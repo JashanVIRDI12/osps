@@ -1,0 +1,170 @@
+'use client';
+
+import { useRef, useState } from 'react';
+import Image from 'next/image';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { useIsomorphicLayoutEffect } from '@/lib/motion';
+import { cn } from '@/lib/utils';
+
+/**
+ * Horizontal scroll carousel — adapted from @uniquesonu / 21st.dev.
+ *
+ * The section is taller than the viewport; the deck inside sticks to the top and
+ * translates on X as that extra height scrolls past, so vertical input reads as
+ * horizontal movement.
+ *
+ * Two changes from the source component:
+ *   - the travel distance is measured from the real track width instead of the
+ *     hardcoded `-95%`, so any number of cards lands flush at both ends,
+ *   - the pinning only engages from `lg` up and is skipped under reduced motion;
+ *     below that the deck is a native swipe row, which is what a touch device
+ *     wants anyway.
+ */
+
+export type CarouselItem = {
+  image: string;
+  title: string;
+  description: string;
+  badge: string;
+};
+
+type HorizontalScrollCarouselProps = {
+  items: CarouselItem[];
+  className?: string;
+  /** Rendered inside the pinned area, above the deck. */
+  header?: React.ReactNode;
+};
+
+export function HorizontalScrollCarousel({
+  items,
+  className,
+  header,
+}: HorizontalScrollCarouselProps) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [travel, setTravel] = useState(0);
+
+  useIsomorphicLayoutEffect(() => {
+    const measure = () => {
+      const track = trackRef.current;
+      const pinnable =
+        window.matchMedia('(min-width: 1024px)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!track || !pinnable) {
+        setTravel(0);
+        return;
+      }
+
+      // Overshoot slightly so the last card clears the right edge.
+      setTravel(Math.max(0, track.scrollWidth - window.innerWidth + 48));
+    };
+
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [items.length]);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+  const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
+
+  return (
+    <div
+      ref={sectionRef}
+      className={cn('relative', className)}
+      // Only reserve extra scroll height when the deck actually travels.
+      style={travel > 0 ? { height: `calc(100svh + ${travel}px)` } : undefined}
+    >
+      <div className="lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:justify-center lg:overflow-hidden">
+        {header}
+
+        {/**
+         * Below `lg` this is a native swipe row, so it gets the things a swipe
+         * row needs and a transformed track must not have: scroll snapping so
+         * cards come to rest framed rather than half-cut, `scroll-padding` that
+         * matches the gutter so a snapped card lines up with the copy above it,
+         * and `overscroll-contain` so swiping past the last card does not
+         * trigger the browser's back gesture.
+         */}
+        <div
+          className={cn(
+            'mt-8 lg:mt-10',
+            'scrollbar-none overscroll-x-contain overflow-x-auto pb-4',
+            'snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-6',
+            'lg:snap-none lg:overflow-visible lg:pb-0'
+          )}
+          role="region"
+          aria-label="Industries we serve, swipe to browse"
+          tabIndex={0}
+        >
+          <motion.div
+            ref={trackRef}
+            style={travel > 0 ? { x } : undefined}
+            className="gutter-x flex w-max gap-4 [--gutter:1.25rem] sm:gap-5 sm:[--gutter:1.5rem] lg:[--gutter:2rem]"
+          >
+            {items.map((item, index) => (
+              <Card key={item.title} item={item} index={index} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Card({ item, index }: { item: CarouselItem; index: number }) {
+  return (
+    <article
+      className={cn(
+        'group relative shrink-0 snap-start overflow-hidden rounded-card-elevated lg:snap-align-none',
+        // Caps at the viewport width so a 320px phone never gets a card wider
+        // than the screen, which would make the row impossible to rest on.
+        'h-[400px] w-[min(268px,78vw)] xs:h-[420px] sm:h-[460px] sm:w-[320px] lg:h-[500px] lg:w-[368px]',
+        'border border-line bg-royal-deep shadow-card'
+      )}
+    >
+      <Image
+        src={item.image}
+        alt=""
+        aria-hidden="true"
+        fill
+        sizes="(max-width: 640px) 268px, (max-width: 1024px) 320px, 368px"
+        className="object-cover transition-transform duration-500 ease-smooth group-hover:scale-105"
+      />
+
+      {/* Scrim — the copy sits over photography, so it needs a floor. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/55 to-royal-deep/10"
+      />
+
+      <div className="absolute inset-0 flex flex-col justify-between p-6">
+        <div className="flex items-start justify-between gap-3">
+          <span className="rounded-pill border border-white/25 bg-white/15 px-3 py-1.5 text-caption font-medium text-white backdrop-blur-md">
+            {item.badge}
+          </span>
+          <span className="text-caption font-semibold tracking-[0.16em] text-white/60">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+        </div>
+
+        <div>
+          <h3 className="text-balance text-[1.4rem] font-semibold leading-[1.1] tracking-[-0.03em] text-white sm:text-[1.55rem]">
+            {item.title}
+          </h3>
+          <p className="mt-3 text-pretty text-body-sm leading-relaxed text-white/80">
+            {item.description}
+          </p>
+          {/* Accent rule that draws in on hover. */}
+          <span
+            aria-hidden="true"
+            className="mt-5 block h-0.5 w-10 origin-left scale-x-100 bg-accent transition-transform duration-500 ease-smooth group-hover:scale-x-[2.4]"
+          />
+        </div>
+      </div>
+    </article>
+  );
+}
