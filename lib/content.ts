@@ -80,7 +80,7 @@ export const hero = {
   ],
   tags: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],
   image: {
-    src: '/images/hero-warehouse.jpg',
+    src: '/images/hero-warehouse.webp',
     alt: 'OSPS surgical products warehouse with branded cartons ready for dispatch',
   },
   /**
@@ -94,40 +94,11 @@ export const hero = {
    * metered connection, in which case the still is the whole composition.
    */
   backdrop: {
-    src: '/images/hero-warehouse.jpg',
+    src: '/images/hero-warehouse.webp',
     video: '/videos/facility.mp4',
     alt: 'OSPS surgical products warehouse with branded cartons ready for dispatch',
     videoLabel: 'WHO-GMP certified manufacturing and supply operations',
   },
-  /**
-   * The four figures that used to drift past the hero's sticky panel. The
-   * parallax column went with the scroll choreography, so nothing renders these
-   * today — kept here because the shots and their captions are still good, and
-   * they are the obvious source if a supporting strip is ever wanted between the
-   * hero and the marquee. `/public/images/hero-*.jpg` are otherwise unreferenced.
-   */
-  retiredParallax: [
-    {
-      src: '/images/hero-syringes.jpg',
-      alt: 'OSPS-branded sterile surgical syringes for clinical administration',
-      caption: 'Syringes & I.V. cannulas',
-    },
-    {
-      src: '/images/hero-gauze.jpg',
-      alt: 'OSPS-branded sterile gauze swabs stacked for wound dressing',
-      caption: 'Gauze swabs & sponges',
-    },
-    {
-      src: '/images/hero-bandage.jpg',
-      alt: 'OSPS-branded elastic and crepe bandages for support and compression',
-      caption: 'Bandages, tapes & plasters',
-    },
-    {
-      src: '/images/hero-gloves.jpg',
-      alt: 'OSPS-branded examination gloves and surgical face masks',
-      caption: 'Gloves, masks & sterile kits',
-    },
-  ],
 };
 
 /** Continuous strip under the hero — the promise, repeated. */
@@ -176,7 +147,7 @@ export const productCategories: ProductCategory[] = [
     items: ['Surgical Syringes', 'I.V. Cannulas', 'Infusion Sets'],
     tone: '#102463',
     image: {
-      src: '/images/category-injection.jpg',
+      src: '/images/category-injection.webp',
       alt: 'OSPS injection and infusion products: syringes, I.V. cannulas and infusion sets',
     },
   },
@@ -189,7 +160,7 @@ export const productCategories: ProductCategory[] = [
     items: ['Urine Bags', 'Wound Drainage Sets'],
     tone: '#18318c',
     image: {
-      src: '/images/category-drainage.jpg',
+      src: '/images/category-drainage.webp',
       alt: 'OSPS drainage and collection sets with sterile tubing components',
     },
   },
@@ -209,7 +180,7 @@ export const productCategories: ProductCategory[] = [
     ],
     tone: '#1d3fbf',
     image: {
-      src: '/images/category-dressings.jpg',
+      src: '/images/category-dressings.webp',
       alt: 'OSPS dressings, gauze swabs, tapes and plasters in sterile packaging',
     },
   },
@@ -227,7 +198,7 @@ export const productCategories: ProductCategory[] = [
     ],
     tone: '#3a5ce8',
     image: {
-      src: '/images/category-theatre.jpg',
+      src: '/images/category-theatre.webp',
       alt: 'OSPS theatre protection kit with gloves, masks, blades and sterile packs',
     },
   },
@@ -259,7 +230,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Surgical Syringes',
         variants: ['With Needle', 'Without Needle'],
         image: {
-          src: '/images/hero-syringes.jpg',
+          src: '/images/hero-syringes.webp',
           alt: 'OSPS sterile surgical syringes',
         },
       },
@@ -268,7 +239,7 @@ export const productGroups: ProductGroup[] = [
         name: 'I.V. Cannulas',
         variants: ['With Safety', 'Without Safety'],
         image: {
-          src: '/images/product-cannulas.jpg',
+          src: '/images/product-cannulas.webp',
           alt: 'OSPS sterile I.V. cannulas with safety options',
         },
       },
@@ -277,7 +248,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Infusion Sets',
         variants: ['With Air Vent', 'Without Air Vent'],
         image: {
-          src: '/images/product-infusion.jpg',
+          src: '/images/product-infusion.webp',
           alt: 'OSPS sterile infusion sets with drip chamber',
         },
       },
@@ -291,7 +262,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Urine Bag',
         variants: ['With T Valve', 'Without T Valve'],
         image: {
-          src: '/images/product-urine-bag.jpg',
+          src: '/images/product-urine-bag.webp',
           alt: 'OSPS sterile urine drainage collection bag',
         },
       },
@@ -300,7 +271,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Wound Drainage Set',
         variants: ['With Trocar', 'Without Trocar'],
         image: {
-          src: '/images/product-drainage-set.jpg',
+          src: '/images/product-drainage-set.webp',
           alt: 'OSPS wound drainage set with trocar',
         },
       },
@@ -314,7 +285,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Gauze Swabs',
         variants: ['Plain', 'X-Ray Detectable'],
         image: {
-          src: '/images/hero-gauze.jpg',
+          src: '/images/hero-gauze.webp',
           alt: 'OSPS sterile gauze swabs',
         },
       },
@@ -323,7 +294,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Surgical Sponges',
         variants: ['Plain', 'X-Ray Detectable'],
         image: {
-          src: '/images/product-sponges.jpg',
+          src: '/images/product-sponges.webp',
           alt: 'OSPS sterile surgical sponges',
         },
       },
@@ -332,7 +303,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Crepe Bandage',
         variants: ['With Elastic', 'Without Elastic'],
         image: {
-          src: '/images/hero-bandage.jpg',
+          src: '/images/hero-bandage.webp',
           alt: 'OSPS crepe bandage rolls',
         },
       },
@@ -341,7 +312,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Elastic Bandage',
         variants: ['Premium Quality'],
         image: {
-          src: '/images/product-elastic.jpg',
+          src: '/images/product-elastic.webp',
           alt: 'OSPS premium elastic compression bandage',
         },
       },
@@ -350,7 +321,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Adhesive Tapes',
         variants: ['Micropore', 'Paper', 'Silk', 'PE'],
         image: {
-          src: '/images/product-tapes.jpg',
+          src: '/images/product-tapes.webp',
           alt: 'OSPS medical adhesive tapes',
         },
       },
@@ -359,7 +330,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Plasters',
         variants: ['Zig-Zag', 'Elastic', 'Regular'],
         image: {
-          src: '/images/product-plasters.jpg',
+          src: '/images/product-plasters.webp',
           alt: 'OSPS medical plasters and adhesive bandages',
         },
       },
@@ -373,7 +344,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Surgical Blades',
         variants: ['Sterile', 'Carbon Steel'],
         image: {
-          src: '/images/product-blades.jpg',
+          src: '/images/product-blades.webp',
           alt: 'OSPS sterile carbon steel surgical blades',
         },
       },
@@ -382,7 +353,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Examination Gloves',
         variants: ['Latex', 'Nitrile', 'Vinyl'],
         image: {
-          src: '/images/product-gloves.jpg',
+          src: '/images/product-gloves.webp',
           alt: 'OSPS powder-free examination gloves in latex and nitrile',
         },
       },
@@ -391,7 +362,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Face Mask',
         variants: ['3 Ply', 'With Tie', 'Without Tie'],
         image: {
-          src: '/images/product-masks.jpg',
+          src: '/images/product-masks.webp',
           alt: 'OSPS 3-ply surgical face masks',
         },
       },
@@ -400,7 +371,7 @@ export const productGroups: ProductGroup[] = [
         name: 'Sterile Surgical Kit',
         variants: ['Premium Quality'],
         image: {
-          src: '/images/product-kit.jpg',
+          src: '/images/product-kit.webp',
           alt: 'OSPS sealed sterile surgical procedure kit',
         },
       },
@@ -415,7 +386,7 @@ export const productAccent = {
 };
 
 export const productImageCard = {
-  src: '/images/accent-quality.jpg',
+  src: '/images/accent-quality.webp',
   alt: 'OSPS quality team inspecting and packaging sterile surgical batches for WHO-GMP dispatch',
   caption: 'Every batch quality-checked and packaged to WHO-GMP standards before dispatch.',
 };
@@ -551,7 +522,7 @@ export const whyChooseUs = {
   heading: 'A surgical range measured by what actually reaches the ward.',
   body: 'Certification, consistency and dispatch speed are what procurement teams judge a surgical supplier on. They are the three things we build our operation around.',
   image: {
-    src: '/images/metrics-stock.jpg',
+    src: '/images/metrics-stock.webp',
     alt: 'OSPS supply specialist checking branded surgical stock on storeroom shelves',
   },
   pointers: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],

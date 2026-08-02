@@ -73,7 +73,7 @@ desktop.ini
 # committed under `public/`:
 #
 #   OSPS Product List.xlsx  (18.6MB)  ->  public/downloads/osps-product-list.xlsx (47KB)
-#   osps logo.pdf           ( 8.8MB)  ->  public/osps-*.webp, public/brand/*.png
+#   osps logo.pdf           ( 8.8MB)  ->  public/osps-*.webp
 #
 # Together they are ~27MB, and anything committed to git stays in its history
 # permanently even after a later delete. Uncomment the two lines below to keep

@@ -27,8 +27,9 @@ export function Logo({
         // get the knockout artwork instead.
         src={onDark ? '/osps-logo-light.webp' : '/osps-logo.webp'}
         alt="Om Sai Pharma & Surgicals"
-        width={640}
-        height={798}
+        width={321}
+        height={400}
+        sizes="132px"
         className={cn('h-auto w-[132px]', className)}
       />
     );
@@ -37,15 +38,15 @@ export function Logo({
   return (
     <span className={cn('flex min-w-0 items-center gap-2 sm:gap-2.5', className)}>
       {/* `sizes` matters more than it looks: without it Next builds a 1x/2x
-          srcset off the intrinsic 256px width and preloads a 640px asset for a
+          srcset off the intrinsic width and preloads a large asset for a
           mark that renders at ~40px — bandwidth taken directly from the hero
           image on the critical path. */}
       <Image
         src="/osps-mark.webp"
         alt=""
         aria-hidden="true"
-        width={256}
-        height={219}
+        width={128}
+        height={110}
         sizes="44px"
         className="h-8 w-auto shrink-0 xs:h-9"
         priority

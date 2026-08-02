@@ -74,7 +74,7 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/images/hero-warehouse.jpg"
+          href="/images/hero-warehouse.webp"
           fetchPriority="high"
         />
         <script dangerouslySetInnerHTML={{ __html: motionGate }} />
