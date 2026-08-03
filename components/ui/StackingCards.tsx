@@ -49,23 +49,37 @@ type StackingCardsProps = {
 };
 
 /**
- * Vertical offset per card, in px, that keeps earlier cards peeking out.
- *
- * A phone gets a smaller one: the offsets stack, so on desktop the deck's last
- * card starts 75px lower than its first, which on a 667px screen is height the
- * card itself needs. 8px is still a legible sliver of the card underneath.
+ * Vertical offset per card, in px, that keeps earlier cards peeking out from
+ * under the ones stacked on top of them. Desktop only — a phone renders the
+ * cards as a plain list, where there is nothing to peek out from behind.
  */
 const PEEK = 25;
-const PEEK_MOBILE = 8;
 
 export function StackingCards({ cards, className }: StackingCardsProps) {
   const scopeRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * The deck is a desktop-only effect.
+   *
+   * Every ingredient of it is something a phone pays for on every single frame
+   * of the scroll: four viewport-tall sticky tracks, a scrubbed `scale` on each
+   * card, a second scrubbed `scale` on each card's image, and an
+   * `0 30px 80px -40px` shadow that has to be re-rastered at every intermediate
+   * scale because a blurred shadow cannot be composited from a cached texture.
+   * Four cards' worth of that, mid-scroll, is where the frame budget goes.
+   *
+   * `gsap.matchMedia` is what gates it — the tweens are never created below
+   * `lg`, and `revert()` on the way out restores the inline styles — so on a
+   * phone the markup below falls through to the `motion-reduce`-style static
+   * layout and the deck simply reads as four stacked cards.
+   */
   useIsomorphicLayoutEffect(() => {
     const scope = scopeRef.current;
     if (!scope || prefersReducedMotion()) return;
 
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia(scope);
+
+    mm.add('(min-width: 1024px)', () => {
       const items = gsap.utils.toArray<HTMLElement>('[data-stack-card]');
       if (items.length < 2) return;
 
@@ -78,6 +92,7 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
           start: 'top top',
           end: 'bottom bottom',
           scrub: true,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -93,49 +108,30 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
           index * step
         );
       });
-    }, scope);
 
-    /**
-     * The image settle is scaled per breakpoint. 2x across a phone-sized card is
-     * both a bigger raster than the device needs and a heavier move than the
-     * small frame can carry — it reads as a lurch rather than a settle.
-     */
-    const mm = gsap.matchMedia(scope);
+      gsap.utils.toArray<HTMLElement>('[data-stack-image]').forEach((image) => {
+        const track = image.closest('[data-stack-track]');
+        if (!track) return;
 
-    mm.add(
-      { isPhone: '(max-width: 1023px)' },
-      (context) => {
-        const { isPhone } = context.conditions as { isPhone: boolean };
-        const from = isPhone ? 1.5 : 2;
+        gsap.fromTo(
+          image,
+          { scale: 2 },
+          {
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: track,
+              start: 'top bottom',
+              end: 'top top',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      });
+    });
 
-        gsap.utils
-          .toArray<HTMLElement>('[data-stack-image]')
-          .forEach((image) => {
-            const track = image.closest('[data-stack-track]');
-            if (!track) return;
-
-            gsap.fromTo(
-              image,
-              { scale: from },
-              {
-                scale: 1,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: track,
-                  start: 'top bottom',
-                  end: 'top top',
-                  scrub: true,
-                },
-              }
-            );
-          });
-      }
-    );
-
-    return () => {
-      mm.revert();
-      ctx.revert();
-    };
+    return () => mm.revert();
   }, []);
 
   return (
@@ -148,19 +144,20 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
             key={card.number}
             data-stack-track
             /**
-             * Two mobile-only changes to the track:
+             * Static below `lg`, sticky from `lg` up.
              *
-             * `min-h` instead of `h` — a phone-width card grows past the
-             * viewport once its description and pills wrap, and a hard `h-svh`
-             * would let it spill over the tracks either side of it.
+             * A phone gets four cards in a plain vertical list: no
+             * viewport-height track, nothing pinned, nothing to keep in sync
+             * with a scroll position. That is both the cheap layout and the
+             * honest one — the deck's whole point is the gather-on-scroll, and a
+             * phone screen is barely taller than one card, so the effect never
+             * had room to read there anyway.
              *
-             * `pt-[4.5rem]` — the card is centred in the track, and centred in a
-             * full viewport puts its top edge behind the 84px fixed header. The
-             * padding moves the centring box below the header instead of
-             * nudging each card down individually, so it stays correct whatever
-             * height the card ends up at.
+             * `min-h` rather than `h` on the desktop track, because a card grows
+             * past the viewport once its description and pills wrap, and a hard
+             * `h-svh` would let it spill over the tracks either side of it.
              */
-            className="sticky top-0 flex min-h-svh items-center justify-center pt-[4.5rem] motion-reduce:relative motion-reduce:min-h-0 motion-reduce:!pt-3 motion-reduce:pb-3 lg:pt-0"
+            className="relative flex items-center justify-center pb-4 last:pb-0 sm:pb-5 lg:sticky lg:top-0 lg:min-h-svh lg:pb-0 lg:last:pb-0"
           >
             <article
               data-stack-card
@@ -168,10 +165,15 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
                 {
                   backgroundColor: card.tone,
                   '--peek': `${index * PEEK}px`,
-                  '--peek-mobile': `${index * PEEK_MOBILE}px`,
                 } as React.CSSProperties
               }
-              className="relative top-[var(--peek-mobile)] flex w-full origin-top flex-col rounded-card-elevated p-5 text-white shadow-[0_30px_80px_-40px_rgba(8,16,50,0.7)] motion-reduce:!top-0 xs:p-6 sm:p-8 lg:top-[calc(-5vh+var(--peek))] lg:h-[460px] lg:w-[84%] lg:p-10"
+              /**
+               * The deep blurred shadow is desktop-only. It is what sells the
+               * cards as a stack of physical panels, but it is also the reason
+               * the scrubbed `scale` was so expensive — and with the deck
+               * flattened on a phone there is nothing left for it to separate.
+               */
+              className="relative flex w-full origin-top flex-col rounded-card-elevated p-5 text-white shadow-card xs:p-6 sm:p-8 lg:top-[calc(-5vh+var(--peek))] lg:h-[460px] lg:w-[84%] lg:p-10 lg:shadow-[0_30px_80px_-40px_rgba(8,16,50,0.7)]"
             >
               <div className="flex items-center justify-between gap-4">
                 {/* Red as a filled pill rather than as text — the card tones run
@@ -224,7 +226,7 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
                   </div>
                 </div>
 
-                <div className="relative h-36 overflow-hidden rounded-2xl xs:h-44 sm:h-52 lg:h-full">
+                <div className="relative h-36 overflow-hidden rounded-2xl bg-white/10 xs:h-44 sm:h-52 lg:h-full">
                   <div data-stack-image className="absolute inset-0">
                     <Image
                       src={card.image.src}

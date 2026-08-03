@@ -82,6 +82,17 @@ export function Globe({
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    /**
+     * Backing-store scale for the canvas.
+     *
+     * The sphere was drawn at 2x on every device, so a 390px-wide phone was
+     * shading a 780x780 buffer sixty times a second — for a decorative element,
+     * on the GPU the scroll itself depends on. 1x on a phone is roughly a
+     * quarter of the fragment work and, on a dotted globe at that size, not a
+     * difference the eye can find. Desktop keeps the crisp 2x.
+     */
+    const scale = window.matchMedia('(max-width: 1023px)').matches ? 1 : 2;
+
     let width = canvas.offsetWidth;
     let frame = 0;
     let destroyed = false;
@@ -89,8 +100,9 @@ export function Globe({
 
     const globe = createGlobe(canvas, {
       ...config,
-      width: width * 2,
-      height: width * 2,
+      devicePixelRatio: scale,
+      width: width * scale,
+      height: width * scale,
       phi: START_PHI,
     });
 
@@ -104,8 +116,8 @@ export function Globe({
 
       globe.update({
         phi: phiRef.current + dragOffsetRef.current,
-        width: width * 2,
-        height: width * 2,
+        width: width * scale,
+        height: width * scale,
       });
       frame = requestAnimationFrame(animate);
     };

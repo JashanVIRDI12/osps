@@ -57,7 +57,14 @@ export function MetricsBand() {
               </dl>
             </div>
 
-            <div className="relative min-h-[280px] lg:min-h-full" data-reveal>
+            {/* Royal fill behind the photograph. Every image below the fold is
+                lazy, so on a fast scroll the frame is reached before the file
+                is — an untinted box flashes white against the royal card and
+                reads as a failed image rather than a loading one. */}
+            <div
+              className="relative min-h-[280px] bg-royal-shade lg:min-h-full"
+              data-reveal
+            >
               <Image
                 src={whyChooseUs.image.src}
                 alt={whyChooseUs.image.alt}
@@ -74,7 +81,7 @@ export function MetricsBand() {
                 {whyChooseUs.pointers.map((pointer) => (
                   <li
                     key={pointer}
-                    className="inline-flex items-center gap-1.5 rounded-pill border border-white/30 bg-royal-deep/60 px-3 py-1.5 text-caption font-medium text-white backdrop-blur-md"
+                    className="inline-flex items-center gap-1.5 rounded-pill border border-white/30 bg-royal-deep/85 px-3 py-1.5 text-caption font-medium text-white lg:bg-royal-deep/60 lg:backdrop-blur-md"
                   >
                     <BadgeCheck
                       className="h-3.5 w-3.5 text-accent-soft"

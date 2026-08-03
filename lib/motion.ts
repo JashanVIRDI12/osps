@@ -15,6 +15,12 @@ export const REVEAL = {
   start: 'top 85%',
 } as const;
 
+/**
+ * How far below the fold a section starts revealing, as a share of the
+ * viewport. Matches the old ScrollTrigger `top 85%`.
+ */
+const ROOT_MARGIN = '0px 0px -12% 0px';
+
 type RevealOptions = {
   /** Children to stagger. Defaults to `[data-reveal]` descendants. */
   selector?: string;
@@ -22,7 +28,7 @@ type RevealOptions = {
   y?: number;
   duration?: number;
   delay?: number;
-  /** ScrollTrigger `start` value. */
+  /** ScrollTrigger `start` value. Kept for call-site compatibility. */
   start?: string;
 };
 
@@ -32,6 +38,17 @@ type RevealOptions = {
  * Attach the returned ref to a section and mark the items inside it with
  * `data-reveal`. Under `prefers-reduced-motion` the y-transform is dropped and
  * only the opacity fade remains.
+ *
+ * Deliberately IntersectionObserver + CSS rather than ScrollTrigger.
+ *
+ * ScrollTrigger resolves `top 85%` against a scroll position it measured once.
+ * On a phone that measurement is taken while the layout is still settling — the
+ * address bar is about to collapse, fonts are about to swap, and every image
+ * below the fold is lazy — so a trigger can end up pointing at a position the
+ * page never reaches. The element then stays at `opacity: 0` permanently, which
+ * is indistinguishable from a section that failed to load. IntersectionObserver
+ * is resolved by the compositor against real geometry, so it cannot drift, and
+ * the transition itself runs off the main thread.
  */
 export function useReveal<T extends HTMLElement = HTMLDivElement>(
   options: RevealOptions = {}
@@ -50,35 +67,46 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(
       y = REVEAL.y,
       duration = REVEAL.duration,
       delay = 0,
-      start = REVEAL.start,
     } = optionsRef.current;
+
+    const targets = Array.from(scope.querySelectorAll<HTMLElement>(selector));
+    if (!targets.length) return;
 
     const reduced = prefersReducedMotion();
 
-    const ctx = gsap.context(() => {
-      const targets = gsap.utils.toArray<HTMLElement>(selector);
-      if (!targets.length) return;
-
-      gsap.fromTo(
-        targets,
-        { opacity: 0, y: reduced ? 0 : y },
-        {
-          opacity: 1,
-          y: 0,
-          duration: reduced ? 0.4 : duration,
-          ease: REVEAL.ease,
-          stagger: reduced ? 0.04 : stagger,
-          delay,
-          scrollTrigger: {
-            trigger: scope,
-            start,
-            once: true,
-          },
-        }
+    targets.forEach((el, index) => {
+      el.style.setProperty('--reveal-y', reduced ? '0px' : `${y}px`);
+      el.style.setProperty(
+        '--reveal-duration',
+        `${reduced ? 0.4 : duration}s`
       );
-    }, scope);
+      el.style.setProperty(
+        '--reveal-delay',
+        `${delay + index * (reduced ? 0.04 : stagger)}s`
+      );
+    });
 
-    return () => ctx.revert();
+    const show = () => targets.forEach((el) => el.classList.add('is-revealed'));
+
+    // No IntersectionObserver (or a scope that is already on screen at mount)
+    // must never mean invisible content.
+    if (typeof IntersectionObserver === 'undefined') {
+      show();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        show();
+        observer.disconnect();
+      },
+      { rootMargin: ROOT_MARGIN, threshold: 0 }
+    );
+
+    observer.observe(scope);
+
+    return () => observer.disconnect();
   }, []);
 
   return ref;
@@ -100,31 +128,41 @@ export function useCountUp(value: number, decimals = 0) {
         ? n.toFixed(decimals)
         : Math.round(n).toLocaleString('en-IN');
 
-    if (prefersReducedMotion()) {
+    if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') {
       el.textContent = format(value);
       return;
     }
 
-    const ctx = gsap.context(() => {
-      const counter = { n: 0 };
-      el.textContent = format(0);
+    el.textContent = format(0);
 
-      gsap.to(counter, {
-        n: value,
-        duration: 1.8,
-        ease: 'power2.out',
-        onUpdate: () => {
-          el.textContent = format(counter.n);
-        },
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 90%',
-          once: true,
-        },
-      });
-    }, el);
+    let tween: gsap.core.Tween | null = null;
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+
+        const counter = { n: 0 };
+        tween = gsap.to(counter, {
+          n: value,
+          duration: 1.8,
+          ease: 'power2.out',
+          onUpdate: () => {
+            el.textContent = format(counter.n);
+          },
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0 }
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      tween?.kill();
+      // The element outlives the tween on a route change; leave it readable.
+      el.textContent = format(value);
+    };
   }, [value, decimals]);
 
   return ref;

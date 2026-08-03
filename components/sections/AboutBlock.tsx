@@ -21,19 +21,33 @@ export function AboutBlock() {
       id="about"
       className="section-base relative overflow-hidden py-20 sm:py-24 lg:py-28"
     >
+      {/**
+       * Decorative backdrop, in two tiers.
+       *
+       * The blooms used to be a pair of 576px and 512px circles under a
+       * `blur(64px)` filter. A filtered element that large cannot be cached as a
+       * plain texture — it is re-rastered whenever the section is repainted,
+       * which on a scrolling phone is often. They are replaced below `lg` by two
+       * radial gradients painted straight onto the section background: the same
+       * soft royal glow, at the cost of an ordinary background paint.
+       *
+       * The honeycomb is desktop-only outright. It is a tiled SVG pattern under
+       * two stacked masks composited with `intersect`, and mask compositing is
+       * both expensive and the least reliably accelerated of the three on mobile
+       * GPUs. At phone scale the pattern reads as faint noise anyway.
+       */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
+        style={{
+          backgroundImage:
+            'radial-gradient(36rem 36rem at 108% -12%, rgba(29,63,191,0.10), transparent 62%), radial-gradient(32rem 32rem at -18% 112%, rgba(29,63,191,0.06), transparent 62%)',
+        }}
       >
-        {/* Soft royal blooms sit under the honeycomb so the pattern has depth
-            behind it rather than lying flat on the canvas. */}
-        <div className="absolute -right-40 -top-48 h-[36rem] w-[36rem] rounded-full bg-royal/[0.09] blur-3xl" />
-        <div className="absolute -bottom-56 -left-48 h-[32rem] w-[32rem] rounded-full bg-royal/[0.05] blur-3xl" />
-
         {/* Honeycomb, faded at the top and bottom edges so it never hard-cuts
             at the section seam, and thinned across the copy column. */}
         <div
-          className="absolute inset-0 text-royal/[0.09]"
+          className="absolute inset-0 hidden text-royal/[0.09] lg:block"
           style={{
             maskImage:
               'linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent), radial-gradient(85% 75% at 78% 45%, #000 35%, rgba(0,0,0,0.45) 100%)',

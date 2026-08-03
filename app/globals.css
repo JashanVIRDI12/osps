@@ -70,7 +70,13 @@
 
   html {
     -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
+    /**
+     * Deliberately not `smooth`. It applies to every programmatic scroll on the
+     * page, including the ones Lenis and `scrollToHash` already animate — two
+     * easings driving the same scroll position read as drift on a phone. The
+     * one place smooth scrolling is wanted asks for it explicitly.
+     */
+    scroll-behavior: auto;
   }
 
   /**
@@ -81,6 +87,20 @@
    */
   body {
     overflow-x: clip;
+  }
+
+  /**
+   * iOS Safari only understands `overflow: clip` from 16. Below that the
+   * declaration above is dropped and nothing catches a stray wide element, so
+   * the fallback pins the body to the viewport width instead — which contains
+   * the overflow without turning anything into a scroll container, and so
+   * without breaking the sticky positioning that `hidden` would.
+   */
+  @supports not (overflow: clip) {
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
   }
 
   /**
@@ -121,6 +141,17 @@
   summary {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /**
+   * Anchor targets clear the fixed header. Belt and braces alongside the offset
+   * `scrollToHash` applies: this one also covers a hash typed straight into the
+   * address bar, a shared deep link, and back/forward restoration — none of
+   * which go through the click handler.
+   */
+  :target,
+  [id] {
+    scroll-margin-top: 6rem;
   }
 
   html.lenis,
@@ -662,6 +693,36 @@
     color: #ffffff;
   }
 
+  /**
+   * `backdrop-filter` is the single most expensive thing a phone can be asked
+   * to paint while scrolling: every layer behind the element has to be
+   * rasterised, blurred and re-composited on each frame it moves, and the page
+   * carries fourteen of them — pills over photographs, the drawer scrim, the
+   * hero's video control.
+   *
+   * Below `lg` they are all traded for an opaque fill of the same value. The
+   * blur is only ever read as "frosted", and against the royal photography the
+   * flat fill is close to indistinguishable — while the frames it gives back
+   * are the difference between a 20fps drag and a smooth one.
+   *
+   * Scoped to `lg` rather than to `(hover: none)` so a touchscreen laptop, which
+   * has the GPU budget for it, keeps the effect.
+   */
+  @media (max-width: 1023.98px) {
+    *,
+    *::before,
+    *::after {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /* Every element that relied on the blur for legibility gets an opaque
+       fill in its place — see the `lg:` variants at each call site. */
+    .glass-tag {
+      background-color: color-mix(in srgb, var(--color-royal-shade) 82%, transparent);
+    }
+  }
+
   /* Edge-to-edge fade so marquee content never hard-clips at the viewport. */
   .edge-fade {
     mask-image: linear-gradient(
@@ -696,11 +757,45 @@
   }
 }
 
+/* ------------------------------------------------------------------ reveal */
+
+/**
+ * Reveal targets start hidden and are transitioned in by a class, not by a
+ * per-element JavaScript tween. `opacity` and `transform` are the only two
+ * properties the compositor can animate without touching layout or paint, so a
+ * whole grid revealing mid-scroll costs the main thread nothing.
+ *
+ * The custom properties are written once, per element, by `useReveal`.
+ */
 html.js [data-reveal],
-html.js [data-hero-reveal],
-html.js [data-word] {
+html.js [data-hero-reveal] {
   opacity: 0;
 }
+
+html.js [data-reveal] {
+  transform: translate3d(0, var(--reveal-y, 40px), 0);
+  transition:
+    opacity var(--reveal-duration, 0.85s) cubic-bezier(0.22, 1, 0.36, 1)
+      var(--reveal-delay, 0s),
+    transform var(--reveal-duration, 0.85s) cubic-bezier(0.22, 1, 0.36, 1)
+      var(--reveal-delay, 0s);
+}
+
+html.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/**
+ * Content that is invisible because its animation never ran is worse than
+ * content with no animation at all — on a phone it is indistinguishable from a
+ * section that failed to load. Two independent nets catch that:
+ *
+ *   - the inline gate in `layout.tsx` drops the `js` class if the motion
+ *     runtime never boots at all, which un-hides everything above;
+ *   - MotionRoot sweeps for any reveal target that is on screen and still
+ *     hidden five seconds in, and adds `is-revealed` to it directly.
+ */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -713,5 +808,14 @@ html.js [data-word] {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /**
+   * The reveal still gates on scroll, it just arrives instantly — the universal
+   * rule above already collapses the duration, so all that is left to drop is
+   * the travel.
+   */
+  html.js [data-reveal] {
+    transform: none;
   }
 }

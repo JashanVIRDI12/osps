@@ -99,6 +99,10 @@ export function HorizontalScrollCarousel({
           role="region"
           aria-label="Industries we serve, swipe to browse"
           tabIndex={0}
+          /* Nested scroller: Lenis must leave this one to the browser, or a
+             horizontal trackpad gesture over the row is swallowed by the page's
+             virtual scroller instead of moving the deck. */
+          data-lenis-prevent
         >
           <motion.div
             ref={trackRef}
@@ -132,6 +136,20 @@ function Card({ item, index }: { item: CarouselItem; index: number }) {
         aria-hidden="true"
         fill
         sizes="(max-width: 640px) 268px, (max-width: 1024px) 320px, 368px"
+        /**
+         * The deck is 2580px of track inside a 390px window, so every card past
+         * the second sits outside the viewport horizontally — and a lazy image
+         * that is off-screen on the *x* axis never loads, however far the
+         * visitor scrolls down the page. The result on a phone is a row whose
+         * first two cards have photography and whose remaining seven are flat
+         * navy rectangles, which reads as a broken section rather than one
+         * waiting to be swiped.
+         *
+         * The first three are therefore eager (they are what is on screen when
+         * the section arrives), and the rest stay lazy so they cost nothing
+         * until the row is actually swiped.
+         */
+        loading={index < 3 ? 'eager' : 'lazy'}
         className="object-cover transition-transform duration-500 ease-smooth group-hover:scale-105"
       />
 
@@ -143,7 +161,7 @@ function Card({ item, index }: { item: CarouselItem; index: number }) {
 
       <div className="absolute inset-0 flex flex-col justify-between p-6">
         <div className="flex items-start justify-between gap-3">
-          <span className="rounded-pill border border-white/25 bg-white/15 px-3 py-1.5 text-caption font-medium text-white backdrop-blur-md">
+          <span className="rounded-pill border border-white/25 bg-royal-deep/70 px-3 py-1.5 text-caption font-medium text-white lg:bg-white/15 lg:backdrop-blur-md">
             {item.badge}
           </span>
           <span className="text-caption font-semibold tracking-[0.16em] text-white/60">

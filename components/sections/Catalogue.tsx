@@ -125,7 +125,7 @@ export function Catalogue() {
               alone needs more than that and would blanket the photograph. The
               crop deepens as the viewport narrows so the image keeps its own
               space. */}
-          <div className="relative aspect-[3/2] w-full xs:aspect-[16/8] sm:aspect-[21/8]">
+          <div className="relative aspect-[3/2] w-full bg-royal-deep xs:aspect-[16/8] sm:aspect-[21/8]">
             <Image
               src={productImageCard.src}
               alt={productImageCard.alt}

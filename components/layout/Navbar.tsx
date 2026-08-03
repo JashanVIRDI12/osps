@@ -201,7 +201,10 @@ export function Navbar() {
           aria-hidden="true"
           onClick={() => setOpen(false)}
           style={{ visibility: 'hidden', opacity: 0 }}
-          className="pointer-events-auto absolute inset-0 bg-royal-deep/70 backdrop-blur-xl"
+          /* Near-opaque instead of blurred: a `blur(24px)` backdrop-filter over
+             the full viewport is the most expensive layer the drawer can open,
+             and it opens on exactly the devices least able to pay for it. */
+          className="pointer-events-auto absolute inset-0 bg-royal-deep/95 lg:bg-royal-deep/70 lg:backdrop-blur-xl"
         />
 
         <div

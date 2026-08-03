@@ -30,13 +30,28 @@ type Connection = { saveData?: boolean; effectiveType?: string };
 /**
  * Whether the backdrop footage should load at all.
  *
- * It is a 3.9MB file at the very top of the page, so it only earns its place
- * when the visitor has not asked for less motion and is not on a metered or
- * slow connection. In every other case the still behind it is the same shot and
+ * It is a 1MB file at the very top of the page, so it only earns its place when
+ * the visitor has not asked for less motion and is not on a metered or slow
+ * connection. In every other case the still behind it is the same shot and
  * carries the composition on its own — the hero never waits on video.
+ *
+ * Phones are excluded outright, and not only for the download. A looping video
+ * decodes frames for as long as it is on screen, and those frames are composited
+ * underneath everything the visitor is actually scrolling; on a mid-range phone
+ * that is a constant tax on the same GPU the scroll depends on. It also competes
+ * for bandwidth with the fifteen catalogue images immediately below it, which is
+ * why they arrive late enough to look like they are not loading at all.
  */
 function shouldLoadBackdropVideo() {
   if (prefersReducedMotion()) return false;
+
+  // Coarse pointer and a narrow viewport — a phone or small tablet.
+  if (
+    window.matchMedia('(max-width: 1023px)').matches ||
+    window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  ) {
+    return false;
+  }
 
   const connection = (navigator as Navigator & { connection?: Connection })
     .connection;
@@ -44,7 +59,8 @@ function shouldLoadBackdropVideo() {
   if (connection?.saveData) return false;
   if (
     connection?.effectiveType === '2g' ||
-    connection?.effectiveType === 'slow-2g'
+    connection?.effectiveType === 'slow-2g' ||
+    connection?.effectiveType === '3g'
   ) {
     return false;
   }
@@ -210,13 +226,20 @@ export function Hero() {
           />
         ) : null}
 
-        {/* Two scrims rather than one: the multiply pass pulls the footage into
-            the brand blue, the gradient guarantees the contrast the copy needs
-            regardless of which frame is on screen. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-royal-deep/60 mix-blend-multiply"
-        />
+        {/**
+         * One scrim, not two.
+         *
+         * The first used to be `mix-blend-multiply`, which pulled the footage
+         * into the brand blue — but a blend mode over a full-viewport, actively
+         * decoding video is the most expensive composite on the page: the
+         * browser cannot keep the layers independent, so every frame of the
+         * hero forces the whole stack to be re-blended, and it does so while
+         * the visitor is scrolling past it.
+         *
+         * A flat royal fill under the existing gradient reaches the same
+         * colour and the same contrast floor with a plain opaque paint.
+         */}
+        <div aria-hidden="true" className="absolute inset-0 bg-royal-deep/55" />
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/45 to-royal-deep/65"
@@ -294,7 +317,7 @@ export function Hero() {
           type="button"
           onClick={toggleVideo}
           aria-pressed={playing}
-          className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-10 grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-royal-deep/40 text-white/80 backdrop-blur-md transition-colors hover:border-white/60 hover:text-white sm:bottom-6 sm:right-6"
+          className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-10 grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-royal-deep/80 text-white/80 transition-colors hover:border-white/60 hover:text-white lg:bg-royal-deep/40 lg:backdrop-blur-md sm:bottom-6 sm:right-6"
         >
           <span className="sr-only">
             {playing

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap';
+import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
 import { process } from '@/lib/content';
 
@@ -25,53 +25,105 @@ export function ProcessRail() {
 
     const reduced = prefersReducedMotion();
 
-    const ctx = gsap.context(() => {
-      const steps = gsap.utils.toArray<HTMLElement>('[data-step]');
+    const steps = Array.from(
+      list.querySelectorAll<HTMLElement>('[data-step]')
+    );
 
-      gsap.fromTo(
-        steps,
-        { opacity: 0, y: reduced ? 0 : 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: reduced ? 0.4 : 0.8,
-          ease: 'power3.out',
-          stagger: reduced ? 0.03 : 0.09,
-          scrollTrigger: { trigger: list, start: 'top 80%', once: true },
-        }
+    /* -------------------------------------------------- step entrance + state
+     *
+     * IntersectionObserver rather than ScrollTrigger, for the same reason the
+     * shared reveal moved: a `once` trigger that resolves against a stale
+     * measurement leaves its step at `opacity: 0` for good, and a column of
+     * invisible steps is the most obviously broken thing on the page.
+     */
+    steps.forEach((step, index) => {
+      step.style.setProperty('--reveal-y', reduced ? '0px' : '30px');
+      step.style.setProperty('--reveal-duration', `${reduced ? 0.4 : 0.8}s`);
+      step.style.setProperty(
+        '--reveal-delay',
+        `${index * (reduced ? 0.03 : 0.09)}s`
       );
+    });
 
-      if (reduced) {
-        gsap.set(progress, { scaleY: 1 });
-        return;
-      }
+    const entrance = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        steps.forEach((step) => step.classList.add('is-revealed'));
+        entrance.disconnect();
+      },
+      { rootMargin: '0px 0px -15% 0px' }
+    );
+    entrance.observe(list);
 
-      gsap.fromTo(
-        progress,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: list,
-            start: 'top 65%',
-            end: 'bottom 75%',
-            scrub: true,
-          },
-        }
-      );
-
-      steps.forEach((step) => {
-        ScrollTrigger.create({
-          trigger: step,
-          start: 'top 70%',
-          end: 'bottom 40%',
-          toggleClass: { targets: step, className: 'is-active' },
+    /**
+     * The chip highlight is a plain "is this step near the middle of the
+     * screen" question, which is exactly what an observer margin expresses —
+     * and it costs nothing per frame, unlike a ScrollTrigger per step.
+     */
+    const active = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-active', entry.isIntersecting);
         });
-      });
-    }, section);
+      },
+      { rootMargin: '-30% 0px -40% 0px' }
+    );
+    steps.forEach((step) => active.observe(step));
 
-    return () => ctx.revert();
+    if (reduced) {
+      gsap.set(progress, { scaleY: 1 });
+      return () => {
+        entrance.disconnect();
+        active.disconnect();
+      };
+    }
+
+    /* ------------------------------------------------------- progress fill
+     *
+     * The one genuinely scroll-linked element here, and desktop-only. Scrubbing
+     * a transform against scroll means a GSAP tick on every frame of every
+     * scroll through this section; on a phone the rail is a 1px line beside the
+     * steps, and it is not worth a frame of the budget. There it simply sits
+     * filled, which is what the reduced-motion path already did.
+     */
+    const mm = gsap.matchMedia(section);
+
+    mm.add(
+      {
+        isDesktop: '(min-width: 1024px)',
+        isMobile: '(max-width: 1023.98px)',
+      },
+      (context) => {
+        const { isDesktop } = context.conditions as { isDesktop: boolean };
+
+        if (!isDesktop) {
+          gsap.set(progress, { scaleY: 1 });
+          return;
+        }
+
+        gsap.fromTo(
+          progress,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: list,
+              start: 'top 65%',
+              end: 'bottom 75%',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      }
+    );
+
+    return () => {
+      entrance.disconnect();
+      active.disconnect();
+      mm.revert();
+    };
   }, []);
 
   return (
@@ -110,6 +162,9 @@ export function ProcessRail() {
               <li
                 key={step.title}
                 data-step
+                /* Also a reveal target, so it starts hidden in CSS before first
+                   paint rather than being hidden by script afterwards. */
+                data-reveal
                 className="group relative pb-11 last:pb-0"
               >
                 <span
