@@ -10,23 +10,35 @@ import { cn } from '@/lib/cn';
 
 /**
  * Stacking scroll cards — adapted from ui-layout's Stacking Cards
- * (21st.dev), rebuilt on this project's GSAP + ScrollTrigger runtime.
+ * (21st.dev), rebuilt on this project's motion runtime.
  *
- * Each card is sticky inside its own viewport-height track and is pulled up by a
- * per-index offset, so the cards gather into a deck. A single scrubbed timeline
- * shrinks every card as the ones after it land on top — card `i` scales from 1 to
- * `1 - (count - i) * 0.05` across the remainder of the section — and each card's
- * image settles from 2x as its track rises into view.
+ * The deck gathers the same way at every size, but it is built two different
+ * ways, because the two platforms can afford different things.
  *
- * Two deliberate departures from the source component:
- *   - No `<ReactLenis root>`. Smooth scrolling is already owned by MotionRoot; a
- *     second root instance would fight the first for the scroll position.
- *   - GSAP rather than `motion/react`, so the page keeps one animation runtime
- *     and ScrollTrigger stays in sync with Lenis.
+ * Desktop — each card is sticky inside its own viewport-height track, and a
+ * scrubbed GSAP timeline shrinks every card as the ones after it land on top:
+ * card `i` scales from 1 to `1 - (count - i) * 0.05` across the remainder of the
+ * section, and each card's image settles from 2x as its track rises into view.
  *
- * Under `prefers-reduced-motion` the `motion-reduce:` variants un-stick the tracks
- * and drop the peek offset, so the deck degrades to a plain vertical list without
- * any JavaScript involved.
+ * Mobile — the same gather, expressed entirely in CSS. Each track is sticky at
+ * `header + index * PEEK_MOBILE`, so card 2 comes to rest ten pixels below card
+ * 1, card 3 ten below that, and each card slides over the one before it leaving
+ * a sliver of its top edge showing. No JavaScript runs while scrolling: sticky
+ * positioning is resolved by the compositor, so the deck costs a phone nothing
+ * per frame.
+ *
+ * The scrubbed `scale` is deliberately *not* reinstated on mobile. It was the
+ * measured cause of the dropped frames through this section — animating scale on
+ * a card carrying a large blurred shadow forces that shadow to be re-rastered at
+ * every intermediate size, four cards deep, on every frame. Sticky alone gives
+ * the stack; the scale only added depth to it.
+ *
+ * One deliberate departure from the source component: no `<ReactLenis root>`.
+ * Smooth scrolling is owned by MotionRoot, and a second root instance would
+ * fight the first for the scroll position.
+ *
+ * Under `prefers-reduced-motion` the tracks un-stick and the deck degrades to a
+ * plain vertical list, without any JavaScript involved.
  */
 
 export type StackingCardItem = {
@@ -49,11 +61,19 @@ type StackingCardsProps = {
 };
 
 /**
- * Vertical offset per card, in px, that keeps earlier cards peeking out from
- * under the ones stacked on top of them. Desktop only — a phone renders the
- * cards as a plain list, where there is nothing to peek out from behind.
+ * Vertical offset per card that keeps earlier cards peeking out from under the
+ * ones stacked on top of them.
+ *
+ * The offsets accumulate, so the phone value has to stay small: at 25px the
+ * fourth card would come to rest 75px further down than the first, and on a
+ * 667px screen that is height the card itself needs. 10px is still a legible
+ * sliver of the card underneath.
  */
 const PEEK = 25;
+const PEEK_MOBILE = 10;
+
+/** Clearance for the fixed header, so a stuck card never lands behind it. */
+const HEADER_CLEARANCE = '4.75rem';
 
 export function StackingCards({ cards, className }: StackingCardsProps) {
   const scopeRef = useRef<HTMLDivElement>(null);
@@ -143,21 +163,42 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
           <div
             key={card.number}
             data-stack-track
+            style={
+              {
+                '--stack-top': `calc(${HEADER_CLEARANCE} + ${
+                  index * PEEK_MOBILE
+                }px)`,
+                /**
+                 * Later cards paint over earlier ones — which DOM order already
+                 * gives, right up until the deck's bottom edge is reached and
+                 * the tracks stop sticking. They release at different scroll
+                 * positions, because the cards are not all the same height, and
+                 * for those few hundred pixels a card can slide up past one that
+                 * should still be covering it. Pinning the order explicitly
+                 * makes the exit read as the whole stack leaving together.
+                 */
+                zIndex: index + 1,
+              } as React.CSSProperties
+            }
             /**
-             * Static below `lg`, sticky from `lg` up.
+             * Sticky at both sizes, but resolved differently.
              *
-             * A phone gets four cards in a plain vertical list: no
-             * viewport-height track, nothing pinned, nothing to keep in sync
-             * with a scroll position. That is both the cheap layout and the
-             * honest one — the deck's whole point is the gather-on-scroll, and a
-             * phone screen is barely taller than one card, so the effect never
-             * had room to read there anyway.
+             * Below `lg` the track sticks at its own accumulated offset, which
+             * is what produces the stack: each card comes to rest 10px lower
+             * than the one before it and covers everything but that sliver. The
+             * gap in flow (`mb`) is the breathing room between cards while they
+             * are still scrolling past — it is margin rather than padding so it
+             * does not travel with the stuck card.
              *
-             * `min-h` rather than `h` on the desktop track, because a card grows
-             * past the viewport once its description and pills wrap, and a hard
-             * `h-svh` would let it spill over the tracks either side of it.
+             * From `lg` the track becomes its own viewport-height stage with the
+             * card centred in it, which is what the scrubbed timeline expects.
+             * `min-h` rather than `h`, because a card grows past the viewport
+             * once its description and pills wrap, and a hard `h-svh` would let
+             * it spill over the tracks either side of it.
+             *
+             * `motion-reduce` un-sticks everything: no gather, just a list.
              */
-            className="relative flex items-center justify-center pb-4 last:pb-0 sm:pb-5 lg:sticky lg:top-0 lg:min-h-svh lg:pb-0 lg:last:pb-0"
+            className="sticky top-[var(--stack-top)] mb-5 flex items-center justify-center last:mb-0 motion-reduce:static sm:mb-6 lg:top-0 lg:mb-0 lg:min-h-svh lg:last:mb-0"
           >
             <article
               data-stack-card
@@ -168,12 +209,16 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
                 } as React.CSSProperties
               }
               /**
-               * The deep blurred shadow is desktop-only. It is what sells the
-               * cards as a stack of physical panels, but it is also the reason
-               * the scrubbed `scale` was so expensive — and with the deck
-               * flattened on a phone there is nothing left for it to separate.
+               * The mobile shadow is cast *upwards*, because on a phone the
+               * card that needs separating is the one underneath — the deck
+               * gathers downward, so each card's top edge is the seam.
+               *
+               * A blurred shadow is affordable here in a way it was not before:
+               * a sticky card is composited as its own layer and its shadow is
+               * rastered once, then simply moved. It was only expensive while a
+               * scrubbed `scale` kept changing the size it had to be drawn at.
                */
-              className="relative flex w-full origin-top flex-col rounded-card-elevated p-5 text-white shadow-card xs:p-6 sm:p-8 lg:top-[calc(-5vh+var(--peek))] lg:h-[460px] lg:w-[84%] lg:p-10 lg:shadow-[0_30px_80px_-40px_rgba(8,16,50,0.7)]"
+              className="relative flex w-full origin-top flex-col rounded-card-elevated p-5 text-white shadow-[0_-12px_32px_-16px_rgba(8,16,50,0.55)] xs:p-6 sm:p-8 lg:top-[calc(-5vh+var(--peek))] lg:h-[460px] lg:w-[84%] lg:p-10 lg:shadow-[0_30px_80px_-40px_rgba(8,16,50,0.7)]"
             >
               <div className="flex items-center justify-between gap-4">
                 {/* Red as a filled pill rather than as text — the card tones run

@@ -52,9 +52,12 @@ export function Capabilities() {
         </div>
       </div>
 
-      <StackingCards cards={cards} className="shell" />
+      {/* The desktop deck opens with a full viewport-height track, which is its
+          own separation from the header and from the CTA below it. The mobile
+          stack has no such stage, so it asks for the spacing explicitly. */}
+      <StackingCards cards={cards} className="shell mt-10 sm:mt-12 lg:mt-0" />
 
-      <div className="shell pb-20 sm:pb-24 lg:pb-28">
+      <div className="shell mt-14 pb-20 sm:mt-16 sm:pb-24 lg:mt-0 lg:pb-28">
         <div className="card-metric flex flex-col gap-6 p-6 xs:p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
           <p className="max-w-xl text-balance text-[1.35rem] font-semibold leading-tight tracking-[-0.03em] xs:text-heading-sm">
             {productAccent.title}

@@ -1,9 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
+import { prefersReducedMotion } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
 /**
@@ -42,7 +44,53 @@ export function HorizontalScrollCarousel({
 }: HorizontalScrollCarouselProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
   const [travel, setTravel] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  /**
+   * Whether each arrow still has somewhere to go. A disabled arrow at the end
+   * of the row is the affordance that tells you the deck has an end — without
+   * it the control looks broken rather than exhausted.
+   */
+  const syncArrows = useCallback(() => {
+    const row = rowRef.current;
+    if (!row) return;
+
+    const max = row.scrollWidth - row.clientWidth;
+    setAtStart(row.scrollLeft <= 4);
+    setAtEnd(row.scrollLeft >= max - 4);
+  }, []);
+
+  useEffect(() => {
+    syncArrows();
+
+    const row = rowRef.current;
+    if (!row) return;
+
+    const observer = new ResizeObserver(syncArrows);
+    observer.observe(row);
+    return () => observer.disconnect();
+  }, [syncArrows, items.length]);
+
+  /** Advances by exactly one card plus its gap, so the row lands snapped. */
+  const step = useCallback((direction: 1 | -1) => {
+    const row = rowRef.current;
+    if (!row) return;
+
+    const card = row.querySelector('article');
+    const track = row.firstElementChild;
+    const gap = track ? parseFloat(getComputedStyle(track).gap) || 16 : 16;
+    const distance = card
+      ? card.getBoundingClientRect().width + gap
+      : row.clientWidth * 0.8;
+
+    row.scrollBy({
+      left: direction * distance,
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    });
+  }, []);
 
   useIsomorphicLayoutEffect(() => {
     const measure = () => {
@@ -82,6 +130,37 @@ export function HorizontalScrollCarousel({
         {header}
 
         {/**
+         * Swipe controls, mobile only.
+         *
+         * From `lg` the deck is driven by the page scroll, so an arrow would be
+         * pointing at a gesture that does not apply. Below it the row is a
+         * native swipe area — and a swipe area with no visible control reads as
+         * a static row of cut-off cards, which is exactly how this section was
+         * being missed.
+         *
+         * They are real buttons rather than decorative chevrons, so the deck is
+         * reachable by tap and by keyboard, not only by dragging.
+         */}
+        <div className="shell mt-7 flex items-center gap-2 lg:hidden">
+          <ArrowButton
+            direction="prev"
+            disabled={atStart}
+            onClick={() => step(-1)}
+          />
+          <ArrowButton
+            direction="next"
+            disabled={atEnd}
+            onClick={() => step(1)}
+          />
+          <span
+            aria-hidden="true"
+            className="ml-1 text-caption font-medium uppercase tracking-[0.14em] text-ink-soft"
+          >
+            Swipe to browse
+          </span>
+        </div>
+
+        {/**
          * Below `lg` this is a native swipe row, so it gets the things a swipe
          * row needs and a transformed track must not have: scroll snapping so
          * cards come to rest framed rather than half-cut, `scroll-padding` that
@@ -90,8 +169,10 @@ export function HorizontalScrollCarousel({
          * trigger the browser's back gesture.
          */}
         <div
+          ref={rowRef}
+          onScroll={syncArrows}
           className={cn(
-            'mt-8 lg:mt-10',
+            'mt-4 lg:mt-10',
             'scrollbar-none overscroll-x-contain overflow-x-auto pb-4',
             'snap-x snap-mandatory scroll-pl-5 sm:scroll-pl-6',
             'lg:snap-none lg:overflow-visible lg:pb-0'
@@ -116,6 +197,39 @@ export function HorizontalScrollCarousel({
         </div>
       </div>
     </div>
+  );
+}
+
+function ArrowButton({
+  direction,
+  disabled,
+  onClick,
+}: {
+  direction: 'prev' | 'next';
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const Icon = direction === 'prev' ? ChevronLeft : ChevronRight;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      /* `aria-label` rather than visible text: the row it controls is already
+         named, so the button only has to say which way it goes. */
+      aria-label={
+        direction === 'prev' ? 'Previous industries' : 'Next industries'
+      }
+      className={cn(
+        'grid h-11 w-11 shrink-0 place-items-center rounded-pill border transition-colors duration-200',
+        disabled
+          ? 'border-line bg-canvas text-ink-soft/40'
+          : 'border-line-strong bg-surface text-royal active:border-royal active:bg-royal-tint'
+      )}
+    >
+      <Icon className="h-5 w-5" aria-hidden="true" />
+    </button>
   );
 }
 
