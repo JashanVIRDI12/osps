@@ -7,12 +7,10 @@ import {
   ClipboardCheck,
   Clock,
   Droplets,
-  Facebook,
   Globe,
   Handshake,
   HeartPulse,
   Instagram,
-  Linkedin,
   Mail,
   MapPin,
   Microscope,
@@ -32,9 +30,9 @@ import { PRODUCT_INTERESTS } from './schema';
 /**
  * Single source of truth for every piece of copy on the page.
  *
- * Contact details and social URLs below are placeholders and should be
- * swapped for real brand details before launch. Imagery lives in
- * `/public/images` and includes the OSPS heart mark where packaging is shown.
+ * Contact details and social URLs are the live brand details used across the
+ * site. Imagery lives in `/public/images` and includes the OSPS heart mark
+ * where packaging is shown.
  */
 
 export const site = {
@@ -45,7 +43,7 @@ export const site = {
   tagline: 'Quality You Can Trust, Care You Deserve',
   description:
     'Om Sai Pharma & Surgicals manufactures and supplies a complete range of surgical products (syringes, I.V. cannulas, infusion sets, dressings, tapes and theatre essentials) to hospitals in India and 20+ countries worldwide.',
-  url: 'https://omsaipharma.example.com',
+  url: 'https://ospsmed.com',
 };
 
 /** The four claims that lead the page. */
@@ -671,11 +669,15 @@ export const contact = {
   lead: 'Send us your requirement list and we will come back with itemised pricing and availability, usually the same working day.',
   productInterests: PRODUCT_INTERESTS,
   details: {
-    address: ['Om Sai Pharma & Surgicals', 'Plot 14, MIDC Industrial Area', 'Pune, Maharashtra 411019'],
-    phone: '+91 98765 43210',
-    phoneHref: 'tel:+919876543210',
-    email: 'sales@omsaipharma.in',
-    emailHref: 'mailto:sales@omsaipharma.in',
+    address: [
+      'Om Sai Pharma & Surgicals',
+      'Plot No. 39, Lakhnawali Rd, Surajpur',
+      'Greater Noida, Uttar Pradesh 201306',
+    ],
+    phone: '+91 98180 00621',
+    phoneHref: 'tel:+919818000621',
+    email: 'contact@ospsmed.com',
+    emailHref: 'mailto:contact@ospsmed.com',
     hours: ['Monday - Saturday', '9:30 AM - 7:00 PM IST'],
   },
 };
@@ -703,8 +705,95 @@ export const footer = {
   blurb:
     'Manufacturing and supplying a complete range of surgical products (syringes, cannulas, infusion sets, dressings, tapes and theatre essentials) since 2015.',
   socials: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com', icon: Linkedin },
-    { label: 'Facebook', href: 'https://www.facebook.com', icon: Facebook },
-    { label: 'Instagram', href: 'https://www.instagram.com', icon: Instagram },
+    { label: 'Instagram', href: 'https://www.instagram.com/ospsmed', icon: Instagram },
+  ],
+  legal: [{ label: 'Privacy Policy', href: '/privacy' }],
+};
+
+/* --------------------------------------------------------- privacy policy */
+
+export const privacyPolicy = {
+  title: 'Privacy Policy',
+  lastUpdated: 'Aug 03, 2026',
+  intro:
+    'Om Sai Pharma & Surgicals ("OSPS", "we", "us", "our") is committed to protecting the privacy of our customers, partners, and website visitors. This Privacy Policy explains how we collect, use, and protect your information, including when you communicate with us via WhatsApp.',
+  sections: [
+    {
+      heading: '1. Information We Collect',
+      body: 'When you interact with us — through our website, WhatsApp, phone, email, or in person — we may collect:',
+      bullets: [
+        'Your name, phone number, and email address',
+        'Business/company name and shipping or billing address',
+        'Order details, product inquiries, and communication history',
+        'Payment-related information necessary to process orders (processed securely through our payment partners)',
+      ],
+    },
+    {
+      heading: '2. How We Use Your Information',
+      body: 'We use the information we collect to:',
+      bullets: [
+        'Respond to inquiries and provide customer support',
+        'Process and fulfill orders, including order confirmations, invoices, and shipment tracking',
+        "Send you updates related to your orders, account, or services you've requested",
+        'Improve our products and services',
+        'Comply with legal and regulatory requirements',
+      ],
+    },
+    {
+      heading: '3. WhatsApp Communication',
+      paragraphs: [
+        'If you contact us via WhatsApp or opt in to receive messages from us, we may use the WhatsApp Business Platform to:',
+      ],
+      bullets: [
+        'Send order confirmations, invoices, shipping updates, and payment reminders',
+        'Respond to your questions and support requests',
+        'Share relevant product or service information, where you have consented to receive such messages',
+      ],
+      after: [
+        "Your phone number and message content shared via WhatsApp are processed in accordance with Meta's WhatsApp Business Platform policies, in addition to this Privacy Policy. You may opt out of promotional messages at any time by replying \"STOP\" or contacting us directly.",
+      ],
+    },
+    {
+      heading: '4. Data Sharing',
+      body: 'We do not sell your personal information. We may share information with:',
+      bullets: [
+        'Trusted service providers who help us operate our business (e.g., logistics partners, payment processors, IT service providers), solely to perform services on our behalf',
+        'Regulatory or government authorities where required by law',
+      ],
+    },
+    {
+      heading: '5. Data Security',
+      paragraphs: [
+        'We implement reasonable technical and organizational measures to protect your information from unauthorized access, alteration, disclosure, or destruction.',
+      ],
+    },
+    {
+      heading: '6. Data Retention',
+      paragraphs: [
+        'We retain your information only as long as necessary to fulfill the purposes described in this policy, or as required by applicable law.',
+      ],
+    },
+    {
+      heading: '7. Your Rights',
+      body: 'You may contact us to:',
+      bullets: [
+        'Request access to the personal information we hold about you',
+        'Request correction or deletion of your information',
+        'Withdraw consent to receive marketing communications',
+      ],
+    },
+    {
+      heading: '8. Contact Us',
+      paragraphs: [
+        'If you have any questions about this Privacy Policy or how we handle your information, please contact us at:',
+      ],
+      contactBlock: true,
+    },
+    {
+      heading: '9. Changes to This Policy',
+      paragraphs: [
+        'We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date.',
+      ],
+    },
   ],
 };

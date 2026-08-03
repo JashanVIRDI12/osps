@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { navLinks, site, footer, contact } from '@/lib/content';
 import { scrollToHash } from '@/lib/scroll';
@@ -7,13 +8,17 @@ import { Logo } from '@/components/ui/Logo';
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+  const onHome = pathname === '/';
   const { details } = contact;
+
+  const navHref = (href: string) => (onHome ? href : `/${href}`);
 
   const handleNavigate = (
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
-    if (scrollToHash(href)) event.preventDefault();
+    if (onHome && scrollToHash(href)) event.preventDefault();
   };
 
   return (
@@ -61,8 +66,18 @@ export function Footer() {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
-                    href={link.href}
+                    href={navHref(link.href)}
                     onClick={(event) => handleNavigate(event, link.href)}
+                    className="inline-flex min-h-[44px] items-center text-body-sm text-royal-mist underline-offset-4 transition-colors hover:text-white hover:underline sm:min-h-0"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              {footer.legal.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
                     className="inline-flex min-h-[44px] items-center text-body-sm text-royal-mist underline-offset-4 transition-colors hover:text-white hover:underline sm:min-h-0"
                   >
                     {link.label}

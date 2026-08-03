@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { ArrowRight, Mail, Phone } from 'lucide-react';
 import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap';
 import { scrollToHash } from '@/lib/scroll';
@@ -20,7 +21,14 @@ export function Navbar() {
   const drawerRef = useRef<gsap.core.Timeline | null>(null);
 
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const onHome = pathname === '/';
   const { details } = contact;
+
+  const navHref = useCallback(
+    (href: string) => (onHome ? href : `/${href}`),
+    [onHome]
+  );
 
   /* ------------------------------------------------------- condensing bar */
 
@@ -31,21 +39,25 @@ export function Navbar() {
 
     const reduced = prefersReducedMotion();
     const duration = reduced ? 0 : 0.4;
+    const condensed = {
+      paddingTop: 10,
+      paddingBottom: 10,
+      backgroundColor: 'rgba(16, 36, 99, 0.94)',
+      borderColor: 'rgba(44, 74, 174, 0.85)',
+    };
+
+    // Interior pages have a light canvas, so the bar stays solid from the start.
+    if (!onHome) {
+      gsap.set(header, { paddingTop: 10, paddingBottom: 10 });
+      gsap.set(bar, condensed);
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const tl = gsap
         .timeline({ paused: true, defaults: { duration, ease: 'power2.out' } })
         .to(header, { paddingTop: 10, paddingBottom: 10 }, 0)
-        .to(
-          bar,
-          {
-            paddingTop: 10,
-            paddingBottom: 10,
-            backgroundColor: 'rgba(16, 36, 99, 0.94)',
-            borderColor: 'rgba(44, 74, 174, 0.85)',
-          },
-          0
-        );
+        .to(bar, condensed, 0);
 
       ScrollTrigger.create({
         trigger: document.body,
@@ -57,7 +69,7 @@ export function Navbar() {
     }, header);
 
     return () => ctx.revert();
-  }, []);
+  }, [onHome]);
 
   /* ------------------------------------------------------- drawer timeline */
 
@@ -184,9 +196,9 @@ export function Navbar() {
   const handleNavigate = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       if (open) closeInstantly();
-      if (scrollToHash(href)) event.preventDefault();
+      if (onHome && scrollToHash(href)) event.preventDefault();
     },
-    [open, closeInstantly]
+    [open, closeInstantly, onHome]
   );
 
   return (
@@ -222,7 +234,7 @@ export function Navbar() {
                 {navLinks.map((link) => (
                   <li key={link.href} data-nav-item>
                     <a
-                      href={link.href}
+                      href={navHref(link.href)}
                       onClick={(event) => handleNavigate(event, link.href)}
                       className="flex min-h-[56px] items-center justify-between gap-4 border-b border-royal-line/70 py-3 text-[1.35rem] font-semibold tracking-[-0.03em] text-white/90 transition-colors active:text-white"
                     >
@@ -238,7 +250,7 @@ export function Navbar() {
 
               <div data-nav-item className="mt-7">
                 <a
-                  href="#contact"
+                  href={navHref('#contact')}
                   onClick={(event) => handleNavigate(event, '#contact')}
                   className="btn-accent w-full px-6 py-3.5"
                 >
@@ -286,11 +298,17 @@ export function Navbar() {
       <div className="shell">
         <div
           ref={barRef}
-          className="flex h-16 items-center justify-between gap-3 rounded-pill border border-transparent bg-transparent px-3 py-2 sm:h-20 sm:gap-4 sm:px-5"
+          className={
+            onHome
+              ? 'flex h-16 items-center justify-between gap-3 rounded-pill border border-transparent bg-transparent px-3 py-2 sm:h-20 sm:gap-4 sm:px-5'
+              : 'flex h-16 items-center justify-between gap-3 rounded-pill border border-royal-line/85 bg-royal-deep/95 px-3 py-2.5 sm:h-auto sm:gap-4 sm:px-5 sm:py-2.5'
+          }
         >
           <a
-            href="#top"
-            onClick={(event) => handleNavigate(event, '#top')}
+            href={onHome ? '#top' : '/'}
+            onClick={(event) => {
+              if (onHome) handleNavigate(event, '#top');
+            }}
             className="min-w-0 shrink rounded-pill focus-visible:ring-offset-4"
             aria-label="Om Sai Pharma & Surgicals, back to top"
           >
@@ -302,7 +320,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
-                    href={link.href}
+                    href={navHref(link.href)}
                     onClick={(event) => handleNavigate(event, link.href)}
                     className="inline-flex rounded-pill px-4 py-2 text-[17px] font-medium text-royal-mist transition-colors duration-200 hover:text-white"
                   >
@@ -315,7 +333,7 @@ export function Navbar() {
 
           <div className="flex shrink-0 items-center gap-2">
             <a
-              href="#contact"
+              href={navHref('#contact')}
               onClick={(event) => handleNavigate(event, '#contact')}
               className="btn-accent hidden px-5 py-2.5 sm:inline-flex"
             >
