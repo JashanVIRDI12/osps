@@ -9,7 +9,7 @@ export function TrustMarquee() {
   return (
     <section
       aria-label={site.tagline}
-      className="section-invert on-invert relative border-y border-royal-line/60 py-5"
+      className="relative border-y border-line bg-gradient-to-r from-royal-tint via-white to-teal-tint py-5"
     >
       <div className="edge-fade overflow-hidden">
         <div className="marquee-track">
@@ -22,12 +22,12 @@ export function TrustMarquee() {
               {marquee.map((item) => (
                 <li
                   key={item}
-                  className="flex shrink-0 items-center gap-6 px-6 text-[15px] font-medium text-royal-mist/85"
+                  className="flex shrink-0 items-center gap-6 px-6 text-[15px] font-medium text-ink-muted"
                 >
                   <span className="whitespace-nowrap">{item}</span>
                   <span
                     aria-hidden="true"
-                    className="h-1.5 w-1.5 shrink-0 rotate-45 bg-accent-soft/80"
+                    className="h-1.5 w-1.5 shrink-0 rotate-45 bg-accent/70"
                   />
                 </li>
               ))}

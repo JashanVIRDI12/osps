@@ -305,11 +305,7 @@ export function Navbar() {
       <div className="shell">
         <div
           ref={barRef}
-          className={
-            onHome
-              ? 'flex h-16 items-center justify-between gap-3 rounded-pill border border-transparent bg-transparent px-3 py-2 sm:h-20 sm:gap-4 sm:px-5'
-              : 'flex h-16 items-center justify-between gap-3 rounded-pill border border-royal-line/85 bg-royal-deep/95 px-3 py-2.5 sm:h-auto sm:gap-4 sm:px-5 sm:py-2.5'
-          }
+          className="flex h-16 items-center justify-between gap-3 rounded-pill border border-royal-line/85 bg-royal-deep/95 px-3 py-2.5 sm:h-auto sm:gap-4 sm:px-5 sm:py-2.5"
         >
           <a
             href={onHome ? '#top' : '/'}

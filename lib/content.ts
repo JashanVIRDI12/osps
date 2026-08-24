@@ -77,26 +77,20 @@ export const hero = {
     { value: 20, suffix: '+', label: 'Export markets' },
   ],
   tags: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],
-  image: {
-    src: '/images/hero-warehouse.webp',
-    alt: 'OSPS warehouse loading bay with a refrigerated dispatch truck',
-  },
   /**
-   * Backdrop for the sticky panel that expands from a framed rectangle to
-   * full-bleed as the visitor scrolls.
-   *
-   * `src` is the still: it is painted as a CSS background, doubles as the
-   * video's poster, and is the page's LCP element — it is preloaded in the root
-   * layout. `video` is the warehouse dispatch footage that fades in over it
-   * once the page has finished loading, and is skipped entirely under reduced
-   * motion or on a metered connection, in which case the still is the whole
-   * composition.
+   * The portrait showcase beside the headline. `poster` is a frame pulled
+   * straight from the footage — it is the page's LCP element and is preloaded
+   * in the root layout — and `video` fades in over it once the page has
+   * finished loading, skipped entirely under reduced motion or on a metered
+   * connection, in which case the poster is the whole composition.
    */
-  backdrop: {
-    src: '/images/hero-warehouse.webp',
-    video: '/videos/warehouse.mp4',
-    alt: 'OSPS warehouse loading bay with a refrigerated dispatch truck',
-    videoLabel: 'OSPS warehouse dispatch and loading operations',
+  delivery: {
+    video: '/videos/four-hour-delivery.mp4',
+    poster: '/images/four-hour-delivery-poster.webp',
+    alt: 'OSPS courier scanning a parcel and loading it for same-day dispatch',
+    videoLabel: 'OSPS four-hour delivery, warehouse to hospital',
+    badge: '4-Hour Delivery',
+    badgeSub: 'Dock to doorstep, guaranteed',
   },
 };
 
@@ -475,8 +469,9 @@ export const services = {
 };
 
 /**
- * Operations footage: warehouse loading is the hero backdrop (`hero.backdrop`);
- * the refrigerated-truck dispatch clip sits on the About block (`about.video`).
+ * Operations footage: the courier scan-and-load clip is the hero showcase
+ * (`hero.delivery`); the refrigerated-truck dispatch clip sits on the About
+ * block (`about.video`).
  */
 
 /* --------------------------------------------------------------- process */

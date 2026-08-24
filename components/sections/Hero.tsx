@@ -1,29 +1,25 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowDown, ArrowRight, Pause, Play } from 'lucide-react';
+import { useRef } from 'react';
+import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
-import { shouldLoadLoopVideo } from '@/lib/media';
 import { scrollToHash } from '@/lib/scroll';
 import { hero, site } from '@/lib/content';
 import { RotatingWord } from '@/components/ui/RotatingWord';
+import { CountUp } from '@/components/ui/CountUp';
+import { LoopVideo } from '@/components/ui/LoopVideo';
 
 const HERO_WORDS = ['depend', 'rely', 'trust', 'count'];
 
 /**
- * Full-screen video hero: warehouse footage under two scrims, copy centred on
- * top. One viewport, no scroll choreography — the section is `min-height` so it
- * grows rather than overflows when the copy needs more room than the screen.
+ * Split hero: the claim and its evidence side by side rather than copy laid
+ * over a dimmed backdrop. The portrait delivery clip is proof of the headline,
+ * not decoration behind it, so it gets its own frame at full quality instead
+ * of competing with body text for legibility under a scrim.
  */
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const manualPauseRef = useRef(false);
-
-  /** Mounts the video element. False on the server and on first paint. */
-  const [videoEnabled, setVideoEnabled] = useState(false);
-  const [playing, setPlaying] = useState(false);
 
   /**
    * Entrance only. This is a one-shot stagger on load, not a scroll-linked
@@ -53,232 +49,131 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
-  /**
-   * The video is deliberately kept out of the first render and out of the load
-   * event. The still is the LCP element and is preloaded; letting a 3.9MB file
-   * compete with it for bandwidth is the fastest way to lose the metric on a
-   * phone. Waiting for `load` means the footage arrives after everything that
-   * is actually measured has settled.
-   */
-  useEffect(() => {
-    if (!shouldLoadLoopVideo()) return;
-
-    if (document.readyState === 'complete') {
-      setVideoEnabled(true);
-      return;
-    }
-
-    const onLoad = () => setVideoEnabled(true);
-    window.addEventListener('load', onLoad, { once: true });
-    return () => window.removeEventListener('load', onLoad);
-  }, []);
-
-  /**
-   * Playback follows the hero. Once the section has scrolled away the footage is
-   * completely hidden behind the rest of the page, and decoding frames nobody
-   * can see is the kind of thing that keeps a phone warm for no reason.
-   */
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !videoEnabled) return;
-
-    let onScreen = true;
-
-    const sync = () => {
-      // A deliberate pause outranks the observer: scrolling the hero back into
-      // view must not restart something the visitor just stopped.
-      if (manualPauseRef.current) return;
-
-      if (onScreen && document.visibilityState === 'visible') {
-        void video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        onScreen = entry.isIntersecting;
-        sync();
-      },
-      { threshold: 0.05 }
-    );
-
-    observer.observe(video);
-    document.addEventListener('visibilitychange', sync);
-    sync();
-
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', sync);
-    };
-  }, [videoEnabled]);
-
-  const toggleVideo = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (video.paused) {
-      manualPauseRef.current = false;
-      void video.play().catch(() => {});
-    } else {
-      manualPauseRef.current = true;
-      video.pause();
-    }
-  }, []);
-
   return (
     <section
       ref={sectionRef}
       id="top"
       aria-label={`${site.name}: introduction`}
-      className="hero-shell section-invert on-invert relative isolate flex w-full items-center overflow-hidden"
+      className="hero-shell relative isolate flex w-full items-center overflow-hidden bg-canvas"
     >
-      {/* Backdrop. `isolate` on the section plus `-z-10` here keeps the whole
-          media stack behind the copy without any of it escaping into the rest
-          of the page's z-order. */}
+      {/* Ambient wash — the split layout has no full-bleed backdrop of its own,
+          so a pair of soft brand-coloured glows keep the canvas from reading as
+          bare white. */}
       <div
-        className="absolute inset-0 -z-10"
-        role="img"
-        aria-label={hero.backdrop.alt}
-      >
-        <div
-          aria-hidden="true"
-          className="hero-media absolute inset-0"
-          style={{ backgroundImage: `url(${hero.backdrop.src})` }}
-        />
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          backgroundImage:
+            'radial-gradient(44rem 38rem at 6% 6%, rgba(29,63,191,0.10), transparent 60%), radial-gradient(38rem 34rem at 98% 100%, rgba(13,148,136,0.12), transparent 60%)',
+        }}
+      />
 
-        {videoEnabled ? (
-          <video
-            ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-smooth data-[ready=true]:opacity-100"
-            src={hero.backdrop.video}
-            poster={hero.backdrop.src}
-            muted
-            loop
-            playsInline
-            /* `metadata`, not `auto`: playback starts the fetch anyway, and the
-               stronger hint makes the browser buffer far ahead of the frame it
-               needs — on a 3G phone that bandwidth is taken from the images the
-               visitor is about to scroll into. */
-            preload="metadata"
-            disablePictureInPicture
-            aria-hidden="true"
-            /* Fades in on its first painted frame rather than on mount, so the
-               cut from still to footage is never a flash of black. */
-            onLoadedData={(event) => {
-              event.currentTarget.dataset.ready = 'true';
-            }}
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
-          />
-        ) : null}
+      <div className="shell grid w-full items-center gap-14 py-24 sm:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20 xl:gap-16">
+        {/* Copy column */}
+        <div className="flex flex-col items-start text-left">
+          <span className="eyebrow" data-hero-reveal>
+            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+            {hero.eyebrow}
+          </span>
 
-        {/**
-         * One scrim, not two.
-         *
-         * The first used to be `mix-blend-multiply`, which pulled the footage
-         * into the brand blue — but a blend mode over a full-viewport, actively
-         * decoding video is the most expensive composite on the page: the
-         * browser cannot keep the layers independent, so every frame of the
-         * hero forces the whole stack to be re-blended, and it does so while
-         * the visitor is scrolling past it.
-         *
-         * A flat royal fill under the existing gradient reaches the same
-         * colour and the same contrast floor with a plain opaque paint.
-         */}
-        <div aria-hidden="true" className="absolute inset-0 bg-royal-deep/55" />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/45 to-royal-deep/65"
-        />
-      </div>
-
-      {/* The vertical rhythm tightens as the viewport gets shorter, because the
-          composition has to live inside one 100svh screen — on a 667px-tall
-          phone the desktop spacing alone would push the CTAs past the fold. */}
-      <div className="shell flex flex-col items-center pb-14 pt-24 text-center sm:pb-20 sm:pt-28">
-        <p className="heading-kicker heading-kicker-invert" data-hero-reveal>
-          {hero.eyebrow}
-        </p>
-
-        <h1
-          className="heading-display mt-2 max-w-4xl text-white"
-          data-hero-reveal
-        >
-          Healthcare supplies you can{' '}
-          <RotatingWord words={HERO_WORDS} intervalMs={3000} /> on.
-        </h1>
-
-        <p
-          className="mt-5 max-w-xl text-pretty text-[0.95rem] leading-[1.55] text-royal-mist xs:text-body sm:mt-6 sm:text-subheading"
-          data-hero-reveal
-        >
-          Pharmaceuticals, surgical consumables, medical devices and hospital
-          essentials, sourced from certified manufacturers and delivered on the
-          day we commit to.
-        </p>
-
-        {/* Full-width and stacked on a phone: at 320–414px the two labels never
-            fit on one line anyway, so a centred pair of part-width pills just
-            reads as ragged. */}
-        <div
-          className="mt-7 flex w-full max-w-xs flex-col items-stretch gap-3 sm:mt-8 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center"
-          data-hero-reveal
-        >
-          <a
-            href={hero.primaryCta.href}
-            onClick={(event) => {
-              if (scrollToHash(hero.primaryCta.href)) event.preventDefault();
-            }}
-            className="btn-accent px-6 py-3.5"
+          <h1
+            className="heading-section-lg mt-5 max-w-xl text-ink"
+            data-hero-reveal
           >
-            {hero.primaryCta.label}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-          <a
-            href={hero.secondaryCta.href}
-            onClick={(event) => {
-              if (scrollToHash(hero.secondaryCta.href)) event.preventDefault();
-            }}
-            className="btn-ghost px-6 py-3.5"
+            Healthcare supplies you can{' '}
+            <RotatingWord words={HERO_WORDS} intervalMs={3000} /> on.
+          </h1>
+
+          <p
+            className="mt-5 max-w-lg text-pretty text-[0.95rem] leading-[1.55] text-ink-muted xs:text-body sm:mt-6 sm:text-subheading"
+            data-hero-reveal
           >
-            {hero.secondaryCta.label}
-          </a>
+            Pharmaceuticals, surgical consumables, medical devices and hospital
+            essentials, sourced from certified manufacturers and delivered on
+            the day we commit to.
+          </p>
+
+          <div
+            className="mt-7 flex w-full max-w-xs flex-col items-stretch gap-3 sm:mt-8 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center"
+            data-hero-reveal
+          >
+            <a
+              href={hero.primaryCta.href}
+              onClick={(event) => {
+                if (scrollToHash(hero.primaryCta.href)) event.preventDefault();
+              }}
+              className="btn-accent px-6 py-3.5"
+            >
+              {hero.primaryCta.label}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <a
+              href={hero.secondaryCta.href}
+              onClick={(event) => {
+                if (scrollToHash(hero.secondaryCta.href)) event.preventDefault();
+              }}
+              className="btn-outline px-6 py-3.5"
+            >
+              {hero.secondaryCta.label}
+            </a>
+          </div>
+
+          <dl
+            className="mt-10 hidden w-full max-w-md items-start gap-6 border-t border-line pt-6 xs:flex sm:gap-9"
+            data-hero-reveal
+          >
+            {hero.stats.map((stat) => (
+              <div key={stat.label}>
+                <dd>
+                  <CountUp
+                    value={stat.value}
+                    suffix={stat.suffix}
+                    className="text-[1.7rem] font-semibold leading-none tracking-[-0.04em] text-royal sm:text-[2rem]"
+                  />
+                </dd>
+                <dt className="mt-1.5 text-caption font-medium uppercase tracking-[0.1em] text-ink-soft">
+                  {stat.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        {/* Decorative affordance, and the first thing to give up when the
-            viewport is too short to hold the composition. */}
-        <p
-          className="mt-8 hidden items-center gap-2 text-caption font-medium uppercase tracking-[0.16em] text-royal-mist [@media(min-height:700px)]:inline-flex sm:mt-12"
+        {/* Delivery showcase — the proof, framed as a portrait card rather
+            than a full-bleed backdrop, so the footage stays at full clarity. */}
+        <div
+          className="relative mx-auto w-full max-w-[300px] xs:max-w-[340px] lg:mx-0 lg:max-w-none"
           data-hero-reveal
         >
-          <ArrowDown className="h-3.5 w-3.5 animate-float" aria-hidden="true" />
-          Scroll to explore
-        </p>
+          <LoopVideo
+            src={hero.delivery.video}
+            poster={hero.delivery.poster}
+            alt={hero.delivery.alt}
+            label={hero.delivery.videoLabel}
+            priority
+            className="aspect-[9/16] w-full rounded-card-elevated border border-line shadow-card-hover lg:max-h-[36rem]"
+          >
+            {/* Badge — the headline's evidence, named on the card itself. */}
+            <div className="absolute left-4 right-4 top-4 flex items-center gap-3 rounded-card border border-white/20 bg-royal-deep/75 p-3.5 shadow-card backdrop-blur-md lg:bg-royal-deep/60">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-icon bg-accent text-white">
+                <Zap
+                  className="h-[18px] w-[18px]"
+                  fill="currentColor"
+                  aria-hidden="true"
+                />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-[0.95rem] font-semibold leading-tight text-white">
+                  {hero.delivery.badge}
+                </p>
+                <p className="truncate text-[0.75rem] text-white/75">
+                  {hero.delivery.badgeSub}
+                </p>
+              </div>
+            </div>
+          </LoopVideo>
+        </div>
       </div>
-
-      {/* WCAG 2.2.2 — a backdrop that loops indefinitely needs a way to stop it.
-          Sits outside the `role="img"` backdrop so it stays a real control. */}
-      {videoEnabled ? (
-        <button
-          type="button"
-          onClick={toggleVideo}
-          aria-pressed={playing}
-          className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-10 grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-royal-deep/80 text-white/80 transition-colors hover:border-white/60 hover:text-white lg:bg-royal-deep/40 lg:backdrop-blur-md sm:bottom-6 sm:right-6"
-        >
-          <span className="sr-only">
-            {playing
-              ? `Pause background video: ${hero.backdrop.videoLabel}`
-              : `Play background video: ${hero.backdrop.videoLabel}`}
-          </span>
-          {playing ? (
-            <Pause className="h-4 w-4" aria-hidden="true" />
-          ) : (
-            <Play className="h-4 w-4 translate-x-px" aria-hidden="true" />
-          )}
-        </button>
-      ) : null}
     </section>
   );
 }

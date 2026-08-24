@@ -19,6 +19,14 @@
     --color-accent-soft: #ff5f6d;
     --color-accent-tint: #feecee;
 
+    /* Teal — the light theme's second accent, for panel sections */
+    --color-teal: #0d9488;
+    --color-teal-deep: #0f766e;
+    --color-teal-bright: #14b8a6;
+    --color-teal-line: #99e6da;
+    --color-teal-tint: #effaf9;
+    --color-teal-wash: #d3f3ee;
+
     /* Ink + surfaces */
     --color-ink: #0c1533;
     --color-ink-muted: #4b5678;

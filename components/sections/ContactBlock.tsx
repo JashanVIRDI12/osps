@@ -25,16 +25,16 @@ export function ContactBlock() {
     <section
       ref={ref}
       id="contact"
-      className="section-invert on-invert relative py-20 sm:py-24 lg:py-28"
+      className="relative bg-gradient-to-br from-royal-tint via-white to-teal-tint py-20 sm:py-24 lg:py-28"
     >
       <div className="shell">
         <div className="max-w-3xl">
-          <h2 className="heading-section heading-section-invert max-w-none" data-reveal>
+          <h2 className="heading-section max-w-none" data-reveal>
             <span className="heading-kicker">Request a quote</span>
             {contact.heading}
           </h2>
           <p
-            className="mt-6 max-w-2xl text-pretty text-body text-royal-mist"
+            className="mt-6 max-w-2xl text-pretty text-body text-ink-muted"
             data-reveal
           >
             {contact.lead}
@@ -43,15 +43,15 @@ export function ContactBlock() {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8">
           <div className="flex flex-col gap-4">
-            <div className="card-invert flex gap-4 p-5 xs:p-6" data-reveal>
+            <div className="card flex gap-4 p-5 xs:p-6" data-reveal>
               <span className="icon-well h-11 w-11 shrink-0">
                 <MapPin className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-royal-mist">
+                <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-ink-soft">
                   Visit
                 </h3>
-                <address className="mt-2 not-italic text-body-sm leading-relaxed text-royal-mist">
+                <address className="mt-2 not-italic text-body-sm leading-relaxed text-ink-muted">
                   {details.address.map((line) => (
                     <span key={line} className="block">
                       {line}
@@ -61,29 +61,29 @@ export function ContactBlock() {
               </div>
             </div>
 
-            <div className="card-invert flex gap-4 p-5 xs:p-6" data-reveal>
+            <div className="card flex gap-4 p-5 xs:p-6" data-reveal>
               <span className="icon-well h-11 w-11 shrink-0">
                 <Phone className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-royal-mist">
+                <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-ink-soft">
                   Call
                 </h3>
                 <a
                   href={details.phoneHref}
-                  className="mt-1 inline-flex min-h-[44px] items-center text-body font-medium text-white underline-offset-4 transition-colors hover:text-accent-soft hover:underline"
+                  className="mt-1 inline-flex min-h-[44px] items-center text-body font-medium text-ink underline-offset-4 transition-colors hover:text-royal hover:underline"
                 >
                   {details.phone}
                 </a>
               </div>
             </div>
 
-            <div className="card-invert flex gap-4 p-5 xs:p-6" data-reveal>
+            <div className="card flex gap-4 p-5 xs:p-6" data-reveal>
               <span className="icon-well h-11 w-11 shrink-0">
                 <Mail className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-royal-mist">
+                <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-ink-soft">
                   Email
                 </h3>
                 {/* `break-all` splits an address at an arbitrary character;
@@ -91,7 +91,7 @@ export function ContactBlock() {
                     so short addresses stay whole. */}
                 <a
                   href={details.emailHref}
-                  className="mt-1 inline-flex min-h-[44px] items-center text-body font-medium text-white [overflow-wrap:anywhere] underline-offset-4 transition-colors hover:text-accent-soft hover:underline"
+                  className="mt-1 inline-flex min-h-[44px] items-center text-body font-medium text-ink [overflow-wrap:anywhere] underline-offset-4 transition-colors hover:text-royal hover:underline"
                 >
                   {details.email}
                 </a>

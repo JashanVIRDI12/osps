@@ -99,21 +99,21 @@ export function VisionMission() {
     <section
       ref={sectionRef}
       id="vision"
-      className="section-invert on-invert relative overflow-hidden py-20 sm:py-24 lg:py-32"
+      className="relative overflow-hidden bg-gradient-to-br from-royal-tint via-white to-teal-tint py-20 sm:py-24 lg:py-32"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            'radial-gradient(42rem 32rem at 88% -8%, rgba(58,92,232,0.28), transparent 62%)',
+            'radial-gradient(42rem 32rem at 88% -8%, rgba(13,148,136,0.12), transparent 62%)',
         }}
       />
 
       <div className="shell relative">
         <p
           data-vm-block
-          className="text-caption font-semibold uppercase tracking-[0.2em] text-accent-soft"
+          className="text-caption font-semibold uppercase tracking-[0.2em] text-accent"
         >
           {visionMission.eyebrow}
         </p>
@@ -158,29 +158,29 @@ export function VisionMission() {
           {/* The statements, at two scales. */}
           <div className="flex flex-col justify-center">
             <div data-vm-block>
-              <p className="text-caption font-semibold uppercase tracking-[0.2em] text-royal-mist">
+              <p className="text-caption font-semibold uppercase tracking-[0.2em] text-royal">
                 {vision.label}
               </p>
               <span
                 data-vm-rule
                 aria-hidden="true"
-                className="mt-4 block h-px w-full origin-left bg-royal-line"
+                className="mt-4 block h-px w-full origin-left bg-royal/40"
               />
-              <p className="mt-7 max-w-[26ch] text-balance text-[1.7rem] font-semibold leading-[1.16] tracking-[-0.04em] text-white xs:text-[1.95rem] sm:text-[2.4rem] lg:text-[2.6rem]">
+              <p className="mt-7 max-w-[26ch] text-balance text-[1.7rem] font-semibold leading-[1.16] tracking-[-0.04em] text-ink xs:text-[1.95rem] sm:text-[2.4rem] lg:text-[2.6rem]">
                 {vision.body}
               </p>
             </div>
 
             <div className="mt-12 sm:mt-14" data-vm-block>
-              <p className="text-caption font-semibold uppercase tracking-[0.2em] text-royal-mist">
+              <p className="text-caption font-semibold uppercase tracking-[0.2em] text-royal">
                 {mission.label}
               </p>
               <span
                 data-vm-rule
                 aria-hidden="true"
-                className="mt-4 block h-px w-full origin-left bg-royal-line"
+                className="mt-4 block h-px w-full origin-left bg-royal/40"
               />
-              <p className="mt-6 max-w-[52ch] text-pretty text-body leading-relaxed text-white/85 sm:text-[1.1rem]">
+              <p className="mt-6 max-w-[52ch] text-pretty text-body leading-relaxed text-ink-muted sm:text-[1.1rem]">
                 {mission.body}
               </p>
             </div>
@@ -191,7 +191,7 @@ export function VisionMission() {
         <div className="mt-16 sm:mt-20 lg:mt-24">
           <p
             data-vm-block
-            className="text-caption font-semibold uppercase tracking-[0.2em] text-royal-mist"
+            className="text-caption font-semibold uppercase tracking-[0.2em] text-royal"
           >
             {mission.methodsLabel}
           </p>
@@ -202,9 +202,9 @@ export function VisionMission() {
                 <span
                   data-vm-rule
                   aria-hidden="true"
-                  className="block h-px w-full origin-left bg-accent-soft/70"
+                  className="block h-px w-full origin-left bg-accent/60"
                 />
-                <p className="mt-5 text-balance text-[1.15rem] font-semibold leading-snug tracking-[-0.03em] text-white sm:text-[1.3rem]">
+                <p className="mt-5 text-balance text-[1.15rem] font-semibold leading-snug tracking-[-0.03em] text-ink sm:text-[1.3rem]">
                   {method}
                 </p>
               </li>

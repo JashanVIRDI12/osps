@@ -38,6 +38,19 @@ const config: Config = {
           soft: '#ff5f6d', // red accent on the inverted canvas (4.9:1 on deep)
           tint: '#feecee', // red wash on light
         },
+        /**
+         * Secondary "clinical" accent — the light theme's second brand colour,
+         * used for panel washes, icon wells and section dividers so a scroll
+         * through the light sections reads as more than one shade of blue.
+         */
+        teal: {
+          DEFAULT: '#0d9488', // icons, borders, small fills     (3:1+ non-text)
+          deep: '#0f766e', // text/kickers on tint or wash        (5:1+ on white)
+          bright: '#14b8a6', // hover state
+          line: '#99e6da', // borders on a tint surface
+          tint: '#effaf9', // soft wash background
+          wash: '#d3f3ee', // stronger wash / borders
+        },
         ink: {
           DEFAULT: '#0c1533', // headings and body on light
           muted: '#4b5678', // secondary text on light          (6.9:1 on canvas)

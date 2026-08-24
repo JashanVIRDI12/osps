@@ -77,16 +77,15 @@ export default function RootLayout({
     <html lang="en" className={`${manrope.variable} ${plexMono.variable}`}>
       <head>
         {/**
-         * The hero backdrop is a CSS background (its `background-size` used to
-         * be animated), so it is invisible to the preload scanner and only
-         * starts downloading after style resolution — on a phone that is the
-         * single largest delay in LCP. Preloading it moves the request into the
-         * first round trip.
+         * The hero's delivery-video poster is the page's LCP element. It is
+         * already marked `priority` on its `next/image`, which injects its own
+         * preload — this second, earlier one exists because the request would
+         * otherwise wait for React to hydrate before the browser discovers it.
          */}
         <link
           rel="preload"
           as="image"
-          href="/images/hero-warehouse.webp"
+          href="/images/four-hour-delivery-poster.webp"
           fetchPriority="high"
         />
         <script dangerouslySetInnerHTML={{ __html: motionGate }} />

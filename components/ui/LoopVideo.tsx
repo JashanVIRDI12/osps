@@ -13,6 +13,8 @@ type LoopVideoProps = {
   label: string;
   className?: string;
   children?: ReactNode;
+  /** Marks the poster as the LCP candidate — only ever one per page. */
+  priority?: boolean;
 };
 
 /**
@@ -26,6 +28,7 @@ export function LoopVideo({
   label,
   className,
   children,
+  priority = false,
 }: LoopVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const manualPauseRef = useRef(false);
@@ -100,6 +103,7 @@ export function LoopVideo({
         fill
         sizes="(max-width: 1024px) 100vw, 42vw"
         className="object-cover"
+        priority={priority}
       />
 
       {videoEnabled ? (
