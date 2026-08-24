@@ -7,6 +7,7 @@ import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
 import { scrollToHash } from '@/lib/scroll';
 import { cn } from '@/lib/cn';
+import { LoopVideo } from '@/components/ui/LoopVideo';
 
 /**
  * Stacking scroll cards — adapted from ui-layout's Stacking Cards
@@ -52,7 +53,8 @@ export type StackingCardItem = {
   tone: string;
   href: string;
   ctaLabel: string;
-  image: { src: string; alt: string };
+  /** `video` is optional: when absent the still carries the card on its own. */
+  image: { src: string; alt: string; video?: string };
 };
 
 type StackingCardsProps = {
@@ -272,14 +274,32 @@ export function StackingCards({ cards, className }: StackingCardsProps) {
                 </div>
 
                 <div className="relative h-36 overflow-hidden rounded-2xl bg-white/10 xs:h-44 sm:h-52 lg:h-full">
+                  {/**
+                   * The still is the default and the clip is the upgrade: when a
+                   * card has no footage yet, or the visitor is on a phone, on a
+                   * metered connection or has asked for less motion, LoopVideo
+                   * renders the same photograph and nothing is downloaded. So a
+                   * card can be given a clip whenever one exists, without any
+                   * other part of the deck changing.
+                   */}
                   <div data-stack-image className="absolute inset-0">
-                    <Image
-                      src={card.image.src}
-                      alt={card.image.alt}
-                      fill
-                      sizes="(max-width: 1024px) 90vw, 46vw"
-                      className="object-cover"
-                    />
+                    {card.image.video ? (
+                      <LoopVideo
+                        src={card.image.video}
+                        poster={card.image.src}
+                        alt={card.image.alt}
+                        label={card.image.alt}
+                        className="h-full w-full"
+                      />
+                    ) : (
+                      <Image
+                        src={card.image.src}
+                        alt={card.image.alt}
+                        fill
+                        sizes="(max-width: 1024px) 90vw, 46vw"
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                 </div>
               </div>

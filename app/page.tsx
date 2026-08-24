@@ -3,6 +3,12 @@ import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
 import { TrustMarquee } from '@/components/sections/TrustMarquee';
 import { AboutBlock } from '@/components/sections/AboutBlock';
+import { VisionMission } from '@/components/sections/VisionMission';
+import { ProblemSolution } from '@/components/sections/ProblemSolution';
+import { WhyDifferent } from '@/components/sections/WhyDifferent';
+import { Clients } from '@/components/sections/Clients';
+import { BrandPartners } from '@/components/sections/BrandPartners';
+import { CoreStrengths } from '@/components/sections/CoreStrengths';
 import { Capabilities } from '@/components/sections/Capabilities';
 import { Catalogue } from '@/components/sections/Catalogue';
 import { PriceList } from '@/components/sections/PriceList';
@@ -28,11 +34,17 @@ export default function HomePage() {
         <Hero />
         <TrustMarquee />
         <AboutBlock />
+        <VisionMission />
+        <ProblemSolution />
+        <WhyDifferent />
         <Capabilities />
         <Catalogue />
         <PriceList />
+        <CoreStrengths />
         <Strengths />
         <ProcessRail />
+        <Clients />
+        <BrandPartners />
         <MetricsBand />
         <ExportGlobe />
         <IndustriesValues />

@@ -31,8 +31,8 @@ import { PRODUCT_INTERESTS } from './schema';
  * Single source of truth for every piece of copy on the page.
  *
  * Contact details and social URLs are the live brand details used across the
- * site. Imagery lives in `/public/images` and includes the OSPS heart mark
- * where packaging is shown.
+ * site. Product photographs in `/public/images` are unbranded; the OSPS mark
+ * lives on the site chrome and in the operations footage.
  */
 
 export const site = {
@@ -79,7 +79,7 @@ export const hero = {
   tags: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],
   image: {
     src: '/images/hero-warehouse.webp',
-    alt: 'OSPS surgical products warehouse with branded cartons ready for dispatch',
+    alt: 'OSPS warehouse loading bay with a refrigerated dispatch truck',
   },
   /**
    * Backdrop for the sticky panel that expands from a framed rectangle to
@@ -87,15 +87,16 @@ export const hero = {
    *
    * `src` is the still: it is painted as a CSS background, doubles as the
    * video's poster, and is the page's LCP element — it is preloaded in the root
-   * layout. `video` is the facility footage that fades in over it once the page
-   * has finished loading, and is skipped entirely under reduced motion or on a
-   * metered connection, in which case the still is the whole composition.
+   * layout. `video` is the warehouse dispatch footage that fades in over it
+   * once the page has finished loading, and is skipped entirely under reduced
+   * motion or on a metered connection, in which case the still is the whole
+   * composition.
    */
   backdrop: {
     src: '/images/hero-warehouse.webp',
-    video: '/videos/facility.mp4',
-    alt: 'OSPS surgical products warehouse with branded cartons ready for dispatch',
-    videoLabel: 'WHO-GMP certified manufacturing and supply operations',
+    video: '/videos/warehouse.mp4',
+    alt: 'OSPS warehouse loading bay with a refrigerated dispatch truck',
+    videoLabel: 'OSPS warehouse dispatch and loading operations',
   },
 };
 
@@ -117,6 +118,13 @@ export const about = {
   lead: 'For over a decade we have kept hospitals, nursing homes and clinics supplied with the surgical consumables their theatres and wards run on, made to WHO-GMP standards and delivered on schedule.',
   body: 'What began as a small regional supplier now serves healthcare institutions in more than twenty countries. Our strength lies in disciplined quality control on every batch, a complete surgical range available under one purchase order, and a team that treats each order as a commitment rather than a transaction.',
   cta: { label: 'Learn more about us', href: '#services' },
+  video: {
+    src: '/videos/dispatch.mp4',
+    poster: '/images/dispatch-poster.webp',
+    alt: 'OSPS refrigerated truck being loaded at the Greater Noida warehouse',
+    videoLabel: 'OSPS dispatch from the Greater Noida warehouse',
+    caption: `Supplying healthcare institutions since ${site.founded}.`,
+  },
 };
 
 /* -------------------------------------------------------------- products */
@@ -132,6 +140,12 @@ export type ProductCategory = {
   image: {
     src: string;
     alt: string;
+    /**
+     * Optional looping clip for the card. The still above is its poster, so a
+     * category with no footage yet — or a visitor on a phone, on a metered
+     * connection, or asking for less motion — simply keeps the photograph.
+     */
+    video?: string;
   };
 };
 
@@ -146,7 +160,7 @@ export const productCategories: ProductCategory[] = [
     tone: '#102463',
     image: {
       src: '/images/category-injection.webp',
-      alt: 'OSPS injection and infusion products: syringes, I.V. cannulas and infusion sets',
+      alt: 'Injection and infusion products: syringes, I.V. cannulas and infusion sets',
     },
   },
   {
@@ -159,7 +173,7 @@ export const productCategories: ProductCategory[] = [
     tone: '#18318c',
     image: {
       src: '/images/category-drainage.webp',
-      alt: 'OSPS drainage and collection sets with sterile tubing components',
+      alt: 'Drainage and collection sets with sterile tubing components',
     },
   },
   {
@@ -179,7 +193,7 @@ export const productCategories: ProductCategory[] = [
     tone: '#1d3fbf',
     image: {
       src: '/images/category-dressings.webp',
-      alt: 'OSPS dressings, gauze swabs, tapes and plasters in sterile packaging',
+      alt: 'Dressings, gauze swabs, tapes and plasters in sterile packaging',
     },
   },
   {
@@ -197,7 +211,7 @@ export const productCategories: ProductCategory[] = [
     tone: '#3a5ce8',
     image: {
       src: '/images/category-theatre.webp',
-      alt: 'OSPS theatre protection kit with gloves, masks, blades and sterile packs',
+      alt: 'Theatre protection kit with gloves, masks, blades and sterile packs',
     },
   },
 ];
@@ -229,7 +243,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['With Needle', 'Without Needle'],
         image: {
           src: '/images/hero-syringes.webp',
-          alt: 'OSPS sterile surgical syringes',
+          alt: 'Sterile surgical syringes',
         },
       },
       {
@@ -238,7 +252,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['With Safety', 'Without Safety'],
         image: {
           src: '/images/product-cannulas.webp',
-          alt: 'OSPS sterile I.V. cannulas with safety options',
+          alt: 'Sterile I.V. cannulas with safety options',
         },
       },
       {
@@ -247,7 +261,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['With Air Vent', 'Without Air Vent'],
         image: {
           src: '/images/product-infusion.webp',
-          alt: 'OSPS sterile infusion sets with drip chamber',
+          alt: 'Sterile infusion sets with drip chamber',
         },
       },
     ],
@@ -261,7 +275,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['With T Valve', 'Without T Valve'],
         image: {
           src: '/images/product-urine-bag.webp',
-          alt: 'OSPS sterile urine drainage collection bag',
+          alt: 'Sterile urine drainage collection bag',
         },
       },
       {
@@ -270,7 +284,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['With Trocar', 'Without Trocar'],
         image: {
           src: '/images/product-drainage-set.webp',
-          alt: 'OSPS wound drainage set with trocar',
+          alt: 'Wound drainage set with trocar',
         },
       },
     ],
@@ -284,7 +298,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Plain', 'X-Ray Detectable'],
         image: {
           src: '/images/hero-gauze.webp',
-          alt: 'OSPS sterile gauze swabs',
+          alt: 'Sterile gauze swabs',
         },
       },
       {
@@ -293,7 +307,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Plain', 'X-Ray Detectable'],
         image: {
           src: '/images/product-sponges.webp',
-          alt: 'OSPS sterile surgical sponges',
+          alt: 'Sterile surgical sponges',
         },
       },
       {
@@ -302,7 +316,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['With Elastic', 'Without Elastic'],
         image: {
           src: '/images/hero-bandage.webp',
-          alt: 'OSPS crepe bandage rolls',
+          alt: 'Crepe bandage rolls',
         },
       },
       {
@@ -311,7 +325,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Premium Quality'],
         image: {
           src: '/images/product-elastic.webp',
-          alt: 'OSPS premium elastic compression bandage',
+          alt: 'Premium elastic compression bandage',
         },
       },
       {
@@ -320,7 +334,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Micropore', 'Paper', 'Silk', 'PE'],
         image: {
           src: '/images/product-tapes.webp',
-          alt: 'OSPS medical adhesive tapes',
+          alt: 'Medical adhesive tapes',
         },
       },
       {
@@ -329,7 +343,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Zig-Zag', 'Elastic', 'Regular'],
         image: {
           src: '/images/product-plasters.webp',
-          alt: 'OSPS medical plasters and adhesive bandages',
+          alt: 'Medical plasters and adhesive bandages',
         },
       },
     ],
@@ -343,7 +357,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Sterile', 'Carbon Steel'],
         image: {
           src: '/images/product-blades.webp',
-          alt: 'OSPS sterile carbon steel surgical blades',
+          alt: 'Sterile carbon steel surgical blades',
         },
       },
       {
@@ -352,7 +366,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Latex', 'Nitrile', 'Vinyl'],
         image: {
           src: '/images/product-gloves.webp',
-          alt: 'OSPS powder-free examination gloves in latex and nitrile',
+          alt: 'Powder-free examination gloves in latex and nitrile',
         },
       },
       {
@@ -361,7 +375,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['3 Ply', 'With Tie', 'Without Tie'],
         image: {
           src: '/images/product-masks.webp',
-          alt: 'OSPS 3-ply surgical face masks',
+          alt: '3-ply surgical face masks',
         },
       },
       {
@@ -370,7 +384,7 @@ export const productGroups: ProductGroup[] = [
         variants: ['Premium Quality'],
         image: {
           src: '/images/product-kit.webp',
-          alt: 'OSPS sealed sterile surgical procedure kit',
+          alt: 'Sealed sterile surgical procedure kit',
         },
       },
     ],
@@ -461,9 +475,8 @@ export const services = {
 };
 
 /**
- * The standalone "Inside OSPS" facility-video section was removed — the footage
- * now runs as the hero backdrop instead. Its source and poster live on
- * `hero.backdrop` above.
+ * Operations footage: warehouse loading is the hero backdrop (`hero.backdrop`);
+ * the refrigerated-truck dispatch clip sits on the About block (`about.video`).
  */
 
 /* --------------------------------------------------------------- process */
@@ -472,6 +485,16 @@ export const process = {
   eyebrow: 'How we work',
   heading: 'Our Process',
   lead: 'A straightforward, transparent path from first enquiry to delivered consignment.',
+  /**
+   * Sits in the sticky column beside the steps. Its subject is step one — a
+   * requirement list being written down — so it introduces the sequence rather
+   * than decorating it, and stays in view while the rest scrolls past.
+   */
+  graphic: {
+    src: '/images/clinician.webp',
+    poster: '/images/clinician-still.webp',
+    alt: 'A clinician noting a ward order on a clipboard',
+  },
   steps: [
     {
       title: 'Order Enquiry',
@@ -794,6 +817,293 @@ export const privacyPolicy = {
       paragraphs: [
         'We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date.',
       ],
+    },
+  ],
+};
+
+/* ------------------------------------------------------- deck: vision */
+
+/**
+ * Content lifted from the 2026 sales deck, kept in deck order so the page and
+ * the presentation stay in step when either is revised.
+ */
+export const visionMission = {
+  /**
+   * An editorial spread rather than two matching panels. The vision is the
+   * destination and the mission is the method, so they are set at two different
+   * scales down one column, against a single tall image — and the three methods
+   * the mission names close the section as a footer rank.
+   */
+  eyebrow: 'Our purpose',
+  heading: 'Why we do this',
+  media: {
+    src: '/images/category-theatre.webp',
+    alt: 'Sterile theatre consumables prepared for a hospital order',
+  },
+  vision: {
+    label: 'Vision',
+    /** The destination. Deliberately the largest type in the section. */
+    body: 'To become a trusted and preferred healthcare supply partner, delivering pharmaceutical and surgical products that enhance patient care and strengthen healthcare systems.',
+  },
+  mission: {
+    label: 'Mission',
+    body: 'To consistently provide reliable, compliant and cost-effective pharma and surgical solutions, while building long-term partnerships with healthcare providers.',
+    /**
+     * The three methods the mission statement itself names. Pulled out as
+     * fields because they are the operative half of the sentence — the part a
+     * procurement lead is actually being asked to believe.
+     */
+    methodsLabel: 'By means of',
+    methods: [
+      'A strong supply chain',
+      'Ethical business practices',
+      'A customer-first approach',
+    ],
+  },
+};
+
+/* ---------------------------------------------- deck: problem/solution */
+
+/**
+ * Paired rows. Index `n` of `problems` is answered by index `n` of `solutions`,
+ * which is what the interleaved reveal in ProblemSolution depends on — keep the
+ * two arrays the same length and in the same order.
+ */
+export const problemSolution = {
+  eyebrow: 'Why we exist',
+  heading: 'The procurement problem, and what we do about it',
+  problems: {
+    label: 'Problem Statement',
+    items: [
+      'Delay in medicine supply',
+      'Multiple vendors for different products',
+      'Emergency medicine shortages',
+      'Price inconsistency',
+    ],
+  },
+  solutions: {
+    label: 'Our Solution',
+    items: [
+      'Fast delivery, within 4 hours',
+      'Medicines and surgical items under one roof',
+      'Reliable stock availability',
+      'Competitive, transparent pricing',
+    ],
+  },
+};
+
+/* ------------------------------------------------ deck: differentiators */
+
+export const differentiators = {
+  eyebrow: 'Why we are different',
+  heading: 'Seven things procurement teams notice first',
+  /**
+   * Transcoded from the supplied GIF to animated WebP: 6.8MB to 679KB for the
+   * same 68 frames. `poster` is frame one at 22KB, which is what actually loads
+   * until the graphic is near the viewport.
+   */
+  graphic: {
+    src: '/images/patient-care.webp',
+    poster: '/images/patient-care-still.webp',
+    alt: 'A clinician reviewing a patient chart at the bedside',
+    caption: 'Every item on this list exists so this happens on time.',
+  },
+  items: [
+    'You can track your order anytime.',
+    'Fast delivery for urgent hospital needs.',
+    'All medicines and surgical items under one roof.',
+    'Reliable stock availability.',
+    'Transparent and competitive pricing.',
+    'Dedicated support for hospital purchases.',
+    'Quick response and smooth order processing.',
+  ],
+};
+
+/* ------------------------------------------------------- deck: clients */
+
+/**
+ * Institutions supplied. `logo` is optional and unset until the artwork is in
+ * `public/images/clients/` — the section renders a wordmark plate until then,
+ * so the grid is never a row of broken images.
+ */
+export type Client = {
+  name: string;
+  logo?: string;
+  /**
+   * Optical size correction, applied on top of `object-contain`.
+   *
+   * `object-contain` fits a mark by its bounding box, which is not the same as
+   * making a row of marks look the same size: a square seal like Nivok's fits to
+   * the box height and lands at a fraction of the width a wide lockup like Max's
+   * gets, and several of these files carry generous whitespace baked into the
+   * artwork. These multipliers are eyeballed per logo against the rendered wall.
+   * Default is 1.
+   */
+  scale?: number;
+};
+
+export const clients = {
+  eyebrow: 'Who we supply',
+  heading: 'Our Clients',
+  lead: 'Hospitals and healthcare groups that reorder from us, month after month.',
+  /**
+   * Annotated rather than `satisfies`: `satisfies` would narrow each entry to
+   * exactly the keys written here, and every row currently omits `logo` — so
+   * the optional field would vanish from the inferred type and the section
+   * could not read it.
+   */
+  items: [
+    { name: 'Kailash Hospital', logo: '/images/clients/kailash.png', scale: 1.1 },
+    { name: 'Ivory Hospital', logo: '/images/clients/ivory.png', scale: 1 },
+    { name: 'Felix Healthcare', logo: '/images/clients/felix.png', scale: 1 },
+    {
+      name: 'Yatharth Super Speciality Hospitals',
+      logo: '/images/clients/yatharth.avif',
+      scale: 1,
+    },
+    { name: 'Fortis Hospitals', logo: '/images/clients/fortis.png', scale: 1.15 },
+    { name: 'Max Healthcare', logo: '/images/clients/max.png', scale: 0.85 },
+    {
+      name: 'Paliwal Hospital & Heart Centre',
+      logo: '/images/clients/paliwal.jpg',
+      scale: 1.5,
+    },
+    {
+      name: 'NIMS Multispeciality Hospital',
+      logo: '/images/clients/nims.png',
+      scale: 1.4,
+    },
+    {
+      // The deck prints this as "Nitok"; the mark itself reads NIVOK.
+      name: 'Nivok Superspeciality Hospital',
+      logo: '/images/clients/nivok.png',
+      scale: 1.25,
+    },
+    { name: 'Sharda Hospital', logo: '/images/clients/sharda.png', scale: 0.95 },
+  ] as Client[],
+};
+
+/* ------------------------------------------------ deck: brand partners */
+
+/**
+ * Manufacturer brands carried. Split across three rows that scroll in
+ * alternating directions, so the wall reads as depth rather than one long list.
+ */
+export type Brand = {
+  name: string;
+  /**
+   * Artwork. Without it the brand is not rendered at all — the roster below is
+   * deliberately longer than the wall, and each entry joins it when a logo
+   * lands. See BrandPartners.
+   */
+  logo?: string;
+  /**
+   * Optical size correction, as on the client wall. `object-contain` fits by
+   * bounding box, so a stacked mark like Sanofi's — symbol above wordmark —
+   * lands far smaller than a pure wordmark like Cipla's at the same box height.
+   * Eyeballed against the rendered grid. Default 1.
+   */
+  scale?: number;
+};
+
+export const brandPartners = {
+  eyebrow: 'What we carry',
+  heading: 'Our Company',
+  lead: 'Over two hundred manufacturer lines held under one purchase order, from disposables to specialty pharma.',
+  /** Closes the wall: the marks shown are a sample, not the roster. */
+  moreLabel: '+ many more multinational brands',
+  /**
+   * The shape of the catalogue, which is the part a purchase manager is
+   * actually buying. Six logos prove the names are real; these three say what
+   * having them under one supplier is worth.
+   */
+  figures: [
+    { value: '40+', label: 'Manufacturer brands' },
+    { value: '200+', label: 'Product lines' },
+    { value: 'One', label: 'Purchase order' },
+  ],
+  /**
+   * A flat list, split into rows by the section itself.
+   *
+   * Length matters here and is not padding: each row is rendered twice to loop
+   * seamlessly, so if one copy is narrower than the viewport both copies are on
+   * screen at once and the repetition reads as a rendering bug. Roughly fifteen
+   * names per row is what keeps a single pass wider than a desktop viewport.
+   */
+  brands: [
+    { name: 'Romsons' },
+    { name: 'Polymed' },
+    { name: 'MGRM' },
+    { name: 'Intas' },
+    { name: 'Luv Lap' },
+    { name: 'Themis Medicare' },
+    { name: 'Lotus' },
+    { name: 'Fresenius' },
+    { name: 'Microgen' },
+    { name: 'Alkem', logo: '/images/brands/alkem.webp', scale: 1.05 },
+    { name: 'Neon' },
+    { name: 'Rüsch' },
+    { name: 'Mediplus' },
+    { name: 'Dr. Odin' },
+    { name: 'Windlas' },
+    { name: 'Hetero Healthcare', logo: '/images/brands/hetero.webp', scale: 1.05 },
+    { name: 'B. Braun' },
+    { name: 'BD', logo: '/images/brands/bd.webp', scale: 0.9 },
+    { name: 'Cipla', logo: '/images/brands/cipla.webp', scale: 0.85 },
+    { name: 'J&J' },
+    { name: 'Sanofi', logo: '/images/brands/sanofi.webp', scale: 1.3 },
+    { name: 'Mankind', logo: '/images/brands/mankind.webp', scale: 1.25 },
+    { name: 'Bard' },
+    { name: 'Hansaplast' },
+    { name: 'Morepen' },
+    { name: 'Tynor' },
+    { name: 'Portex' },
+    { name: 'Sutures India' },
+    { name: 'Accu Sure' },
+    { name: 'Ace Cathtech' },
+    { name: 'Primocare' },
+    { name: 'Respimeds' },
+    { name: 'Surgicare' },
+    { name: 'Karemed' },
+    { name: 'Intersurgical' },
+    { name: 'Medtech Device' },
+    { name: 'Kidney Care' },
+    { name: 'Baxim Lifescience' },
+    { name: 'Bharat Serums' },
+    { name: 'Biocure' },
+    { name: 'Cytobiologics' },
+    { name: 'Rajdhani' },
+    { name: 'Samarth' },
+    { name: 'Syrijan' },
+  ] as Brand[],
+};
+
+/* ----------------------------------------------- deck: core strengths */
+
+export const coreStrengths = {
+  eyebrow: 'Our strengths',
+  heading: 'Four things we are built around',
+  lead: 'We combine rapid local delivery, optimised pricing and quality-assured sourcing to eliminate supply delays and high procurement costs for healthcare providers.',
+  items: [
+    {
+      icon: Clock,
+      title: 'Fast Delivery Promise',
+      description: 'Urgent hospital orders dispatched and delivered within four hours.',
+    },
+    {
+      icon: PiggyBank,
+      title: 'Cost Optimization',
+      description: 'Direct sourcing and volume-based discounts, passed on as transparent pricing.',
+    },
+    {
+      icon: Warehouse,
+      title: 'Reliable Supply Chain',
+      description: 'Actively managed stock depth so critical lines are available on demand.',
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Quality & Compliance',
+      description: 'WHO-GMP sourcing with batch, expiry and packaging verified before dispatch.',
     },
   ],
 };

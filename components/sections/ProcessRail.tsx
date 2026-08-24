@@ -4,6 +4,8 @@ import { useRef } from 'react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
 import { process } from '@/lib/content';
+import { HexPattern } from '@/components/ui/HexPattern';
+import { LoopGraphic } from '@/components/ui/LoopGraphic';
 
 /**
  * The six steps from enquiry to delivery.
@@ -142,6 +144,35 @@ export function ProcessRail() {
             <p className="mt-6 max-w-md text-pretty text-body text-ink-muted">
               {process.lead}
             </p>
+
+            {/**
+             * Framed stage, not a floating GIF. The clinician is line-art on a
+             * transparent field, so without a surface it reads as a hole in the
+             * column. The honeycomb and royal wash give it a floor, and the
+             * square panel holds its proportion at every width — including on a
+             * phone, where hiding it used to leave the heading sitting on empty
+             * canvas above the steps.
+             */}
+            <figure className="relative mt-8 overflow-hidden rounded-card-elevated border border-line bg-royal-tint lg:mt-10">
+              <HexPattern
+                className="pointer-events-none absolute inset-0 text-royal/20"
+                scale={1.4}
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(255,255,255,0.92)_0%,rgba(237,241,254,0.35)_55%,transparent_78%)]"
+              />
+              <div className="relative grid aspect-square place-items-center p-5 xs:p-6 sm:p-8">
+                <LoopGraphic
+                  src={process.graphic.src}
+                  poster={process.graphic.poster}
+                  alt={process.graphic.alt}
+                  width={480}
+                  height={480}
+                  className="relative h-auto w-[78%] max-w-[17rem] object-contain"
+                />
+              </div>
+            </figure>
           </div>
 
           <ol ref={listRef} className="relative pl-14 sm:pl-16">

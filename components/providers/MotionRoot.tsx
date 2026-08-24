@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import { ScrollTrigger, prefersReducedMotion } from '@/lib/gsap';
+import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap';
 import { setLenis } from '@/lib/lenis';
 
 declare global {
@@ -59,7 +59,21 @@ export function MotionRoot({ children }: { children: React.ReactNode }) {
      * is lazy. A refresh on each of those events keeps scrubbed triggers
      * (the process rail, the desktop card deck) honest.
      */
-    const refresh = () => ScrollTrigger.refresh();
+    let lenis: Lenis | null = null;
+
+    const refresh = () => {
+      /**
+       * Lenis caches the document height and clamps its target scroll to it.
+       * That measurement is taken at construction, before the fonts have
+       * swapped and before a single lazy image below the fold has landed — so
+       * without this the wheel simply stops a few hundred pixels short of the
+       * footer, which reads as the page being broken. It has to run *before*
+       * ScrollTrigger re-measures, so both agree on how tall the page is.
+       */
+      lenis?.resize();
+      ScrollTrigger.refresh();
+    };
+
     const onLoad = () => refresh();
     window.addEventListener('load', onLoad);
     void document.fonts?.ready.then(refresh);
@@ -122,38 +136,81 @@ export function MotionRoot({ children }: { children: React.ReactNode }) {
 
     if (!canSmooth) return cleanupBase;
 
-    const lenis = new Lenis({
-      duration: 1.05,
+    lenis = new Lenis({
+      /**
+       * `duration` + an expo-out curve rather than `lerp`.
+       *
+       * `lerp` moves a fixed *fraction* of the remaining distance per frame, so
+       * its settle time is whatever the frame rate happens to be — the same
+       * wheel gesture glides noticeably longer on a 60Hz panel than on a 120Hz
+       * one. A duration is wall-clock, so the scroll feels identical on both.
+       *
+       * 0.9s is the shortest setting where the tail still reads as deceleration
+       * rather than a stop. The curve below is expo-out: ~80% of the distance is
+       * covered in the first third of that, so the page answers the wheel almost
+       * immediately and spends the rest of the time easing — which is what makes
+       * it feel responsive and smooth at once, instead of floaty.
+       */
+      duration: 0.9,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       syncTouch: false,
-      // Lenis drives its own frame loop, so GSAP's ticker — and the
-      // `lagSmoothing` question that comes with sharing it — stays out of it.
-      autoRaf: true,
+      /**
+       * One wheel notch should still travel roughly the distance the OS says it
+       * should — overshooting here is the single fastest way to make a smooth
+       * scroller feel like it is fighting the user.
+       */
+      wheelMultiplier: 1,
+      /**
+       * GSAP's ticker drives the loop instead (below), so Lenis must not also
+       * run one of its own.
+       */
+      autoRaf: false,
     });
 
     setLenis(lenis);
 
     /**
-     * `ScrollTrigger.update` walks every registered trigger. Lenis emits a
-     * scroll event per animated frame, so the update is coalesced onto a single
-     * rAF tick rather than running more than once per painted frame.
+     * Lenis and ScrollTrigger have to advance inside the *same* tick, in this
+     * order — and that is the whole reason the ticker is shared.
+     *
+     * Previously Lenis ran its own rAF and the ScrollTrigger update was pushed
+     * to the *next* frame. So every pinned card in the deck and every scrubbed
+     * scale was rendered against a scroll position one frame stale: the sticky
+     * track had already moved, its scale tween had not. At 60Hz that is ~16ms of
+     * disagreement on screen at all times, and it is exactly the shear/jitter
+     * that makes a Lenis page feel worse than native scrolling.
+     *
+     * Driving `lenis.raf` from `gsap.ticker` collapses that to zero. Within one
+     * tick: the ticker callback advances Lenis → Lenis emits `scroll`
+     * synchronously → `ScrollTrigger.update` reads the position it just wrote →
+     * GSAP then renders every tween against it. One frame, one truth.
      */
-    let queued = false;
-    const scheduleUpdate = () => {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(() => {
-        queued = false;
-        ScrollTrigger.update();
-      });
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const drive = (time: number) => {
+      // gsap.ticker reports seconds; Lenis wants milliseconds.
+      lenis?.raf(time * 1000);
     };
 
-    lenis.on('scroll', scheduleUpdate);
+    gsap.ticker.add(drive);
+
+    /**
+     * GSAP clamps the delta it reports after a slow frame, so tweens never jump
+     * across a hitch. Applied to a scroll simulation that clamp is wrong: it
+     * feeds Lenis less time than actually elapsed, so after any jank the page
+     * drifts behind the wheel and takes a moment to catch up. The scroll should
+     * track real time, always.
+     */
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       cleanupBase();
-      lenis.destroy();
+      gsap.ticker.remove(drive);
+      // Back to GSAP's documented default, or a later mount inherits this.
+      gsap.ticker.lagSmoothing(500, 33);
+      lenis?.destroy();
+      lenis = null;
       setLenis(null);
     };
   }, []);

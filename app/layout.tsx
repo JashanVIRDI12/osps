@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Manrope } from 'next/font/google';
+import { Manrope, IBM_Plex_Mono } from 'next/font/google';
 import { MotionRoot } from '@/components/providers/MotionRoot';
 import { site } from '@/lib/content';
 import './globals.css';
@@ -9,6 +9,18 @@ const manrope = Manrope({
   display: 'swap',
   weight: ['500', '600'],
   variable: '--font-gilroy',
+});
+
+/**
+ * Utility face for controlled-document typography. Two weights only — this is
+ * signage, not body copy, and every extra weight is a font file the page waits
+ * on. `display: swap` keeps it out of the render-blocking path entirely.
+ */
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500'],
+  variable: '--font-plex-mono',
 });
 
 export const metadata: Metadata = {
@@ -62,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={manrope.variable}>
+    <html lang="en" className={`${manrope.variable} ${plexMono.variable}`}>
       <head>
         {/**
          * The hero backdrop is a CSS background (its `background-size` used to

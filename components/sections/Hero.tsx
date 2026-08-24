@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowRight, Pause, Play } from 'lucide-react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
+import { shouldLoadLoopVideo } from '@/lib/media';
 import { scrollToHash } from '@/lib/scroll';
 import { hero, site } from '@/lib/content';
 import { RotatingWord } from '@/components/ui/RotatingWord';
@@ -11,63 +12,10 @@ import { RotatingWord } from '@/components/ui/RotatingWord';
 const HERO_WORDS = ['depend', 'rely', 'trust', 'count'];
 
 /**
- * Full-screen video hero.
- *
- * One viewport, one layer stack: footage under two fixed scrims, copy centred on
- * top. There is no scroll choreography — the previous version reserved up to
- * 1500px of extra scroll for a sticky panel that expanded from a framed
- * rectangle while a column of parallax figures drifted over it, and the two
- * layers collided on the way through.
- *
- * What that leaves is a hero that is correct at every size by construction:
- * nothing is positioned against a scroll offset, so nothing can be caught
- * mid-transition, and the section is `min-height` so it grows rather than
- * overflows when the copy needs more room than the viewport has.
+ * Full-screen video hero: warehouse footage under two scrims, copy centred on
+ * top. One viewport, no scroll choreography — the section is `min-height` so it
+ * grows rather than overflows when the copy needs more room than the screen.
  */
-
-type Connection = { saveData?: boolean; effectiveType?: string };
-
-/**
- * Whether the backdrop footage should load at all.
- *
- * It is a 1MB file at the very top of the page, so it only earns its place when
- * the visitor has not asked for less motion and is not on a metered or slow
- * connection. In every other case the still behind it is the same shot and
- * carries the composition on its own — the hero never waits on video.
- *
- * Phones are excluded outright, and not only for the download. A looping video
- * decodes frames for as long as it is on screen, and those frames are composited
- * underneath everything the visitor is actually scrolling; on a mid-range phone
- * that is a constant tax on the same GPU the scroll depends on. It also competes
- * for bandwidth with the fifteen catalogue images immediately below it, which is
- * why they arrive late enough to look like they are not loading at all.
- */
-function shouldLoadBackdropVideo() {
-  if (prefersReducedMotion()) return false;
-
-  // Coarse pointer and a narrow viewport — a phone or small tablet.
-  if (
-    window.matchMedia('(max-width: 1023px)').matches ||
-    window.matchMedia('(hover: none) and (pointer: coarse)').matches
-  ) {
-    return false;
-  }
-
-  const connection = (navigator as Navigator & { connection?: Connection })
-    .connection;
-
-  if (connection?.saveData) return false;
-  if (
-    connection?.effectiveType === '2g' ||
-    connection?.effectiveType === 'slow-2g' ||
-    connection?.effectiveType === '3g'
-  ) {
-    return false;
-  }
-
-  return true;
-}
-
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -113,7 +61,7 @@ export function Hero() {
    * is actually measured has settled.
    */
   useEffect(() => {
-    if (!shouldLoadBackdropVideo()) return;
+    if (!shouldLoadLoopVideo()) return;
 
     if (document.readyState === 'complete') {
       setVideoEnabled(true);

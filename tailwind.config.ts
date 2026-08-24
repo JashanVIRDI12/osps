@@ -52,6 +52,14 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-gilroy)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        /**
+         * Utility face, for the places the page speaks as a document rather
+         * than as a brand: batch-style field labels, revision marks, spec keys.
+         * A mono is not decoration here — in a WHO-GMP supplier's world every
+         * controlled document is set this way, so it carries meaning the sans
+         * cannot.
+         */
+        utility: ['var(--font-plex-mono)', 'ui-monospace', 'monospace'],
       },
       fontSize: {
         caption: [

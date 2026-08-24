@@ -45,10 +45,14 @@ export function Navbar() {
       backgroundColor: 'rgba(16, 36, 99, 0.94)',
       borderColor: 'rgba(44, 74, 174, 0.85)',
     };
+    const headerPad = {
+      paddingTop: 'max(10px, env(safe-area-inset-top, 0px))',
+      paddingBottom: 10,
+    };
 
     // Interior pages have a light canvas, so the bar stays solid from the start.
     if (!onHome) {
-      gsap.set(header, { paddingTop: 10, paddingBottom: 10 });
+      gsap.set(header, headerPad);
       gsap.set(bar, condensed);
       return;
     }
@@ -56,7 +60,7 @@ export function Navbar() {
     const ctx = gsap.context(() => {
       const tl = gsap
         .timeline({ paused: true, defaults: { duration, ease: 'power2.out' } })
-        .to(header, { paddingTop: 10, paddingBottom: 10 }, 0)
+        .to(header, headerPad, 0)
         .to(bar, condensed, 0);
 
       ScrollTrigger.create({
@@ -202,7 +206,10 @@ export function Navbar() {
   );
 
   return (
-    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 py-4 sm:py-5">
+    <header
+      ref={headerRef}
+      className="fixed inset-x-0 top-0 z-50 pb-4 pt-[max(1rem,env(safe-area-inset-top,0px))] sm:pb-5"
+    >
       {/* ------------------------------------------------------ mobile drawer
           Declared before the bar so it paints underneath it: the logo and the
           close button stay legible on top of the blur, with no z-index tricks
