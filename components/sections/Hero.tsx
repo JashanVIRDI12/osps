@@ -9,6 +9,7 @@ import { hero, site } from '@/lib/content';
 import { RotatingWord } from '@/components/ui/RotatingWord';
 import { CountUp } from '@/components/ui/CountUp';
 import { LoopVideo } from '@/components/ui/LoopVideo';
+import { AetherRibbonMesh } from '@/components/ui/aether-ribbon-mesh';
 
 const HERO_WORDS = ['depend', 'rely', 'trust', 'count'];
 
@@ -57,16 +58,10 @@ export function Hero() {
       className="hero-shell relative isolate flex w-full items-center overflow-hidden bg-canvas"
     >
       {/* Ambient wash — the split layout has no full-bleed backdrop of its own,
-          so a pair of soft brand-coloured glows keep the canvas from reading as
-          bare white. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          backgroundImage:
-            'radial-gradient(44rem 38rem at 6% 6%, rgba(29,63,191,0.10), transparent 60%), radial-gradient(38rem 34rem at 98% 100%, rgba(13,148,136,0.12), transparent 60%)',
-        }}
-      />
+          so an animated ribbon mesh in the royal/teal pairing keeps the canvas
+          from reading as bare white. Falls back to the flat `bg-canvas` above
+          under reduced motion, since the mesh itself renders nothing then. */}
+      <AetherRibbonMesh className="-z-10" />
 
       <div className="shell grid w-full items-center gap-14 py-24 sm:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20 xl:gap-16">
         {/* Copy column */}
