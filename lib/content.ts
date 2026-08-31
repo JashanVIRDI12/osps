@@ -151,7 +151,7 @@ export const productCategories: ProductCategory[] = [
       'The disposables that carry fluid and medication to the patient, supplied sterile, single-use, and in the needle, safety and air-vent configurations each ward specifies.',
     icon: Syringe,
     items: ['Surgical Syringes', 'I.V. Cannulas', 'Infusion Sets'],
-    tone: '#102463',
+    tone: '#1f56d8',
     image: {
       src: '/images/category-injection.webp',
       alt: 'Injection and infusion products: syringes, I.V. cannulas and infusion sets',
@@ -164,7 +164,7 @@ export const productCategories: ProductCategory[] = [
       'Closed-system drainage and collection for post-operative and bedside care, available with or without T-valve and trocar to suit the procedure.',
     icon: Droplets,
     items: ['Urine Bags', 'Wound Drainage Sets'],
-    tone: '#18318c',
+    tone: '#2c63e4',
     image: {
       src: '/images/category-drainage.webp',
       alt: 'Drainage and collection sets with sterile tubing components',
@@ -184,7 +184,7 @@ export const productCategories: ProductCategory[] = [
       'Adhesive Tapes',
       'Plasters',
     ],
-    tone: '#1d3fbf',
+    tone: '#2f62e8',
     image: {
       src: '/images/category-dressings.webp',
       alt: 'Dressings, gauze swabs, tapes and plasters in sterile packaging',
@@ -202,7 +202,7 @@ export const productCategories: ProductCategory[] = [
       'Face Masks',
       'Sterile Surgical Kits',
     ],
-    tone: '#3a5ce8',
+    tone: '#5b82f5',
     image: {
       src: '/images/category-theatre.webp',
       alt: 'Theatre protection kit with gloves, masks, blades and sterile packs',

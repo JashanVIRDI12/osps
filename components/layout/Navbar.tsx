@@ -42,8 +42,8 @@ export function Navbar() {
     const condensed = {
       paddingTop: 10,
       paddingBottom: 10,
-      backgroundColor: 'rgba(16, 36, 99, 0.94)',
-      borderColor: 'rgba(44, 74, 174, 0.85)',
+      backgroundColor: 'rgba(31, 86, 216, 0.94)',
+      borderColor: 'rgba(74, 116, 234, 0.85)',
     };
     const headerPad = {
       paddingTop: 'max(10px, env(safe-area-inset-top, 0px))',

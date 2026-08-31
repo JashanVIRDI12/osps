@@ -18,6 +18,10 @@ const HERO_WORDS = ['depend', 'rely', 'trust', 'count'];
  * over a dimmed backdrop. The portrait delivery clip is proof of the headline,
  * not decoration behind it, so it gets its own frame at full quality instead
  * of competing with body text for legibility under a scrim.
+ *
+ * On a phone the clip is a 4:5 card the width of the shell — a 9:16 portrait
+ * at this width is more than half a screen on its own, and stacked under the
+ * copy it would push the rest of the page out of reach.
  */
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -57,17 +61,15 @@ export function Hero() {
       aria-label={`${site.name}: introduction`}
       className="hero-shell relative isolate flex w-full items-center overflow-hidden bg-canvas"
     >
-      {/* Ambient wash — the split layout has no full-bleed backdrop of its own,
-          so an animated ribbon mesh in the royal/teal pairing keeps the canvas
-          from reading as bare white. Falls back to the flat `bg-canvas` above
-          under reduced motion, since the mesh itself renders nothing then. */}
-      <AetherRibbonMesh className="-z-10" />
+      {/* Ambient wash — desktop only. A full-viewport canvas tick on a phone
+          is the kind of decoration that costs frames the copy does not need. */}
+      <AetherRibbonMesh className="-z-10 hidden lg:block" />
 
-      <div className="shell grid w-full items-center gap-14 py-24 sm:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20 xl:gap-16">
+      <div className="shell grid w-full items-center gap-8 py-[calc(5.75rem+env(safe-area-inset-top,0px))] pb-12 sm:gap-10 sm:pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20 xl:gap-16">
         {/* Copy column */}
-        <div className="flex flex-col items-start text-left">
-          <span className="eyebrow" data-hero-reveal>
-            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+        <div className="flex min-w-0 flex-col items-start text-left">
+          <span className="eyebrow max-w-full whitespace-normal text-left leading-snug" data-hero-reveal>
+            <ShieldCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             {hero.eyebrow}
           </span>
 
@@ -89,7 +91,7 @@ export function Hero() {
           </p>
 
           <div
-            className="mt-7 flex w-full max-w-xs flex-col items-stretch gap-3 sm:mt-8 sm:w-auto sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center"
+            className="mt-7 flex w-full flex-col items-stretch gap-3 sm:mt-8 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center"
             data-hero-reveal
           >
             <a
@@ -114,19 +116,19 @@ export function Hero() {
           </div>
 
           <dl
-            className="mt-10 hidden w-full max-w-md items-start gap-6 border-t border-line pt-6 xs:flex sm:gap-9"
+            className="mt-8 grid w-full grid-cols-3 gap-3 border-t border-line pt-6 xs:mt-10 xs:gap-6 sm:max-w-md sm:gap-9"
             data-hero-reveal
           >
             {hero.stats.map((stat) => (
-              <div key={stat.label}>
+              <div key={stat.label} className="min-w-0">
                 <dd>
                   <CountUp
                     value={stat.value}
                     suffix={stat.suffix}
-                    className="text-[1.7rem] font-semibold leading-none tracking-[-0.04em] text-royal sm:text-[2rem]"
+                    className="text-[1.35rem] font-semibold leading-none tracking-[-0.04em] text-royal xs:text-[1.7rem] sm:text-[2rem]"
                   />
                 </dd>
-                <dt className="mt-1.5 text-caption font-medium uppercase tracking-[0.1em] text-ink-soft">
+                <dt className="mt-1.5 text-[0.62rem] font-medium uppercase leading-snug tracking-[0.08em] text-ink-soft xs:text-caption xs:tracking-[0.1em]">
                   {stat.label}
                 </dt>
               </div>
@@ -134,34 +136,30 @@ export function Hero() {
           </dl>
         </div>
 
-        {/* Delivery showcase — the proof, framed as a portrait card rather
-            than a full-bleed backdrop, so the footage stays at full clarity. */}
-        <div
-          className="relative mx-auto w-full max-w-[300px] xs:max-w-[340px] lg:mx-0 lg:max-w-none"
-          data-hero-reveal
-        >
+        {/* Delivery showcase — full-width 4:5 on a phone so it is a card, not
+            a second viewport of portrait footage. Portrait 9:16 from `lg`. */}
+        <div className="relative w-full min-w-0" data-hero-reveal>
           <LoopVideo
             src={hero.delivery.video}
             poster={hero.delivery.poster}
             alt={hero.delivery.alt}
             label={hero.delivery.videoLabel}
             priority
-            className="aspect-[9/16] w-full rounded-card-elevated border border-line shadow-card-hover lg:max-h-[36rem]"
+            className="aspect-[4/5] w-full rounded-card-elevated border border-line shadow-card-hover sm:mx-auto sm:max-w-[22rem] lg:mx-0 lg:aspect-[9/16] lg:max-h-[36rem] lg:max-w-none"
           >
-            {/* Badge — the headline's evidence, named on the card itself. */}
-            <div className="absolute left-4 right-4 top-4 flex items-center gap-3 rounded-card border border-white/20 bg-royal-deep/75 p-3.5 shadow-card backdrop-blur-md lg:bg-royal-deep/60">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-icon bg-accent text-white">
+            <div className="absolute left-3 right-3 top-3 flex items-center gap-2.5 rounded-card border border-white/20 bg-royal-deep/80 p-2.5 shadow-card xs:left-4 xs:right-4 xs:top-4 xs:gap-3 xs:p-3.5 lg:bg-royal-deep/60">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-icon bg-accent text-white xs:h-10 xs:w-10">
                 <Zap
-                  className="h-[18px] w-[18px]"
+                  className="h-4 w-4 xs:h-[18px] xs:w-[18px]"
                   fill="currentColor"
                   aria-hidden="true"
                 />
               </span>
               <div className="min-w-0">
-                <p className="truncate text-[0.95rem] font-semibold leading-tight text-white">
+                <p className="truncate text-[0.85rem] font-semibold leading-tight text-white xs:text-[0.95rem]">
                   {hero.delivery.badge}
                 </p>
-                <p className="truncate text-[0.75rem] text-white/75">
+                <p className="truncate text-[0.7rem] text-white/75 xs:text-[0.75rem]">
                   {hero.delivery.badgeSub}
                 </p>
               </div>

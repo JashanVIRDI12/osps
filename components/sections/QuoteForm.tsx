@@ -185,7 +185,7 @@ export function QuoteForm() {
           className="field-input appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-11"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d3fbf' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232f62e8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
           }}
           aria-invalid={errors.interest ? 'true' : undefined}
           aria-describedby={describedBy('interest')}

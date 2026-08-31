@@ -162,7 +162,7 @@ export function ProcessRail() {
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(255,255,255,0.92)_0%,rgba(237,241,254,0.35)_55%,transparent_78%)]"
               />
-              <div className="relative grid aspect-square place-items-center p-5 xs:p-6 sm:p-8">
+              <div className="relative grid aspect-[4/3] max-h-[14rem] place-items-center p-4 xs:max-h-none xs:p-6 sm:p-8 lg:aspect-square">
                 <LoopGraphic
                   src={process.graphic.src}
                   poster={process.graphic.poster}

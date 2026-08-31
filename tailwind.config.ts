@@ -24,14 +24,14 @@ const config: Config = {
       },
       colors: {
         royal: {
-          DEFAULT: '#1d3fbf', // primary action + links on light  (8.4:1 on white)
-          deep: '#102463', // inverted section canvas
-          shade: '#18318c', // elevated surface on the inverted canvas
-          bright: '#3a5ce8', // hover, and accents on the inverted canvas
-          line: '#2c4aae', // hairlines on the inverted canvas
-          mist: '#b9c8f5', // muted text + line-art on the inverted canvas
-          tint: '#edf1fe', // soft royal fill on the light canvas
-          wash: '#dce4fc', // stronger royal fill / borders on light
+          DEFAULT: '#2f62e8', // primary action + links on light  (5.2:1 on white)
+          deep: '#1f56d8', // inverted section canvas
+          shade: '#2c63e4', // elevated surface on the inverted canvas
+          bright: '#5b82f5', // hover, and accents on the inverted canvas
+          line: '#4a74ea', // hairlines on the inverted canvas
+          mist: '#cdd9ff', // muted text + line-art on the inverted canvas
+          tint: '#f2f5ff', // soft royal fill on the light canvas
+          wash: '#e4ecff', // stronger royal fill / borders on light
         },
         accent: {
           DEFAULT: '#dc2436', // red accent on light            (4.8:1 on white)
@@ -124,8 +124,8 @@ const config: Config = {
         pill: '9999px',
       },
       boxShadow: {
-        cta: '0 8px 24px -8px rgba(29, 63, 191, 0.45)',
-        'cta-hover': '0 12px 30px -8px rgba(29, 63, 191, 0.6)',
+        cta: '0 8px 24px -8px rgba(47, 98, 232, 0.45)',
+        'cta-hover': '0 12px 30px -8px rgba(47, 98, 232, 0.55)',
         card: '0 1px 2px rgba(12, 21, 51, 0.04), 0 12px 32px -20px rgba(12, 21, 51, 0.18)',
         'card-hover':
           '0 1px 2px rgba(12, 21, 51, 0.05), 0 22px 48px -24px rgba(12, 21, 51, 0.28)',

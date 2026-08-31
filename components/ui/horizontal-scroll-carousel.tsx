@@ -240,7 +240,7 @@ function Card({ item, index }: { item: CarouselItem; index: number }) {
         'group relative shrink-0 snap-start overflow-hidden rounded-card-elevated lg:snap-align-none',
         // Caps at the viewport width so a 320px phone never gets a card wider
         // than the screen, which would make the row impossible to rest on.
-        'h-[400px] w-[min(268px,78vw)] xs:h-[420px] sm:h-[460px] sm:w-[320px] lg:h-[500px] lg:w-[368px]',
+        'h-[300px] w-[min(260px,78vw)] xs:h-[340px] sm:h-[460px] sm:w-[320px] lg:h-[500px] lg:w-[368px]',
         'border border-line bg-royal-deep shadow-card'
       )}
     >

@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
-    /* Royal blue */
-    --color-royal: #1d3fbf;
-    --color-royal-deep: #102463;
-    --color-royal-shade: #18318c;
-    --color-royal-bright: #3a5ce8;
-    --color-royal-line: #2c4aae;
-    --color-royal-mist: #b9c8f5;
-    --color-royal-tint: #edf1fe;
-    --color-royal-wash: #dce4fc;
+    /* Royal blue — a lighter, clearer ramp than the old navy */
+    --color-royal: #2f62e8;
+    --color-royal-deep: #1f56d8;
+    --color-royal-shade: #2c63e4;
+    --color-royal-bright: #5b82f5;
+    --color-royal-line: #4a74ea;
+    --color-royal-mist: #cdd9ff;
+    --color-royal-tint: #f2f5ff;
+    --color-royal-wash: #e4ecff;
 
     /* Red accent — emphasis only, never a large fill */
     --color-accent: #dc2436;
@@ -340,6 +340,8 @@
 
   .eyebrow {
     display: inline-flex;
+    max-width: 100%;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
     border-radius: 9999px;
@@ -400,12 +402,12 @@
     background-color: var(--color-royal);
     color: #ffffff;
     padding: 0.75rem 1.5rem;
-    box-shadow: 0 8px 24px -8px rgba(29, 63, 191, 0.45);
+    box-shadow: 0 8px 24px -8px rgba(47, 98, 232, 0.45);
   }
 
   .btn-primary:hover {
     background-color: var(--color-royal-bright);
-    box-shadow: 0 12px 30px -8px rgba(29, 63, 191, 0.6);
+    box-shadow: 0 12px 30px -8px rgba(47, 98, 232, 0.55);
   }
 
   /** Red fill — reserved for the primary conversion action ("Request a Quote"). */
@@ -522,7 +524,7 @@
 
     .btn-primary:hover {
       background-color: var(--color-royal);
-      box-shadow: 0 8px 24px -8px rgba(29, 63, 191, 0.45);
+      box-shadow: 0 8px 24px -8px rgba(47, 98, 232, 0.45);
     }
 
     .btn-outline:hover {
@@ -633,15 +635,18 @@
   /* ------------------------------------------------- full-screen hero */
 
   /**
-   * `min-height`, not `height` — a short phone in landscape, or a long
-   * headline, has to be able to grow the section rather than spill out of it.
-   * The `vh` line is the fallback for browsers without `svh`; the `svh` line
-   * below it wins everywhere else and is what stops the mobile address bar from
-   * cropping the composition.
+   * Desktop only. On a phone the split hero is already taller than the screen
+   * (copy + portrait clip); forcing 100svh just adds empty canvas under it.
    */
   .hero-shell {
-    min-height: 100vh;
-    min-height: 100svh;
+    min-height: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-shell {
+      min-height: 100vh;
+      min-height: 100svh;
+    }
   }
 
   /** Still frame behind the video — also the poster and the LCP element. */

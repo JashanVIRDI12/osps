@@ -19,7 +19,7 @@ const Globe = dynamic(
     loading: () => (
       <div
         aria-hidden="true"
-        className="relative mx-auto aspect-square w-full max-w-[520px]"
+        className="relative mx-auto aspect-square w-full max-w-[16.5rem] sm:max-w-[22rem] md:max-w-[520px]"
       >
         <div className="absolute inset-[8%] rounded-full bg-royal/10 blur-2xl" />
       </div>

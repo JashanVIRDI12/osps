@@ -123,7 +123,7 @@ export function WhyDifferent() {
                     data-diff-fill
                     aria-hidden="true"
                     className="absolute inset-0 block origin-left"
-                    style={{ backgroundColor: dark ? '#0c1533' : '#1d3fbf' }}
+                    style={{ backgroundColor: dark ? '#1f56d8' : '#5b82f5' }}
                   />
 
                   <p
@@ -139,7 +139,7 @@ export function WhyDifferent() {
                   data-diff-node
                   aria-hidden="true"
                   className="absolute right-0 top-1/2 hidden h-9 w-9 -translate-y-1/2 translate-x-1/2 rounded-full border-[3px] border-canvas sm:block"
-                  style={{ backgroundColor: dark ? '#1d3fbf' : '#0c1533' }}
+                  style={{ backgroundColor: dark ? '#5b82f5' : '#1f56d8' }}
                 />
               </li>
             );

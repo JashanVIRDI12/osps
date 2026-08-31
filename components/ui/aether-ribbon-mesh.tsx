@@ -44,6 +44,10 @@ class Particle {
   }
 }
 
+function rgba(r: number, g: number, b: number, a: number) {
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
 type AetherRibbonMeshProps = {
   className?: string;
 };
@@ -65,6 +69,7 @@ export function AetherRibbonMesh({ className }: AetherRibbonMeshProps) {
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
+    if (window.matchMedia('(max-width: 1023px)').matches) return;
 
     const wrapper = wrapperRef.current;
     const canvas = canvasRef.current;
@@ -125,7 +130,7 @@ export function AetherRibbonMesh({ className }: AetherRibbonMeshProps) {
       ripple.radius = 0;
 
       for (let i = 0; i < 16; i++) {
-        particles.push(new Particle(ripple.x, ripple.y, 'rgba(29, 63, 191, 0.7)'));
+        particles.push(new Particle(ripple.x, ripple.y, rgba(47, 98, 232, 0.7)));
       }
     };
 
@@ -208,9 +213,10 @@ export function AetherRibbonMesh({ className }: AetherRibbonMeshProps) {
 
         // Royal blue -> teal -> royal blue: the light theme's two accents.
         const gradient = ctx.createLinearGradient(0, 0, width, 0);
-        gradient.addColorStop(0, `rgba(29, 63, 191, ${layer.primary ? 0.05 : 0.015})`);
-        gradient.addColorStop(0.5, `rgba(13, 148, 136, ${layer.primary ? 0.22 : 0.09})`);
-        gradient.addColorStop(1, `rgba(29, 63, 191, ${layer.primary ? 0.05 : 0.015})`);
+        const royalEdge = rgba(47, 98, 232, layer.primary ? 0.05 : 0.015);
+        gradient.addColorStop(0, royalEdge);
+        gradient.addColorStop(0.5, rgba(13, 148, 136, layer.primary ? 0.22 : 0.09));
+        gradient.addColorStop(1, royalEdge);
 
         for (let r = 0; r < layer.ribbonCount; r++) {
           const progress = r / layer.ribbonCount;

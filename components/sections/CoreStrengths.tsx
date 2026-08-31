@@ -118,7 +118,7 @@ export function CoreStrengths() {
                   style={{
                     clipPath:
                       'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                    backgroundColor: dark ? '#0c1533' : '#1d3fbf',
+                    backgroundColor: dark ? '#1f56d8' : '#5b82f5',
                   }}
                 >
                   <span className="grid place-items-center gap-2 xs:gap-2.5">
