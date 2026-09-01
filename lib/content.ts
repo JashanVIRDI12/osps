@@ -83,6 +83,8 @@ export const hero = {
    */
   delivery: {
     video: '/videos/four-hour-delivery.mp4',
+    /** Same take as the clip, on its own so the muted video can autoplay. */
+    audio: '/audio/four-hour-delivery.mp3',
     poster: '/images/four-hour-delivery-poster.webp',
     alt: 'OSPS warehouse operator sending a packed order down the dispatch line',
     videoLabel: 'OSPS four-hour delivery from the warehouse dispatch line',
@@ -111,6 +113,8 @@ export const about = {
   cta: { label: 'Learn more about us', href: '#services' },
   video: {
     src: '/videos/dispatch.mp4',
+    /** Same take as the clip, on its own so the muted video can autoplay. */
+    audio: '/audio/dispatch.mp3',
     poster: '/images/dispatch-poster.webp',
     alt: 'OSPS refrigerated truck being loaded at the Greater Noida warehouse',
     videoLabel: 'OSPS dispatch from the Greater Noida warehouse',

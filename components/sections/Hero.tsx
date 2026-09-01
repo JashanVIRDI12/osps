@@ -142,6 +142,7 @@ export function Hero() {
         <div className="relative w-full min-w-0" data-hero-reveal>
           <LoopVideo
             src={hero.delivery.video}
+            audioSrc={hero.delivery.audio}
             poster={hero.delivery.poster}
             alt={hero.delivery.alt}
             label={hero.delivery.videoLabel}
