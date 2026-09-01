@@ -78,17 +78,14 @@ export const hero = {
   ],
   tags: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],
   /**
-   * The portrait showcase beside the headline. `poster` is a frame pulled
-   * straight from the footage — it is the page's LCP element and is preloaded
-   * in the root layout — and `video` fades in over it once the page has
-   * finished loading, skipped entirely under reduced motion or on a metered
-   * connection, in which case the poster is the whole composition.
+   * Four-hour delivery clip with soundtrack. Plays on the hero until About
+   * comes on screen, then yields to the dispatch clip.
    */
   delivery: {
     video: '/videos/four-hour-delivery.mp4',
     poster: '/images/four-hour-delivery-poster.webp',
-    alt: 'OSPS courier scanning a parcel and loading it for same-day dispatch',
-    videoLabel: 'OSPS four-hour delivery, warehouse to hospital',
+    alt: 'OSPS warehouse operator sending a packed order down the dispatch line',
+    videoLabel: 'OSPS four-hour delivery from the warehouse dispatch line',
     badge: '4-Hour Delivery',
     badgeSub: 'Dock to doorstep, guaranteed',
   },
@@ -469,9 +466,9 @@ export const services = {
 };
 
 /**
- * Operations footage: the courier scan-and-load clip is the hero showcase
- * (`hero.delivery`); the refrigerated-truck dispatch clip sits on the About
- * block (`about.video`).
+ * Operations footage: the four-hour dispatch-line clip is the hero showcase
+ * (`hero.delivery`); the refrigerated-truck clip sits on the About block
+ * (`about.video`).
  */
 
 /* --------------------------------------------------------------- process */

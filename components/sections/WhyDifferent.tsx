@@ -1,158 +1,85 @@
 'use client';
 
-import { useRef } from 'react';
-import { gsap, prefersReducedMotion } from '@/lib/gsap';
-import { useIsomorphicLayoutEffect } from '@/lib/motion';
+import {
+  BadgePercent,
+  Headset,
+  Layers,
+  PackageSearch,
+  Timer,
+  Warehouse,
+  Zap,
+} from 'lucide-react';
+import { useReveal } from '@/lib/motion';
 import { differentiators } from '@/lib/content';
 import { LoopGraphic } from '@/components/ui/LoopGraphic';
 
 /**
- * Seven claims as a staircase of bars that draw themselves in.
+ * Seven procurement notices, as a numbered ledger rather than a staircase of
+ * bars. The heading counts them, so the index is information, not decoration —
+ * and equal-width rows let a buyer scan the list the way they scan a spec,
+ * instead of decoding overlapping pills.
  *
- * Each row's fill is its own absolutely-positioned layer, scaled on `scaleX`
- * from a left origin — not an animated `width`. Width is a layout property, so
- * animating it would reflow the row and re-wrap its text on every frame of
- * seven simultaneous bars; `scaleX` on a background layer is a compositor
- * transform and the text above it never moves. The label fades in just behind
- * the leading edge, so the bar appears to carry it in.
- *
- * The widths themselves step down the list. That is the deck's staircase, and
- * it also stops seven identical full-width bars from reading as a table.
+ * The bedside illustration is the reason the list exists. It leads on a phone
+ * (proof, then claims) and sits sticky beside the ledger from `lg`.
  */
-const WIDTHS = ['100%', '94%', '88%', '82%', '90%', '76%', '84%'];
+const ICONS = [
+  PackageSearch,
+  Zap,
+  Layers,
+  Warehouse,
+  BadgePercent,
+  Headset,
+  Timer,
+] as const;
 
 export function WhyDifferent() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useIsomorphicLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const rows = gsap.utils.toArray<HTMLElement>(
-      section.querySelectorAll('[data-diff-row]')
-    );
-    if (!rows.length) return;
-
-    const reduced = prefersReducedMotion();
-
-    if (reduced) {
-      rows.forEach((row) => {
-        const fill = row.querySelector('[data-diff-fill]');
-        const label = row.querySelector('[data-diff-label]');
-        if (fill) gsap.set(fill, { scaleX: 1 });
-        if (label) gsap.set(label, { opacity: 1, x: 0 });
-      });
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      rows.forEach((row, index) => {
-        const fill = row.querySelector('[data-diff-fill]');
-        const label = row.querySelector('[data-diff-label]');
-        const node = row.querySelector('[data-diff-node]');
-
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: row,
-            start: 'top 88%',
-            toggleActions: 'play none none none',
-          },
-          delay: index * 0.06,
-        });
-
-        if (fill) {
-          timeline.fromTo(
-            fill,
-            { scaleX: 0 },
-            { scaleX: 1, duration: 0.75, ease: 'power3.out', transformOrigin: 'left center' },
-            0
-          );
-        }
-
-        if (label) {
-          timeline.fromTo(
-            label,
-            { opacity: 0, x: -14 },
-            { opacity: 1, x: 0, duration: 0.55, ease: 'power2.out' },
-            0.18
-          );
-        }
-
-        if (node) {
-          timeline.fromTo(
-            node,
-            { scale: 0 },
-            { scale: 1, duration: 0.45, ease: 'back.out(2)' },
-            0.45
-          );
-        }
-      });
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
+  const sectionRef = useReveal<HTMLElement>({ stagger: 0.06 });
 
   return (
     <section
       ref={sectionRef}
-      className="section-base relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      className="section-base relative overflow-hidden py-16 sm:py-24 lg:py-28"
     >
       <div className="shell">
         <div className="max-w-3xl">
-          <h2 className="heading-section max-w-none">
+          <h2 className="heading-section max-w-none" data-reveal>
             <span className="heading-kicker">{differentiators.eyebrow}</span>
             {differentiators.heading}
           </h2>
         </div>
 
-        <div className="mt-12 grid gap-12 sm:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.6fr)] lg:items-center lg:gap-16">
-          <ul className="space-y-3 sm:space-y-3.5">
-          {differentiators.items.map((item, index) => {
-            const dark = index % 2 === 1;
+        <div className="mt-10 grid items-start gap-10 sm:mt-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
+          <ol className="order-2 divide-y divide-line border-y border-line lg:order-1">
+            {differentiators.items.map((item, index) => {
+              const Icon = ICONS[index];
 
-            return (
-              <li
-                key={item}
-                data-diff-row
-                className="relative"
-                style={{ maxWidth: WIDTHS[index] ?? '100%' }}
-              >
-                <div className="relative overflow-hidden rounded-pill">
-                  {/* The fill. Transform-only, so the label above never reflows. */}
-                  <span
-                    data-diff-fill
-                    aria-hidden="true"
-                    className="absolute inset-0 block origin-left"
-                    style={{ backgroundColor: dark ? '#1f56d8' : '#5b82f5' }}
-                  />
+              return (
+                <li
+                  key={item}
+                  data-reveal
+                  className="group flex items-start gap-4 py-5 xs:gap-5 xs:py-6"
+                >
+                  <span className="icon-well mt-0.5 h-10 w-10 shrink-0 transition-colors duration-300 group-hover:border-royal group-hover:text-royal xs:h-12 xs:w-12">
+                    <Icon className="h-4 w-4 xs:h-5 xs:w-5" aria-hidden="true" />
+                  </span>
 
-                  <p
-                    data-diff-label
-                    className="relative px-6 py-4 text-pretty text-body-sm font-semibold leading-snug text-white xs:px-7 sm:px-8 sm:py-5 sm:text-body"
-                  >
-                    {item}
-                  </p>
-                </div>
+                  <div className="min-w-0 flex-1 pt-1.5 xs:pt-2">
+                    <span className="font-utility text-[0.68rem] tracking-[0.16em] text-royal">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <p className="mt-1.5 text-pretty text-[1.05rem] font-semibold leading-snug tracking-[-0.03em] text-ink xs:text-[1.15rem] sm:text-[1.25rem]">
+                      {item}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
 
-                {/* Terminal node, echoing the deck's circles on the bar ends. */}
-                <span
-                  data-diff-node
-                  aria-hidden="true"
-                  className="absolute right-0 top-1/2 hidden h-9 w-9 -translate-y-1/2 translate-x-1/2 rounded-full border-[3px] border-canvas sm:block"
-                  style={{ backgroundColor: dark ? '#5b82f5' : '#1f56d8' }}
-                />
-              </li>
-            );
-          })}
-          </ul>
-
-          {/**
-           * The payoff for the list beside it. Ordered after the bars in the
-           * DOM so a screen reader hears the seven claims before the aside, and
-           * the illustration itself is inert decoration — the caption carries
-           * whatever meaning it adds.
-           */}
-          <figure data-diff-graphic className="lg:pl-4">
+          <figure
+            className="order-1 lg:sticky lg:top-32 lg:order-2"
+            data-reveal
+          >
             <div className="overflow-hidden rounded-card-elevated border border-line bg-royal-tint">
               <LoopGraphic
                 src={differentiators.graphic.src}
@@ -163,7 +90,7 @@ export function WhyDifferent() {
                 className="h-auto w-full"
               />
             </div>
-            <figcaption className="mt-5 max-w-[34ch] text-pretty text-body-sm leading-relaxed text-ink-soft">
+            <figcaption className="mt-4 max-w-[34ch] text-pretty text-body-sm leading-relaxed text-ink-soft">
               {differentiators.graphic.caption}
             </figcaption>
           </figure>

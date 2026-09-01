@@ -136,16 +136,18 @@ export function Hero() {
           </dl>
         </div>
 
-        {/* Delivery showcase — full-width 4:5 on a phone so it is a card, not
-            a second viewport of portrait footage. Portrait 9:16 from `lg`. */}
+        {/* Delivery showcase — 3:4 so the portrait clip has real height
+            instead of a landscape crop. Capped on large screens so it still
+            sits beside the copy rather than becoming a second viewport. */}
         <div className="relative w-full min-w-0" data-hero-reveal>
           <LoopVideo
             src={hero.delivery.video}
             poster={hero.delivery.poster}
             alt={hero.delivery.alt}
             label={hero.delivery.videoLabel}
+            channel="hero"
             priority
-            className="aspect-[4/5] w-full rounded-card-elevated border border-line shadow-card-hover sm:mx-auto sm:max-w-[22rem] lg:mx-0 lg:aspect-[9/16] lg:max-h-[36rem] lg:max-w-none"
+            className="aspect-[3/4] w-full rounded-card-elevated border border-line shadow-card-hover lg:max-h-[44rem]"
           >
             <div className="absolute left-3 right-3 top-3 flex items-center gap-2.5 rounded-card border border-white/20 bg-royal-deep/80 p-2.5 shadow-card xs:left-4 xs:right-4 xs:top-4 xs:gap-3 xs:p-3.5 lg:bg-royal-deep/60">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-icon bg-accent text-white xs:h-10 xs:w-10">

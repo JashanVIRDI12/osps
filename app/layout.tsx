@@ -77,7 +77,7 @@ export default function RootLayout({
     <html lang="en" className={`${manrope.variable} ${plexMono.variable}`}>
       <head>
         {/**
-         * The hero's delivery-video poster is the page's LCP element. It is
+         * The hero delivery poster is the page's LCP element. It is already
          * already marked `priority` on its `next/image`, which injects its own
          * preload — this second, earlier one exists because the request would
          * otherwise wait for React to hydrate before the browser discovers it.

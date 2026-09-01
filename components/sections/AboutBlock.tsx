@@ -113,6 +113,7 @@ export function AboutBlock() {
                 poster={about.video.poster}
                 alt={about.video.alt}
                 label={about.video.videoLabel}
+                channel="about"
                 className="aspect-[4/3] w-full xs:aspect-[16/10] lg:absolute lg:inset-0 lg:aspect-auto lg:h-full"
               />
             </div>
