@@ -3,10 +3,19 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import emailjs from '@emailjs/browser';
 import { AlertCircle, CheckCircle2, Loader2, Send } from 'lucide-react';
 import { PRODUCT_INTERESTS, quoteSchema, type QuoteInput } from '@/lib/schema';
+import {
+  emailjsConfig,
+  isEmailjsConfigured,
+  toTemplateParams,
+} from '@/lib/emailjs';
 
 type Status = 'idle' | 'success' | 'error';
+
+const FALLBACK_ERROR =
+  'We could not send your enquiry. Please try again, or email us directly.';
 
 export function QuoteForm() {
   const [status, setStatus] = useState<Status>('idle');
@@ -32,34 +41,40 @@ export function QuoteForm() {
     setStatus('idle');
     setStatusMessage('');
 
+    if (!isEmailjsConfigured()) {
+      // Missing env vars on the host is the one failure the visitor can do
+      // nothing about, so say so plainly rather than blaming their input.
+      setStatus('error');
+      setStatusMessage(
+        'The enquiry form is not configured yet. Please email or call us directly in the meantime.'
+      );
+      return;
+    }
+
     try {
-      const response = await fetch('/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-
-      const data: { ok?: boolean; message?: string } = await response
-        .json()
-        .catch(() => ({}));
-
-      if (!response.ok || !data.ok) {
-        throw new Error(data.message ?? 'Something went wrong.');
-      }
+      await emailjs.send(
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
+        toTemplateParams(values),
+        { publicKey: emailjsConfig.publicKey }
+      );
 
       reset();
       setStatus('success');
       setStatusMessage(
-        data.message ??
-          'Thanks. Your enquiry is with our team. We usually reply within one working day.'
+        'Thanks. Your enquiry is with our team. We usually reply within one working day.'
       );
     } catch (error) {
+      // EmailJS rejects with { status, text }; anything else is a network drop.
+      const detail =
+        typeof error === 'object' && error && 'text' in error
+          ? String((error as { text: unknown }).text)
+          : '';
+
+      console.error('[quote] EmailJS send failed', error);
+
       setStatus('error');
-      setStatusMessage(
-        error instanceof Error && error.message
-          ? error.message
-          : 'We could not send your enquiry. Please try again or call us directly.'
-      );
+      setStatusMessage(detail ? `${FALLBACK_ERROR} (${detail})` : FALLBACK_ERROR);
     }
   };
 

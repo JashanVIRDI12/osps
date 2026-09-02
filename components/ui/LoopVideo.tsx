@@ -127,7 +127,9 @@ export function LoopVideo({
     if (!channel) return;
     return subscribeSoundtrack((snapshot) => {
       const isActive = snapshot.active === channel;
-      const audible = snapshot.wanted;
+      // Both halves matter: `wanted` is the visitor's choice, `unlocked` is
+      // whether the browser is currently letting audio through.
+      const audible = snapshot.wanted && snapshot.unlocked;
 
       activeRef.current = isActive;
       soundOnRef.current = audible;

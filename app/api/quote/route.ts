@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
 import { quoteSchema } from '@/lib/schema';
 
+/**
+ * Server-side intake for the quote form.
+ *
+ * The form itself no longer posts here — delivery moved to EmailJS, which the
+ * browser calls directly (see lib/emailjs.ts). This route is kept as the
+ * validated entry point for a future server-side integration (a CRM webhook,
+ * a database write, or transactional email with a private key), and is safe to
+ * delete if none of those arrive.
+ */
 export async function POST(request: Request) {
   let payload: unknown;
 
@@ -26,11 +35,6 @@ export async function POST(request: Request) {
     );
   }
 
-  /*
-   * TODO: forward to the real destination before launch — transactional email
-   * (Resend / SES), a CRM webhook, or a database write. Validation is already
-   * done server-side, so only the delivery step is missing.
-   */
   console.info('[quote] new enquiry', {
     ...parsed.data,
     receivedAt: new Date().toISOString(),

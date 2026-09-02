@@ -21,15 +21,18 @@ type Snapshot = {
 
 const STORAGE_KEY = 'osps:soundtrack';
 
-/** Everything a browser is willing to count as a user gesture or interaction. */
+/**
+ * Everything a browser actually counts as a user gesture. Scrolling is not on
+ * the list — neither `scroll` nor `wheel` grants user activation in Chrome or
+ * Safari, so they can never unlock audio, and with Lenis driving smooth scroll
+ * they fire every frame: all cost, no unlock.
+ */
 const GESTURE_EVENTS = [
   'pointerdown',
   'touchstart',
   'mousedown',
   'click',
   'keydown',
-  'scroll',
-  'wheel',
 ] as const;
 
 const listeners = new Set<(snapshot: Snapshot) => void>();
@@ -74,6 +77,10 @@ function writePreference(value: boolean) {
  * by the browser before user interaction.
  */
 function onGesture(event: Event) {
+  // Already running: nothing to retry, and this fires on every click on the
+  // page, so it has to stay a single boolean read.
+  if (unlocked) return;
+
   const target = event.target;
   if (target instanceof Element && target.closest('[data-soundtrack-toggle]')) {
     return;
@@ -123,11 +130,16 @@ export function setSoundtrackWanted(value: boolean) {
 }
 
 /**
- * The browser refused unprompted audio autoplay on load.
- * Keep listening for interactions to start audio as soon as the user interacts.
+ * The browser refused audio before a gesture — the common case on a cold
+ * visit. `wanted` is untouched, so the visitor's preference survives; only
+ * `unlocked` drops, which re-arms `onGesture` and lets the speaker icon tell
+ * the truth. Without this the icon would read "sound on" over a silent page,
+ * and the first press of it would mute rather than unmute.
  */
 export function reportSoundtrackBlocked() {
-  // Keep wanted preference and keep gesture listeners armed.
+  if (!unlocked) return;
+  unlocked = false;
+  emit();
 }
 
 export type { Channel, Snapshot };
