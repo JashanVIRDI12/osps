@@ -138,7 +138,8 @@ export const InteractiveTravelCard = React.forwardRef<
           className="object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/35 via-transparent to-royal-deep/75" />
+        {/* Neutral, and clear through the middle — the product is the point. */}
+        <div aria-hidden="true" className="scrim-card absolute inset-0" />
 
         <div className="relative flex h-full flex-col justify-between p-3 text-white xs:p-3.5 sm:p-5">
           <div className="flex items-start justify-between gap-2 sm:gap-3">
@@ -186,7 +187,7 @@ export const InteractiveTravelCard = React.forwardRef<
                padding shrink — this is the card's only control on a phone. */
             className={cn(
               'min-h-[44px] w-full rounded-input px-2 py-2 text-center text-[13px] font-semibold text-white transition-colors xs:text-[14px] sm:py-3 sm:text-body',
-              'bg-royal-deep/55 ring-1 ring-inset ring-white/25 hover:bg-royal-deep/70'
+              'bg-ink/60 ring-1 ring-inset ring-white/25 hover:bg-ink/75'
             )}
           >
             {actionText}

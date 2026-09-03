@@ -134,10 +134,7 @@ export function Catalogue() {
               className="object-cover object-[center_40%]"
               priority={false}
             />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-royal-deep/90 via-royal-deep/35 to-royal-deep/10"
-            />
+            <div aria-hidden="true" className="scrim-caption absolute inset-0" />
           </div>
           <figcaption className="absolute inset-x-5 bottom-5 max-w-xl text-balance text-[1.05rem] font-semibold leading-snug tracking-[-0.03em] text-white xs:inset-x-6 xs:bottom-6 xs:text-[1.2rem] sm:inset-x-8 sm:bottom-8 sm:text-heading-sm">
             {productImageCard.caption}

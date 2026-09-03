@@ -150,7 +150,7 @@ export function Hero() {
             priority
             className="aspect-[3/4] w-full rounded-card-elevated border border-line shadow-card-hover lg:max-h-[44rem]"
           >
-            <div className="absolute left-3 right-3 top-3 flex items-center gap-2.5 rounded-card border border-white/20 bg-royal-deep/80 p-2.5 shadow-card xs:left-4 xs:right-4 xs:top-4 xs:gap-3 xs:p-3.5 lg:bg-royal-deep/60">
+            <div className="absolute left-3 right-3 top-3 flex items-center gap-2.5 rounded-card border border-white/20 bg-ink/80 p-2.5 shadow-card xs:left-4 xs:right-4 xs:top-4 xs:gap-3 xs:p-3.5 lg:bg-ink/60">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-icon bg-accent text-white xs:h-10 xs:w-10">
                 <Zap
                   className="h-4 w-4 xs:h-[18px] xs:w-[18px]"

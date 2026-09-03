@@ -149,7 +149,7 @@ export function ProblemSolution() {
           >
             <span
               ref={spineRef}
-              className="absolute inset-0 block origin-top bg-royal"
+              className="absolute inset-0 block origin-top bg-royal-bright"
             />
           </div>
 
@@ -187,7 +187,7 @@ export function ProblemSolution() {
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-royal text-white">
                     <Check className="h-4 w-4" aria-hidden="true" />
                   </span>
-                  <p className="text-pretty text-body-sm font-semibold leading-snug text-royal-deep">
+                  <p className="text-pretty text-body-sm font-semibold leading-snug text-royal">
                     {solutions.items[index]}
                   </p>
                 </div>

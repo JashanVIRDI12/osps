@@ -120,37 +120,24 @@ export function VisionMission() {
 
         <div className="mt-10 grid gap-10 sm:mt-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-16 xl:gap-20">
           {/**
-           * The anchor, rendered as a royal duotone.
-           *
-           * The product photography is lit on coloured grounds — the theatre
-           * flat-lay sits on magenta — and dropped straight onto this canvas it
-           * fights the brand blue hard enough to look like a mistake. Blending
-           * the image on `luminosity` over a royal bed keeps its tonal range and
-           * takes its hue from the section, so any catalogue still can anchor
-           * this spread without a colour-matched reshoot.
+           * The theatre still is already graded in light sky blue, so it sits
+           * on the royal bed as a photograph rather than a duotone.
            */}
-          <div className="relative overflow-hidden rounded-card-elevated bg-royal">
-            {/**
-             * The royal bed sits on this element, not its parent. GSAP writes a
-             * `transform` here to settle the frame, and a transform creates a
-             * stacking context — which isolates `mix-blend-luminosity` from
-             * anything painted outside it, so a bed on the parent would blend
-             * against nothing and the duotone would silently do nothing.
-             */}
+          <div className="relative overflow-hidden rounded-card-elevated bg-royal-deep">
             <div
               data-vm-media
-              className="relative isolate aspect-[4/3] w-full bg-royal sm:aspect-[16/9] lg:aspect-auto lg:h-full lg:min-h-[30rem]"
+              className="relative isolate aspect-[4/3] w-full bg-royal-deep sm:aspect-[16/9] lg:aspect-auto lg:h-full lg:min-h-[30rem]"
             >
               <Image
                 src={media.src}
                 alt={media.alt}
                 fill
                 sizes="(max-width: 1024px) 92vw, 34vw"
-                className="object-cover mix-blend-luminosity"
+                className="object-cover"
               />
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/15 to-royal-deep/10"
+                className="absolute inset-0 bg-gradient-to-t from-royal-deep/35 via-transparent to-white/10"
               />
             </div>
           </div>

@@ -130,7 +130,7 @@ export function AetherRibbonMesh({ className }: AetherRibbonMeshProps) {
       ripple.radius = 0;
 
       for (let i = 0; i < 16; i++) {
-        particles.push(new Particle(ripple.x, ripple.y, rgba(47, 98, 232, 0.7)));
+        particles.push(new Particle(ripple.x, ripple.y, rgba(59, 130, 246, 0.7)));
       }
     };
 
@@ -196,7 +196,7 @@ export function AetherRibbonMesh({ className }: AetherRibbonMeshProps) {
 
       // Matches --color-canvas, so the animated layer reads as one surface
       // with the rest of the page rather than a framed insert.
-      ctx.fillStyle = '#f7f8fc';
+      ctx.fillStyle = '#e6f2ff';
       ctx.fillRect(0, 0, width, height);
 
       for (let i = particles.length - 1; i >= 0; i--) {
@@ -213,7 +213,7 @@ export function AetherRibbonMesh({ className }: AetherRibbonMeshProps) {
 
         // Royal blue -> teal -> royal blue: the light theme's two accents.
         const gradient = ctx.createLinearGradient(0, 0, width, 0);
-        const royalEdge = rgba(47, 98, 232, layer.primary ? 0.05 : 0.015);
+        const royalEdge = rgba(59, 130, 246, layer.primary ? 0.05 : 0.015);
         gradient.addColorStop(0, royalEdge);
         gradient.addColorStop(0.5, rgba(13, 148, 136, layer.primary ? 0.22 : 0.09));
         gradient.addColorStop(1, royalEdge);

@@ -118,15 +118,15 @@ export function CoreStrengths() {
                   style={{
                     clipPath:
                       'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                    backgroundColor: dark ? '#1f56d8' : '#5b82f5',
+                    backgroundColor: dark ? '#93c5fd' : '#bfdbfe',
                   }}
                 >
                   <span className="grid place-items-center gap-2 xs:gap-2.5">
                     <Icon
-                      className="h-6 w-6 text-white/85 xs:h-7 xs:w-7 sm:h-8 sm:w-8"
+                      className="h-6 w-6 text-ink/80 xs:h-7 xs:w-7 sm:h-8 sm:w-8"
                       aria-hidden="true"
                     />
-                    <h3 className="text-balance px-0.5 text-[0.78rem] font-semibold leading-tight tracking-[-0.03em] text-white xs:text-[0.9rem] sm:text-body-sm">
+                    <h3 className="text-balance px-0.5 text-[0.78rem] font-semibold leading-tight tracking-[-0.03em] text-ink xs:text-[0.9rem] sm:text-body-sm">
                       {item.title}
                     </h3>
                   </span>

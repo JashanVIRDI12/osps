@@ -267,15 +267,13 @@ function Card({ item, index }: { item: CarouselItem; index: number }) {
         className="object-cover transition-transform duration-500 ease-smooth group-hover:scale-105"
       />
 
-      {/* Scrim — the copy sits over photography, so it needs a floor. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/55 to-royal-deep/10"
-      />
+      {/* Scrim — the copy sits over photography, so it needs a floor. Kept to
+          the bottom third and neutral, so the top of each photograph is clear. */}
+      <div aria-hidden="true" className="scrim-caption absolute inset-0" />
 
       <div className="absolute inset-0 flex flex-col justify-between p-6">
         <div className="flex items-start justify-between gap-3">
-          <span className="rounded-pill border border-white/25 bg-royal-deep/70 px-3 py-1.5 text-caption font-medium text-white lg:bg-white/15 lg:backdrop-blur-md">
+          <span className="rounded-pill border border-white/25 bg-ink/70 px-3 py-1.5 text-caption font-medium text-white lg:bg-ink/50 lg:backdrop-blur-md">
             {item.badge}
           </span>
           <span className="text-caption font-semibold tracking-[0.16em] text-white/60">

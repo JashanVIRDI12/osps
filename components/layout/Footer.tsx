@@ -28,7 +28,7 @@ export function Footer() {
       <div className="shell py-14 pb-[max(3.5rem,calc(3.5rem+env(safe-area-inset-bottom)))] sm:py-16 sm:pb-[max(4rem,calc(4rem+env(safe-area-inset-bottom)))]">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div className="flex flex-col gap-5">
-            <Logo tone="light" variant="stacked" />
+            <Logo tone="dark" variant="stacked" />
             <p className="max-w-sm text-pretty text-body-sm leading-relaxed text-royal-mist">
               {footer.blurb}
             </p>
@@ -42,7 +42,7 @@ export function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="grid h-11 w-11 place-items-center rounded-pill border border-royal-line bg-royal-shade/60 text-royal-mist transition-colors hover:border-white hover:text-white sm:h-10 sm:w-10"
+                      className="grid h-11 w-11 place-items-center rounded-pill border border-royal-line bg-royal-shade/60 text-royal-mist transition-colors hover:border-ink hover:text-ink sm:h-10 sm:w-10"
                     >
                       <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
                       <span className="sr-only">
@@ -68,7 +68,7 @@ export function Footer() {
                   <a
                     href={navHref(link.href)}
                     onClick={(event) => handleNavigate(event, link.href)}
-                    className="inline-flex min-h-[44px] items-center text-body-sm text-royal-mist underline-offset-4 transition-colors hover:text-white hover:underline sm:min-h-0"
+                    className="inline-flex min-h-[44px] items-center text-body-sm text-royal-mist underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
                   >
                     {link.label}
                   </a>
@@ -78,7 +78,7 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="inline-flex min-h-[44px] items-center text-body-sm text-royal-mist underline-offset-4 transition-colors hover:text-white hover:underline sm:min-h-0"
+                    className="inline-flex min-h-[44px] items-center text-body-sm text-royal-mist underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
                   >
                     {link.label}
                   </a>
@@ -112,7 +112,7 @@ export function Footer() {
                 />
                 <a
                   href={details.phoneHref}
-                  className="inline-flex min-h-[44px] items-center underline-offset-4 transition-colors hover:text-white hover:underline sm:min-h-0"
+                  className="inline-flex min-h-[44px] items-center underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
                 >
                   {details.phone}
                 </a>
@@ -124,7 +124,7 @@ export function Footer() {
                 />
                 <a
                   href={details.emailHref}
-                  className="inline-flex min-h-[44px] items-center [overflow-wrap:anywhere] underline-offset-4 transition-colors hover:text-white hover:underline sm:min-h-0"
+                  className="inline-flex min-h-[44px] items-center [overflow-wrap:anywhere] underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
                 >
                   {details.email}
                 </a>

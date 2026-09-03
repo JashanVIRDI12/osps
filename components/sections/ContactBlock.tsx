@@ -106,7 +106,7 @@ export function ContactBlock() {
                 <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-royal-mist">
                   Hours
                 </h3>
-                <p className="mt-2 text-body-sm leading-relaxed text-white">
+                <p className="mt-2 text-body-sm leading-relaxed text-ink">
                   {details.hours.map((line) => (
                     <span key={line} className="block">
                       {line}

@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
-    /* Royal blue — a lighter, clearer ramp than the old navy */
-    --color-royal: #2f62e8;
-    --color-royal-deep: #1f56d8;
-    --color-royal-shade: #2c63e4;
-    --color-royal-bright: #5b82f5;
-    --color-royal-line: #4a74ea;
-    --color-royal-mist: #cdd9ff;
-    --color-royal-tint: #f2f5ff;
-    --color-royal-wash: #e4ecff;
+    /* Sky blue — light fills; DEFAULT stays dark enough for white button text */
+    --color-royal: #3b82f6;
+    --color-royal-deep: #93c5fd;
+    --color-royal-shade: #bfdbfe;
+    --color-royal-bright: #60a5fa;
+    --color-royal-line: #7dd3fc;
+    --color-royal-mist: #1e3a5f;
+    --color-royal-tint: #eff6ff;
+    --color-royal-wash: #dbeafe;
 
     /* Red accent — emphasis only, never a large fill */
     --color-accent: #dc2436;
@@ -31,10 +31,10 @@
     --color-ink: #0c1533;
     --color-ink-muted: #4b5678;
     --color-ink-soft: #5f6a8c;
-    --color-canvas: #f7f8fc;
+    --color-canvas: #f4f9ff;
     --color-surface: #ffffff;
-    --color-line: #e2e6f3;
-    --color-line-strong: #c9d0e6;
+    --color-line: #d7e6f8;
+    --color-line-strong: #b8d4f0;
 
     --font-gilroy: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 
@@ -248,7 +248,7 @@
   /** Royal inversion — a hard cut, never a gradient. */
   .section-invert {
     background-color: var(--color-royal-deep);
-    color: #ffffff;
+    color: var(--color-ink);
   }
 
   /* ------------------------------------------------------------- headings */
@@ -294,7 +294,7 @@
 
   .section-invert .heading-section,
   .heading-section-invert {
-    color: #ffffff;
+    color: var(--color-ink);
   }
 
   .heading-display {
@@ -402,12 +402,12 @@
     background-color: var(--color-royal);
     color: #ffffff;
     padding: 0.75rem 1.5rem;
-    box-shadow: 0 8px 24px -8px rgba(47, 98, 232, 0.45);
+    box-shadow: 0 8px 24px -8px rgba(59, 130, 246, 0.35);
   }
 
   .btn-primary:hover {
     background-color: var(--color-royal-bright);
-    box-shadow: 0 12px 30px -8px rgba(47, 98, 232, 0.55);
+    box-shadow: 0 12px 30px -8px rgba(59, 130, 246, 0.45);
   }
 
   /** Red fill — reserved for the primary conversion action ("Request a Quote"). */
@@ -488,6 +488,38 @@
     color: #ffffff;
   }
 
+  /**
+   * Scrims for copy sitting over photography.
+   *
+   * These were royal-blue washes, which do not darken a photograph so much as
+   * repaint it — the product shots are near-white, so a saturated blue at 75%
+   * turned every one of them into a blue rectangle. Two changes fix that: the
+   * ink is near-neutral (#0c1533), so it dims without staining the colour, and
+   * the ramp is pinned to the text bands with an explicitly clear middle, so
+   * the product itself is never covered.
+   *
+   * The floor is still real: white type over a white syringe needs one.
+   */
+  .scrim-caption {
+    background-image: linear-gradient(
+      to top,
+      rgba(12, 21, 51, 0.78) 0%,
+      rgba(12, 21, 51, 0.28) 34%,
+      rgba(12, 21, 51, 0) 62%
+    );
+  }
+
+  /* Copy at both ends — a title up top, a control at the bottom. */
+  .scrim-card {
+    background-image: linear-gradient(
+      to bottom,
+      rgba(12, 21, 51, 0.4) 0%,
+      rgba(12, 21, 51, 0) 30%,
+      rgba(12, 21, 51, 0) 56%,
+      rgba(12, 21, 51, 0.72) 100%
+    );
+  }
+
   .card-hover {
     @apply transition-[transform,border-color,box-shadow] duration-300 ease-smooth hover:-translate-y-1;
   }
@@ -524,7 +556,7 @@
 
     .btn-primary:hover {
       background-color: var(--color-royal);
-      box-shadow: 0 8px 24px -8px rgba(47, 98, 232, 0.45);
+      box-shadow: 0 8px 24px -8px rgba(59, 130, 246, 0.35);
     }
 
     .btn-outline:hover {

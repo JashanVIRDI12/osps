@@ -55,7 +55,7 @@ export const metadata: Metadata = {
  * is never blocked.
  */
 export const viewport: Viewport = {
-  themeColor: '#1f56d8',
+  themeColor: '#93c5fd',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',

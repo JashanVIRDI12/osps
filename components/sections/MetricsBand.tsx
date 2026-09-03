@@ -21,9 +21,9 @@ export function MetricsBand() {
   return (
     <section ref={ref} className="section-base py-16 sm:py-24 lg:py-28">
       <div className="shell">
-        <div className="overflow-hidden rounded-card-elevated border border-royal-line bg-royal">
+        <div className="overflow-hidden rounded-card-elevated border border-royal-line bg-royal-deep">
           <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-            <div className="relative z-10 bg-royal p-5 xs:p-8 sm:p-10 lg:bg-[linear-gradient(90deg,var(--color-royal)_0%,var(--color-royal)_70%,transparent_100%)] lg:p-12">
+            <div className="relative z-10 bg-royal-deep p-5 xs:p-8 sm:p-10 lg:bg-[linear-gradient(90deg,var(--color-royal-deep)_0%,var(--color-royal-deep)_70%,transparent_100%)] lg:p-12">
               <h2
                 className="heading-section heading-section-invert max-w-lg"
                 data-reveal
@@ -35,7 +35,7 @@ export function MetricsBand() {
               </h2>
 
               <p
-                className="mt-5 max-w-lg text-pretty text-body-sm leading-relaxed text-royal-mist"
+                className="mt-5 max-w-lg text-pretty text-body-sm leading-relaxed text-ink"
                 data-reveal
               >
                 {whyChooseUs.body}
@@ -48,10 +48,10 @@ export function MetricsBand() {
                       <CountUp
                         value={stat.value}
                         suffix={stat.suffix}
-                        className="text-[1.9rem] font-semibold leading-none tracking-[-0.05em] text-white xs:text-[2.6rem] sm:text-[3rem]"
+                        className="text-[1.9rem] font-semibold leading-none tracking-[-0.05em] text-ink xs:text-[2.6rem] sm:text-[3rem]"
                       />
                     </dd>
-                    <dt className="mt-2 text-[0.62rem] font-medium uppercase leading-snug tracking-[0.1em] text-royal-mist/90 xs:text-caption xs:tracking-[0.12em]">
+                    <dt className="mt-2 text-[0.62rem] font-medium uppercase leading-snug tracking-[0.1em] text-royal-mist xs:text-caption xs:tracking-[0.12em]">
                       {stat.label}
                     </dt>
                   </div>
@@ -91,14 +91,14 @@ export function MetricsBand() {
 
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-royal-deep/75 via-transparent to-transparent lg:bg-[linear-gradient(90deg,var(--color-royal)_0%,color-mix(in_srgb,var(--color-royal)_62%,transparent)_22%,transparent_56%)]"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent lg:bg-[linear-gradient(90deg,var(--color-royal)_0%,color-mix(in_srgb,var(--color-royal)_62%,transparent)_22%,transparent_56%)]"
               />
 
               <ul className="absolute inset-x-4 bottom-4 z-[1] flex flex-wrap gap-1.5 xs:inset-x-6 xs:bottom-6 xs:gap-2">
                 {whyChooseUs.pointers.map((pointer) => (
                   <li
                     key={pointer}
-                    className="inline-flex items-center gap-1.5 rounded-pill border border-white/30 bg-royal-deep/85 px-2.5 py-1 text-[0.65rem] font-medium text-white xs:px-3 xs:py-1.5 xs:text-caption lg:bg-royal-deep/60 lg:backdrop-blur-md"
+                    className="inline-flex items-center gap-1.5 rounded-pill border border-white/30 bg-ink/85 px-2.5 py-1 text-[0.65rem] font-medium text-white xs:px-3 xs:py-1.5 xs:text-caption lg:bg-ink/60 lg:backdrop-blur-md"
                   >
                     <BadgeCheck
                       className="h-3.5 w-3.5 shrink-0 text-accent-soft"

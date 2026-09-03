@@ -24,18 +24,19 @@ const config: Config = {
       },
       colors: {
         royal: {
-          DEFAULT: '#2f62e8', // primary action + links on light  (5.2:1 on white)
-          deep: '#1f56d8', // inverted section canvas
-          shade: '#2c63e4', // elevated surface on the inverted canvas
-          bright: '#5b82f5', // hover, and accents on the inverted canvas
-          line: '#4a74ea', // hairlines on the inverted canvas
-          mist: '#cdd9ff', // muted text + line-art on the inverted canvas
-          tint: '#f2f5ff', // soft royal fill on the light canvas
-          wash: '#e4ecff', // stronger royal fill / borders on light
+          DEFAULT: '#3b82f6', // links + buttons on light
+          deep: '#93c5fd', // tinted section canvas — carries INK text, not white
+          shade: '#bfdbfe', // elevated panel on that canvas
+          bright: '#60a5fa', // hover + accents on that canvas
+          line: '#7dd3fc', // hairlines on that canvas
+          mist: '#1e3a5f', // muted text + line-art on that canvas
+          tint: '#eff6ff', // soft royal fill on the light canvas
+          wash: '#dbeafe', // stronger royal fill / borders on light
         },
         accent: {
           DEFAULT: '#dc2436', // red accent on light            (4.8:1 on white)
           soft: '#ff5f6d', // red accent on the inverted canvas (4.9:1 on deep)
+          deep: '#8f1523', // kickers on the light blue band  (4.8:1 on it)
           tint: '#feecee', // red wash on light
         },
         /**
@@ -53,14 +54,14 @@ const config: Config = {
         },
         ink: {
           DEFAULT: '#0c1533', // headings and body on light
-          muted: '#4b5678', // secondary text on light          (6.9:1 on canvas)
-          soft: '#5f6a8c', // captions, low emphasis on light   (5.1:1 on canvas)
+          muted: '#4b5678', // secondary text on light          (6.4:1 on canvas)
+          soft: '#5c6789', // captions, low emphasis on light   (4.9:1 on canvas)
         },
-        canvas: '#f7f8fc', // page background
+        canvas: '#f4f9ff', // page background
         surface: '#ffffff', // raised cards on the canvas
         line: {
-          DEFAULT: '#e2e6f3', // hairline on light
-          strong: '#c9d0e6',
+          DEFAULT: '#d7e6f8', // hairline on light
+          strong: '#b8d4f0',
         },
       },
       fontFamily: {
@@ -124,8 +125,8 @@ const config: Config = {
         pill: '9999px',
       },
       boxShadow: {
-        cta: '0 8px 24px -8px rgba(47, 98, 232, 0.45)',
-        'cta-hover': '0 12px 30px -8px rgba(47, 98, 232, 0.55)',
+        cta: '0 8px 24px -8px rgba(59, 130, 246, 0.35)',
+        'cta-hover': '0 12px 30px -8px rgba(59, 130, 246, 0.45)',
         card: '0 1px 2px rgba(12, 21, 51, 0.04), 0 12px 32px -20px rgba(12, 21, 51, 0.18)',
         'card-hover':
           '0 1px 2px rgba(12, 21, 51, 0.05), 0 22px 48px -24px rgba(12, 21, 51, 0.28)',

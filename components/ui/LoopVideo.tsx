@@ -306,7 +306,7 @@ export function LoopVideo({
               data-soundtrack-toggle
               onClick={toggleSound}
               aria-pressed={soundOn}
-              className="grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-royal-deep/80 text-white/80 transition-colors hover:border-white/60 hover:text-white"
+              className="grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-ink/70 text-white/90 transition-colors hover:border-white/60 hover:text-white"
             >
               <span className="sr-only">
                 {soundOn ? 'Mute video soundtrack' : 'Unmute video soundtrack'}
@@ -324,7 +324,7 @@ export function LoopVideo({
               type="button"
               onClick={toggleVideo}
               aria-pressed={playing}
-              className="grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-royal-deep/80 text-white/80 transition-colors hover:border-white/60 hover:text-white"
+              className="grid h-11 w-11 place-items-center rounded-pill border border-white/25 bg-ink/70 text-white/90 transition-colors hover:border-white/60 hover:text-white"
             >
               <span className="sr-only">
                 {playing

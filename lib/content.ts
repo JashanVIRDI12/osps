@@ -205,7 +205,7 @@ export const productCategories: ProductCategory[] = [
     ],
     tone: '#5b82f5',
     image: {
-      src: '/images/category-theatre.webp',
+      src: '/images/category-theatre.png',
       alt: 'Theatre protection kit with gloves, masks, blades and sterile packs',
     },
   },
@@ -833,7 +833,7 @@ export const visionMission = {
   eyebrow: 'Our purpose',
   heading: 'Why we do this',
   media: {
-    src: '/images/category-theatre.webp',
+    src: '/images/category-theatre.png',
     alt: 'Sterile theatre consumables prepared for a hospital order',
   },
   vision: {

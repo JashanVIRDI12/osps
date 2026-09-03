@@ -107,7 +107,7 @@ export function AboutBlock() {
               </a>
             </div>
 
-            <div className="relative bg-royal-deep lg:min-h-[30rem]">
+            <div className="relative bg-ink lg:min-h-[30rem]">
               <LoopVideo
                 src={about.video.src}
                 audioSrc={about.video.audio}

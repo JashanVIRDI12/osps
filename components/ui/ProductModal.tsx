@@ -68,7 +68,7 @@ export function ProductModal({
       <button
         type="button"
         aria-label="Close product details"
-        className="absolute inset-0 bg-royal-deep/55 backdrop-blur-sm"
+        className="absolute inset-0 bg-ink/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
@@ -91,10 +91,9 @@ export function ProductModal({
             className="object-cover"
             priority
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-royal-deep/50 via-transparent to-royal-deep/15"
-          />
+          {/* No scrim. This is the one view where the product is being
+              examined, and the only things over the image — the number pill and
+              the close button — already carry their own backgrounds. */}
           <span className="absolute left-5 top-5 rounded-pill bg-white/90 px-3 py-1.5 text-caption font-semibold tracking-[0.12em] text-royal backdrop-blur-sm">
             {product.number}
           </span>
@@ -102,7 +101,7 @@ export function ProductModal({
             ref={closeRef}
             type="button"
             onClick={onClose}
-            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-pill border border-white/35 bg-royal-deep/45 text-white backdrop-blur-md transition-colors hover:bg-royal-deep/70 sm:h-10 sm:w-10"
+            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-pill border border-white/35 bg-ink/55 text-white backdrop-blur-md transition-colors hover:bg-ink/75 sm:h-10 sm:w-10"
             aria-label="Close"
           >
             <X className="h-5 w-5" aria-hidden="true" />

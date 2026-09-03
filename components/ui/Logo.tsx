@@ -55,7 +55,7 @@ export function Logo({
         <span
           className={cn(
             'text-[17px] font-semibold tracking-tight',
-            onDark ? 'text-white' : 'text-ink'
+            onDark ? 'text-ink' : 'text-ink'
           )}
         >
           OSPS
