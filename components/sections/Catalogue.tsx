@@ -100,11 +100,12 @@ export function Catalogue() {
                     <InteractiveTravelCard
                       title={product.name}
                       titleAs="h4"
+                      variants={product.variants}
                       subtitle={product.variants.join(' · ')}
                       imageUrl={product.image.src}
                       imageAlt={product.image.alt}
                       badge={product.number}
-                      actionText="Show more"
+                      actionText="View Specs"
                       href={`#product-${product.number}`}
                       onActionClick={() =>
                         setSelected({ product, groupTitle: group.title })

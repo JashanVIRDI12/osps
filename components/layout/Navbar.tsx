@@ -252,6 +252,20 @@ export function Navbar() {
                   {details.phone}
                 </a>
               </li>
+              {details.secondaryPhone ? (
+                <li>
+                  <a
+                    href={details.secondaryPhoneHref}
+                    className="flex min-h-[44px] items-center gap-3 text-body-sm font-medium text-ink-muted transition-colors active:text-ink"
+                  >
+                    <Phone
+                      className="h-4 w-4 shrink-0 text-royal"
+                      aria-hidden="true"
+                    />
+                    {details.secondaryPhone}
+                  </a>
+                </li>
+              ) : null}
               <li>
                 <a
                   href={details.emailHref}

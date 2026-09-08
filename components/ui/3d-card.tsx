@@ -3,28 +3,30 @@
 import * as React from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 /**
- * Props for the InteractiveTravelCard component.
+ * Props for the InteractiveTravelCard (Product Card) component.
  */
 export interface InteractiveTravelCardProps {
   /** The main title for the card, e.g. product name */
   title: string;
-  /** A subtitle or location / product line */
-  subtitle: string;
-  /** The URL for the background image. */
+  /** A subtitle or comma/dot-separated product line */
+  subtitle?: string;
+  /** Specific variant tags or configurations */
+  variants?: string[];
+  /** The URL for the product image. */
   imageUrl: string;
   /** Accessible alt text for the image. */
   imageAlt?: string;
   /** Optional leading label, e.g. product number "01". */
   badge?: string;
   /** The text for the primary action button. */
-  actionText: string;
+  actionText?: string;
   /** The destination URL for the top-right link. */
-  href: string;
-  /** Callback function when the primary action button is clicked. */
+  href?: string;
+  /** Callback function when the primary action button or card is clicked. */
   onActionClick: () => void;
   /** Optional additional class names for custom styling. */
   className?: string;
@@ -37,11 +39,6 @@ export interface InteractiveTravelCardProps {
 
 /**
  * True only on devices that can actually hover with a precise pointer.
- *
- * Starts `false` so the server markup and the first client render agree, then
- * flips after mount — a touch device therefore never mounts the tilt at all,
- * which matters here because the catalogue renders twenty-odd of these and each
- * live `transformPerspective` promotes its own compositor layer.
  */
 function useFinePointer() {
   const [fine, setFine] = React.useState(false);
@@ -59,10 +56,8 @@ function useFinePointer() {
 }
 
 /**
- * A responsive product card with a light hover tilt.
- *
- * Intentionally flat: nested preserve-3d / translateZ / backdrop-blur stacks
- * left compositor gaps that showed as white bands across the catalogue photos.
+ * Premium Hospital & Surgical Product Card with smooth 3D tilt,
+ * framed medical photography, specification chips, and micro-interactions.
  */
 export const InteractiveTravelCard = React.forwardRef<
   HTMLDivElement,
@@ -72,10 +67,11 @@ export const InteractiveTravelCard = React.forwardRef<
     {
       title,
       subtitle,
+      variants,
       imageUrl,
       imageAlt,
       badge,
-      actionText,
+      actionText = 'View Specifications',
       href,
       onActionClick,
       className,
@@ -87,12 +83,12 @@ export const InteractiveTravelCard = React.forwardRef<
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    const springConfig = { damping: 15, stiffness: 150 };
+    const springConfig = { damping: 18, stiffness: 140 };
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    const rotateX = useTransform(springY, [-0.5, 0.5], ['5deg', '-5deg']);
-    const rotateY = useTransform(springX, [-0.5, 0.5], ['-5deg', '5deg']);
+    const rotateX = useTransform(springY, [-0.5, 0.5], ['4deg', '-4deg']);
+    const rotateY = useTransform(springX, [-0.5, 0.5], ['-4deg', '4deg']);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
@@ -110,6 +106,12 @@ export const InteractiveTravelCard = React.forwardRef<
       mouseY.set(0);
     };
 
+    const parsedVariants = variants && variants.length > 0
+      ? variants
+      : subtitle
+        ? subtitle.split(/·|,/).map((s) => s.trim()).filter(Boolean)
+        : [];
+
     return (
       <motion.div
         ref={ref}
@@ -117,84 +119,94 @@ export const InteractiveTravelCard = React.forwardRef<
         onMouseLeave={finePointer ? handleMouseLeave : undefined}
         style={
           finePointer
-            ? { rotateX, rotateY, transformPerspective: 900 }
+            ? { rotateX, rotateY, transformPerspective: 1000 }
             : undefined
         }
-        /* Below `sm` the card sits in a two-up grid — roughly 134px wide at
-           320px — so it is reproportioned rather than merely squeezed. From
-           `sm` up the grid was already two columns and nothing here changes. */
         className={cn(
-          'relative h-[14rem] w-full overflow-hidden rounded-card border border-line/60 bg-royal-deep shadow-card xs:h-[16.5rem] sm:h-[26rem]',
+          'group relative flex h-full w-full flex-col overflow-hidden rounded-card-elevated border border-line bg-surface shadow-card transition-all duration-300 hover:border-royal/40 hover:shadow-card-hover',
           className
         )}
       >
-        <Image
-          src={imageUrl}
-          alt={imageAlt ?? `${title}, ${subtitle}`}
-          fill
-          /* Half the viewport on a phone now, not all of it — the two-up grid
-             halves the pixels every one of these fifteen images has to ship. */
-          sizes="(max-width: 1024px) 50vw, 33vw"
-          className="object-cover"
-        />
+        {/* Top Image Frame */}
+        <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-gradient-to-br from-royal-wash/60 via-slate-50 to-teal-tint/40 sm:aspect-[16/11]">
+          <Image
+            src={imageUrl}
+            alt={imageAlt ?? `${title} - Surgical Supplies`}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 380px"
+            className="object-cover object-center transition-transform duration-500 ease-smooth group-hover:scale-105"
+          />
 
-        {/* Neutral, and clear through the middle — the product is the point. */}
-        <div aria-hidden="true" className="scrim-card absolute inset-0" />
+          {/* Soft ambient gradient overlay */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-black/10 opacity-70 transition-opacity duration-300 group-hover:opacity-40"
+          />
 
-        <div className="relative flex h-full flex-col justify-between p-3 text-white xs:p-3.5 sm:p-5">
-          <div className="flex items-start justify-between gap-2 sm:gap-3">
-            <div className="min-w-0">
-              {badge ? (
-                <span className="mb-1.5 inline-flex rounded-pill bg-white/90 px-2 py-0.5 text-[10px] font-semibold tracking-[0.1em] text-royal sm:mb-2 sm:px-2.5 sm:py-1 sm:text-caption sm:tracking-[0.12em]">
-                  {badge}
-                </span>
-              ) : null}
-              <Title className="text-balance text-[0.95rem] font-semibold leading-[1.15] tracking-[-0.03em] xs:text-[1.05rem] sm:text-2xl sm:leading-tight">
-                {title}
-              </Title>
-              {/* Variant lists run long ("With Needle · Without Needle"), and in
-                  a 110px column they would eat the card. Clamped on phones,
-                  full text from `sm` where there is room for it. */}
-              <p className="mt-1 line-clamp-2 text-[11px] font-medium leading-snug text-white/80 xs:text-[12px] sm:line-clamp-none sm:text-pretty sm:text-body-sm">
-                {subtitle}
-              </p>
+          {/* Top Badge (Product Number) */}
+          {badge ? (
+            <div className="absolute left-2.5 top-2.5 z-10 xs:left-3 xs:top-3 sm:left-4 sm:top-4">
+              <span className="inline-flex items-center rounded-pill border border-royal-line/60 bg-white/90 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-royal shadow-sm backdrop-blur-md xs:text-[11px] sm:px-2.5 sm:py-1 sm:text-xs">
+                № {badge}
+              </span>
             </div>
-            {/* Hidden on phones: it duplicates the button below, and at this
-                width a 44px circle crowds out the title it sits beside. */}
-            <motion.a
-              href={href}
-              onClick={(event) => {
-                if (href.startsWith('#')) {
-                  event.preventDefault();
-                  onActionClick();
-                }
-              }}
-              whileHover={{ scale: 1.1, rotate: '2.5deg' }}
-              whileTap={{ scale: 0.9 }}
-              aria-label={`Show more about ${title}`}
-              className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/25 ring-1 ring-inset ring-white/35 transition-colors hover:bg-white/35 sm:flex"
+          ) : null}
+
+          {/* Top Right Quick Expand Indicator */}
+          <div className="absolute right-2.5 top-2.5 z-10 xs:right-3 xs:top-3 sm:right-4 sm:top-4">
+            <button
+              type="button"
+              onClick={onActionClick}
+              aria-label={`Open details for ${title}`}
+              className="grid h-7 w-7 place-items-center rounded-full border border-white/60 bg-white/80 text-ink-muted shadow-sm backdrop-blur-md transition-all duration-300 group-hover:border-royal-line group-hover:bg-royal group-hover:text-white xs:h-8 xs:w-8 sm:h-9 sm:w-9"
             >
-              <ArrowUpRight className="h-5 w-5 text-white" aria-hidden="true" />
-            </motion.a>
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:scale-110 sm:h-4 sm:w-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Card Content Body */}
+        <div className="flex flex-1 flex-col justify-between p-3.5 xs:p-4 sm:p-5">
+          <div>
+            <Title className="text-balance text-[0.95rem] font-semibold leading-snug tracking-[-0.03em] text-ink transition-colors duration-300 group-hover:text-royal xs:text-[1.05rem] sm:text-[1.25rem]">
+              {title}
+            </Title>
+
+            {/* Specification / Variant Chips */}
+            {parsedVariants.length > 0 ? (
+              <div className="mt-2.5 flex flex-wrap gap-1.5 xs:mt-3 sm:gap-2">
+                {parsedVariants.slice(0, 3).map((variant) => (
+                  <span
+                    key={variant}
+                    className="inline-flex items-center rounded-md border border-royal-line/40 bg-royal-tint/60 px-2 py-0.5 text-[10px] font-medium tracking-tight text-royal-shade xs:text-[11px] sm:text-xs"
+                  >
+                    {variant}
+                  </span>
+                ))}
+                {parsedVariants.length > 3 ? (
+                  <span className="inline-flex items-center rounded-md border border-line bg-surface-muted px-1.5 py-0.5 text-[10px] font-semibold text-ink-muted xs:text-[11px]">
+                    +{parsedVariants.length - 3}
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
           </div>
 
-          <motion.button
-            type="button"
-            onClick={onActionClick}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            /* `min-h` holds the 44px tap target even though the type and
-               padding shrink — this is the card's only control on a phone. */
-            className={cn(
-              'min-h-[44px] w-full rounded-input px-2 py-2 text-center text-[13px] font-semibold text-white transition-colors xs:text-[14px] sm:py-3 sm:text-body',
-              'bg-ink/60 ring-1 ring-inset ring-white/25 hover:bg-ink/75'
-            )}
-          >
-            {actionText}
-          </motion.button>
+          {/* Action Button */}
+          <div className="mt-4 pt-3 border-t border-line/70 xs:mt-5 sm:pt-4">
+            <button
+              type="button"
+              onClick={onActionClick}
+              className="group/btn relative flex min-h-[40px] w-full items-center justify-center gap-2 rounded-xl border border-royal-line/70 bg-royal-wash/60 px-3 py-2 text-center text-[12px] font-semibold text-royal shadow-sm transition-all duration-300 hover:border-royal hover:bg-royal hover:text-white active:scale-[0.98] xs:text-[13px] sm:min-h-[44px] sm:py-2.5 sm:text-body-sm"
+            >
+              <span>{actionText}</span>
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-1 sm:h-4 sm:w-4" />
+            </button>
+          </div>
         </div>
       </motion.div>
     );
   }
 );
+
 InteractiveTravelCard.displayName = 'InteractiveTravelCard';

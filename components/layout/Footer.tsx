@@ -110,12 +110,22 @@ export function Footer() {
                   className="mt-0.5 h-4 w-4 shrink-0 text-accent-soft"
                   aria-hidden="true"
                 />
-                <a
-                  href={details.phoneHref}
-                  className="inline-flex min-h-[44px] items-center underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
-                >
-                  {details.phone}
-                </a>
+                <div className="flex flex-col gap-1">
+                  <a
+                    href={details.phoneHref}
+                    className="inline-flex min-h-[36px] items-center underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
+                  >
+                    {details.phone}
+                  </a>
+                  {details.secondaryPhone ? (
+                    <a
+                      href={details.secondaryPhoneHref}
+                      className="inline-flex min-h-[36px] items-center underline-offset-4 transition-colors hover:text-ink hover:underline sm:min-h-0"
+                    >
+                      {details.secondaryPhone}
+                    </a>
+                  ) : null}
+                </div>
               </li>
               <li className="flex gap-3">
                 <Mail

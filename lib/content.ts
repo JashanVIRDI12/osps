@@ -431,6 +431,12 @@ export const services = {
   lead: 'Procurement teams stay with us because the fundamentals are handled: stock is available, orders move quickly, and what arrives is exactly what was promised.',
   items: [
     {
+      icon: Ambulance,
+      title: '24-Hour Emergency Supply',
+      description:
+        'Round-the-clock emergency surgical replenishment and fast-track dispatch for critical hospital wards and emergency procedures.',
+    },
+    {
       icon: PackageCheck,
       title: 'Reliable Product Availability',
       description:
@@ -687,21 +693,36 @@ export const contact = {
   heading: "Let's Build a Strong Healthcare Partnership",
   lead: 'Send us your requirement list and we will come back with itemised pricing and availability, usually the same working day.',
   productInterests: PRODUCT_INTERESTS,
+  emergencyService: {
+    title: '24-Hour Emergency Supply',
+    badge: '24/7 Available',
+    description:
+      'Immediate priority dispatch and emergency surgical stock replenishment for ICUs, emergency departments, and hospital operation theatres.',
+  },
   details: {
     address: [
       'Om Sai Pharma & Surgicals',
       'Plot No. 39, Lakhnawali Rd, Surajpur',
       'Greater Noida, Uttar Pradesh 201306',
     ],
+    phones: [
+      { number: '+91 98180 00621', href: 'tel:+919818000621' },
+      { number: '+91 85860 23997', href: 'tel:+918586023997' },
+    ],
     phone: '+91 98180 00621',
     phoneHref: 'tel:+919818000621',
+    secondaryPhone: '+91 85860 23997',
+    secondaryPhoneHref: 'tel:+918586023997',
     email: 'contact@ospsmed.com',
     emailHref: 'mailto:contact@ospsmed.com',
-    hours: ['Monday - Saturday', '9:30 AM - 7:00 PM IST'],
+    hours: [
+      'Monday - Saturday: 9:30 AM - 7:00 PM IST',
+      'Emergency Dispatch: 24 Hours Active',
+    ],
   },
 };
 
-export const contactIcons = { MapPin, Phone, Mail, Clock };
+export const contactIcons = { MapPin, Phone, Mail, Clock, Ambulance };
 
 /* -------------------------------------------------------- export gateway */
 
@@ -976,6 +997,27 @@ export const clients = {
       scale: 1.25,
     },
     { name: 'Sharda Hospital', logo: '/images/clients/sharda.png', scale: 0.95 },
+    { name: 'Neo Hospitals', logo: '/images/clients/neo.webp', scale: 1.05 },
+    {
+      name: 'Primus Super Speciality Hospital',
+      logo: '/images/clients/primus.webp',
+      scale: 1.05,
+    },
+    { name: 'Apollo Hospitals', logo: '/images/clients/apollo.png', scale: 0.9 },
+    {
+      name: 'Park Group of Hospitals',
+      logo: '/images/clients/park.png',
+      scale: 1.05,
+    },
+    { name: 'TMU Hospital', logo: '/images/clients/tmu.png', scale: 1.05 },
+    { name: 'Cosmos Hospital', logo: '/images/clients/cosmos.webp', scale: 1.1 },
+    { name: 'Apex Hospital', logo: '/images/clients/apex.png', scale: 1 },
+    {
+      name: 'Asian Institute of Medical Sciences',
+      logo: '/images/clients/asian.png',
+      scale: 1.05,
+    },
+    { name: 'Metro Hospitals', logo: '/images/clients/metro.webp', scale: 1.1 },
   ] as Client[],
 };
 

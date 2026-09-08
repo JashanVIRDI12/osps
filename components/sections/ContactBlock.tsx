@@ -15,7 +15,7 @@ const QuoteForm = dynamic(() =>
   import('@/components/sections/QuoteForm').then((mod) => mod.QuoteForm)
 );
 
-const { MapPin, Phone, Mail, Clock } = contactIcons;
+const { MapPin, Phone, Mail, Clock, Ambulance } = contactIcons;
 
 export function ContactBlock() {
   const ref = useReveal<HTMLElement>({ stagger: 0.07 });
@@ -65,16 +65,53 @@ export function ContactBlock() {
               <span className="icon-well h-11 w-11 shrink-0">
                 <Phone className="h-5 w-5" aria-hidden="true" />
               </span>
-              <div>
+              <div className="min-w-0 flex-1">
                 <h3 className="text-caption font-medium uppercase tracking-[0.14em] text-ink-soft">
-                  Call
+                  Call & Inquiries
                 </h3>
-                <a
-                  href={details.phoneHref}
-                  className="mt-1 inline-flex min-h-[44px] items-center text-body font-medium text-ink underline-offset-4 transition-colors hover:text-royal hover:underline"
-                >
-                  {details.phone}
-                </a>
+                <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-1">
+                  <a
+                    href={details.phoneHref}
+                    className="inline-flex min-h-[36px] items-center text-body font-semibold text-ink underline-offset-4 transition-colors hover:text-royal hover:underline"
+                  >
+                    {details.phone}
+                  </a>
+                  {details.secondaryPhone ? (
+                    <a
+                      href={details.secondaryPhoneHref}
+                      className="inline-flex min-h-[36px] items-center text-body font-semibold text-ink underline-offset-4 transition-colors hover:text-royal hover:underline"
+                    >
+                      {details.secondaryPhone}
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+
+            {/* Dedicated 24-Hour Emergency Supply Service Div */}
+            <div
+              className="card relative overflow-hidden border-rose-200/80 bg-gradient-to-br from-rose-50/50 via-white to-royal-tint/30 p-5 xs:p-6"
+              data-reveal
+            >
+              <div className="flex gap-4">
+                <span className="icon-well h-11 w-11 shrink-0 border-rose-200 bg-rose-50 text-rose-600">
+                  <Ambulance className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-body font-semibold text-ink">
+                      {contact.emergencyService?.title ?? '24-Hour Emergency Supply'}
+                    </h3>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-100/80 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 ring-1 ring-inset ring-rose-600/20">
+                      <span className="h-1.5 w-1.5 rounded-full bg-rose-600 animate-pulse" />
+                      {contact.emergencyService?.badge ?? '24/7 Available'}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-pretty text-body-sm leading-relaxed text-ink-muted">
+                    {contact.emergencyService?.description ??
+                      'Immediate priority dispatch and emergency surgical stock replenishment for ICUs, emergency departments, and hospital operation theatres.'}
+                  </p>
+                </div>
               </div>
             </div>
 
