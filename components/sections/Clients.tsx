@@ -20,6 +20,17 @@ import { clients } from '@/lib/content';
  * section is complete before the artwork is, and a missing asset can never
  * render as a broken image on a page whose whole argument is reliability.
  */
+const CLIENT_COLORS = [
+  'text-royal group-hover:text-royal-bright',
+  'text-teal-deep group-hover:text-teal',
+  'text-blue-700 group-hover:text-blue-600',
+  'text-accent-deep group-hover:text-accent',
+  'text-indigo-700 group-hover:text-indigo-600',
+  'text-emerald-700 group-hover:text-emerald-600',
+  'text-cyan-800 group-hover:text-cyan-600',
+  'text-violet-700 group-hover:text-violet-600',
+];
+
 export function Clients() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -63,6 +74,7 @@ export function Clients() {
   return (
     <section
       ref={sectionRef}
+      id="clients"
       className="section-surface relative border-y border-line py-20 sm:py-24 lg:py-28"
     >
       <div className="shell">
@@ -77,58 +89,42 @@ export function Clients() {
         </div>
 
         <ul className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-card-elevated border border-line bg-line sm:mt-14 sm:grid-cols-3 lg:grid-cols-5">
-          {clients.items.map((client) => (
-            <li
-              key={client.name}
-              data-client-tile
-              className="group grid min-h-[8rem] place-items-center bg-surface p-6 transition-colors duration-300 hover:bg-royal-tint sm:min-h-[9.5rem] sm:p-7"
-            >
-              {client.logo ? (
-                /**
-                 * Fixed box + `object-contain`, because these marks arrive at
-                 * whatever size and ratio each hospital publishes — Yatharth is
-                 * a wide lockup, Nivok a circular seal. Sizing the box rather
-                 * than the image is what keeps ten of them optically level.
-                 *
-                 * Greyscale at rest is not a stylistic tic: between them these
-                 * logos use red, green, orange, teal and two different blues,
-                 * and at full saturation the wall reads as a jumble that
-                 * competes with the page's own palette. Desaturating settles it
-                 * into one texture and lets the row say "these are our clients"
-                 * rather than ten brands shouting at once. Colour returns on
-                 * hover, so each mark is still shown as its owner intends it.
-                 */
-                <div className="relative h-16 w-full sm:h-20">
-                  {/**
-                   * The scale sits on the image, not this wrapper, and that is
-                   * load-bearing. A transform creates a stacking context, and a
-                   * blend mode only composites against the backdrop *inside* its
-                   * nearest one — so scaling the wrapper would cut
-                   * `mix-blend-multiply` off from the tile's white background and
-                   * the blend would silently do nothing.
-                   *
-                   * Multiply is what hides the off-white rectangles baked into
-                   * the flattened files (Paliwal is a JPEG and cannot carry
-                   * transparency at all): white multiplied against the tile is
-                   * the tile. It also means the marks pick up the royal tint on
-                   * hover instead of sitting on their own pale islands.
-                   */}
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    fill
-                    sizes="(max-width: 640px) 40vw, (max-width: 1024px) 28vw, 17vw"
-                    style={{ transform: `scale(${client.scale ?? 1})` }}
-                    className="object-contain opacity-70 mix-blend-multiply grayscale transition duration-500 group-hover:opacity-100 group-hover:grayscale-0"
-                  />
-                </div>
-              ) : (
-                <span className="text-balance text-center text-body-sm font-semibold leading-tight tracking-[-0.02em] text-ink-muted transition-colors duration-300 group-hover:text-royal">
+          {clients.items.map((client, index) => {
+            const colorClass = CLIENT_COLORS[index % CLIENT_COLORS.length];
+
+            return (
+              <li
+                key={client.name}
+                data-client-tile
+                className="group flex flex-col items-center justify-between min-h-[9rem] bg-surface p-5 sm:min-h-[10.5rem] sm:p-6 transition-all duration-300 hover:bg-royal-tint/60"
+              >
+                {client.logo ? (
+                  <div className="relative flex-1 flex items-center justify-center w-full min-h-[3.75rem] sm:min-h-[4.5rem]">
+                    <div className="relative h-12 w-full sm:h-14">
+                      <Image
+                        src={client.logo}
+                        alt={client.name}
+                        fill
+                        sizes="(max-width: 640px) 40vw, (max-width: 1024px) 28vw, 17vw"
+                        style={{ transform: `scale(${client.scale ?? 1})` }}
+                        className="object-contain opacity-85 transition duration-300 group-hover:opacity-100 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center w-full">
+                    <span className="inline-block h-2 w-2 rounded-full bg-royal/40" />
+                  </div>
+                )}
+
+                <span
+                  className={`mt-2.5 block text-balance text-center text-[12.5px] sm:text-[13.5px] font-semibold leading-tight tracking-[-0.02em] ${colorClass} transition-colors duration-300`}
+                >
                   {client.name}
                 </span>
-              )}
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>

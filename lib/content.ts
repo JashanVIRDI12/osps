@@ -122,6 +122,102 @@ export const about = {
   },
 };
 
+/* ---------------------------------------------------- emergency supply */
+
+/**
+ * The one section on the page that speaks like a control room rather than a
+ * brochure. Everything below is set as a duty board — a status line, the numbers
+ * that are actually answered, the window they are answered in, and the manifest
+ * each ward gets — so the labels are written as board labels, short and literal.
+ */
+export const emergencySupply = {
+  eyebrow: 'Critical Care & Urgent Response',
+  title: '24-Hour Emergency Supply',
+  lead: 'Immediate priority dispatch and emergency surgical stock replenishment for ICUs, emergency departments, and hospital operation theatres.',
+  description:
+    'When critical hospital wards face unexpected shortages, OSPS activates dedicated priority fulfillment. Pre-inspected WHO-GMP inventory is packed and dispatched through rapid transit lines to ensure zero interruption to patient care.',
+  /** Board head: what the panel is, and whether it is live. */
+  board: {
+    label: 'Duty dispatch line',
+    status: 'Open now',
+    note: 'Speak to the duty dispatch team, or send your requirement list straight through for immediate fulfilment.',
+  },
+  hotlines: [
+    {
+      label: 'Emergency hotline 1',
+      number: '+91 98180 00621',
+      href: 'tel:+919818000621',
+      primary: true,
+    },
+    {
+      label: 'Emergency hotline 2',
+      number: '+91 85860 23997',
+      href: 'tel:+918586023997',
+      primary: false,
+    },
+  ],
+  whatsapp: {
+    number: '+91 98180 00621',
+    href: 'https://wa.me/919818000621?text=Urgent%20Emergency%20Surgical%20Supply%20Requirement%20for%20Hospital',
+    label: 'WhatsApp quick dispatch',
+    /** Sits where a hotline's number sits, so the three rows read as one rank. */
+    note: 'Send your requirement list',
+  },
+  /** The committed terms, set as the board's ruled footer rank. */
+  statsLabel: 'Committed terms',
+  stats: [
+    {
+      label: 'Emergency dispatch',
+      value: '4-Hour',
+      subtext: 'Dock-to-door committed delivery window',
+    },
+    {
+      label: 'Dispatch readiness',
+      value: '24/7/365',
+      subtext: 'Continuous priority line support',
+    },
+    {
+      label: 'Quality standard',
+      value: 'WHO-GMP',
+      subtext: 'Pre-verified sterile batch certification',
+    },
+  ],
+  departmentsLabel: 'Dedicated units & priority consumables',
+  departmentsNote: 'Pre-inspected WHO-GMP stock, held for immediate replenishment',
+  /** Column head for the manifest under each unit. */
+  suppliesLabel: 'Priority stocked lines',
+  departments: [
+    {
+      title: 'ICUs & Critical Care',
+      tagline: 'Zero-delay infusion & bedside lines',
+      description:
+        'Immediate replenishment of sterile I.V. cannulas, infusion sets, closed drainage sets, and bedside critical disposables.',
+      icon: HeartPulse,
+      badge: 'ICU Priority',
+      supplies: ['Surgical Syringes', 'I.V. Cannulas', 'Infusion Sets', 'Wound Drainage Sets'],
+    },
+    {
+      title: 'Emergency Departments',
+      tagline: 'Acute trauma care & rapid stabilization',
+      description:
+        'Priority dispatch of sterile gauze swabs, trauma dressings, elastic bandages, micropore tapes, and quick-procedure packs.',
+      icon: Ambulance,
+      badge: 'Trauma Ready',
+      supplies: ['Gauze Swabs', 'Crepe & Elastic Bandages', 'Adhesive Tapes', 'Medical Plasters'],
+    },
+    {
+      title: 'Hospital Operation Theatres',
+      tagline: 'OT consumable reserves & sterile barriers',
+      description:
+        'Fast-track replenishment of sterile surgical blades (carbon steel), X-ray detectable sponges, examination gloves, and complete sterile procedure kits.',
+      icon: ShieldCheck,
+      badge: 'OT Fast-Track',
+      supplies: ['Surgical Blades', 'X-Ray Sponges', 'Latex & Nitrile Gloves', 'Sterile Surgical Kits'],
+    },
+  ],
+  cta: { label: 'Submit a requisition', href: '#contact' },
+};
+
 /* -------------------------------------------------------------- products */
 
 export type ProductCategory = {
@@ -853,9 +949,16 @@ export const visionMission = {
    */
   eyebrow: 'Our purpose',
   heading: 'Why we do this',
+  /**
+   * The dock, not a product shot. The scalpel still that used to sit here is
+   * the Catalogue's theatre card — running it twice made the purpose spread
+   * read as another product panel, and a close-up of a blade is a poor answer
+   * to "why we do this". A branded consignment leaving the warehouse is the
+   * supply chain the mission actually names.
+   */
   media: {
-    src: '/images/category-theatre.png',
-    alt: 'Sterile theatre consumables prepared for a hospital order',
+    src: '/images/hero-warehouse.webp',
+    alt: 'An OSPS consignment truck loaded at the Greater Noida warehouse dock',
   },
   vision: {
     label: 'Vision',

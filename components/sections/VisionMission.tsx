@@ -120,8 +120,10 @@ export function VisionMission() {
 
         <div className="mt-10 grid gap-10 sm:mt-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-16 xl:gap-20">
           {/**
-           * The theatre still is already graded in light sky blue, so it sits
-           * on the royal bed as a photograph rather than a duotone.
+           * The dock still is a 16:9 frame, so the tall column crops it to the
+           * loaded trailer with the mark centred — which is the part of the
+           * photograph that carries the point. The warm concrete sits on the
+           * royal bed as a photograph rather than a duotone.
            */}
           <div className="relative overflow-hidden rounded-card-elevated bg-royal-deep">
             <div

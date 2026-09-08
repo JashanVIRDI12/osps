@@ -3,6 +3,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
 import { TrustMarquee } from '@/components/sections/TrustMarquee';
 import { AboutBlock } from '@/components/sections/AboutBlock';
+import { EmergencySupply } from '@/components/sections/EmergencySupply';
 import { VisionMission } from '@/components/sections/VisionMission';
 import { ProblemSolution } from '@/components/sections/ProblemSolution';
 import { WhyDifferent } from '@/components/sections/WhyDifferent';
@@ -34,6 +35,7 @@ export default function HomePage() {
         <Hero />
         <TrustMarquee />
         <AboutBlock />
+        <EmergencySupply />
         <VisionMission />
         <ProblemSolution />
         <WhyDifferent />
