@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
-/** Mirrors the four product families in `content.ts`. */
+/** Mirrors the product families in `content.ts`. */
 export const PRODUCT_INTERESTS = [
   'Injection & Infusion',
   'Drainage & Collection',
   'Dressings & Bandages',
   'Theatre & Protection',
+  'Pharmaceuticals',
   'Multiple categories',
   'Something else',
 ] as const;

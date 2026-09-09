@@ -109,7 +109,7 @@ export function ContactBlock() {
                   </div>
                   <p className="mt-2 text-pretty text-body-sm leading-relaxed text-ink-muted">
                     {contact.emergencyService?.description ??
-                      'Immediate priority dispatch and emergency surgical stock replenishment for ICUs, emergency departments, and hospital operation theatres.'}
+                      'Immediate priority dispatch and emergency replenishment of surgical stock and hospital medicines for ICUs, emergency departments, pharmacies and operation theatres.'}
                   </p>
                 </div>
               </div>

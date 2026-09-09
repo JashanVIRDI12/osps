@@ -9,9 +9,10 @@ import { CountUp } from '@/components/ui/CountUp';
 /**
  * The full SKU list as a file download.
  *
- * The catalogue above is the curated fifteen categories; this is the long tail —
- * every code a procurement team might need to price against. The download is a
- * plain anchor with `download`, so it needs no JavaScript to work.
+ * The catalogue above is the curated surgical and pharmaceutical families;
+ * this is the long tail — every code a procurement team might need to price
+ * against. The download is a plain anchor with `download`, so it needs no
+ * JavaScript to work.
  */
 export function PriceList() {
   const ref = useReveal<HTMLElement>({ stagger: 0.08 });

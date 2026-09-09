@@ -10,10 +10,10 @@ import {
 } from '@/components/ui/StackingCards';
 
 /**
- * The four supply lines, as a deck that assembles itself on scroll.
+ * The five supply lines, as a deck that assembles itself on scroll.
  *
  * The cards step down the royal ramp from deep to bright, so the deck reads as
- * one system rather than four unrelated panels, and each card keeps enough room
+ * one system rather than unrelated panels, and each card keeps enough room
  * for its description, its sub-lines and a photograph at the size the type
  * scale needs.
  */
@@ -38,8 +38,8 @@ export function Capabilities() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <h2 className="heading-section max-w-none" data-reveal>
-              <span className="heading-kicker">What we supply</span>
-              Four supply lines, one accountable partner.
+              <span className="heading-kicker">{productAccent.eyebrow}</span>
+              {productAccent.heading}
             </h2>
           </div>
 

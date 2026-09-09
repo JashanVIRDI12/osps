@@ -85,9 +85,7 @@ export function Hero() {
             className="mt-5 max-w-lg text-pretty text-[0.95rem] leading-[1.55] text-ink-muted xs:text-body sm:mt-6 sm:text-subheading"
             data-hero-reveal
           >
-            Pharmaceuticals, surgical consumables, medical devices and hospital
-            essentials, sourced from certified manufacturers and delivered on
-            the day we commit to.
+            {hero.body}
           </p>
 
           <div

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useReveal } from '@/lib/motion';
 import {
+  catalogueIntro,
   highlights,
   productGroups,
   productImageCard,
@@ -28,17 +29,13 @@ type SelectedProduct = {
 };
 
 /**
- * Full surgical range as 3D tilt image cards — each product opens a detail
- * popup so the catalogue reads as a visual inventory, not only a list.
+ * Full surgical and pharmaceutical range as 3D tilt image cards — each product
+ * opens a detail popup so the catalogue reads as a visual inventory, not only a
+ * list.
  */
 export function Catalogue() {
   const ref = useReveal<HTMLElement>({ stagger: 0.04 });
   const [selected, setSelected] = useState<SelectedProduct | null>(null);
-
-  const total = productGroups.reduce(
-    (count, group) => count + group.products.length,
-    0
-  );
 
   const closeModal = useCallback(() => setSelected(null), []);
 
@@ -47,11 +44,11 @@ export function Catalogue() {
       <div className="shell">
         <div className="max-w-3xl">
           <h2 className="heading-section max-w-none" data-reveal>
-            <span className="heading-kicker">The range</span>
-            Complete range of surgical products.
+            <span className="heading-kicker">{catalogueIntro.eyebrow}</span>
+            {catalogueIntro.heading}
           </h2>
           <p className="mt-6 text-pretty text-body text-ink-muted" data-reveal>
-            {`${total} categories, each supplied in the configurations below. Everything is quoted the same working day. Send a requirement list and we will price it line by line.`}
+            {catalogueIntro.lead}
           </p>
         </div>
 
@@ -90,10 +87,9 @@ export function Catalogue() {
                 </span>
               </div>
 
-              {/* Two-up on phones. Fifteen full-width 368px-tall cards was
-                  roughly 8000px of scrolling to get through the range; paired
-                  cards halve that and let the eye compare across a row, which
-                  is how a catalogue is actually read. */}
+              {/* Two-up on phones. Pairing cards halves the scroll and lets the
+                  eye compare across a row, which is how a catalogue is actually
+                  read. */}
               <ul className="mt-6 grid grid-cols-2 gap-3 xs:gap-4 sm:gap-5 lg:grid-cols-3">
                 {group.products.map((product) => (
                   <li key={product.number} data-reveal>

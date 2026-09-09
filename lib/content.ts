@@ -17,6 +17,7 @@ import {
   PackageCheck,
   Phone,
   PiggyBank,
+  Pill,
   ShieldCheck,
   Stethoscope,
   Store,
@@ -42,7 +43,7 @@ export const site = {
   founded: 2015,
   tagline: 'Quality You Can Trust, Care You Deserve',
   description:
-    'Om Sai Pharma & Surgicals manufactures and supplies a complete range of surgical products (syringes, I.V. cannulas, infusion sets, dressings, tapes and theatre essentials) to hospitals in India and 20+ countries worldwide.',
+    'Om Sai Pharma & Surgicals manufactures and supplies a complete range of surgical products and pharmaceuticals — syringes, I.V. cannulas, infusion sets, dressings, theatre essentials, hospital injectables, IV fluids and medicines — to hospitals in India and 20+ countries worldwide.',
   url: 'https://ospsmed.com',
 };
 
@@ -65,14 +66,14 @@ export const navLinks = [
 /* ------------------------------------------------------------------ hero */
 
 export const hero = {
-  eyebrow: 'WHO-GMP Certified Surgical Manufacturer & Supplier',
+  eyebrow: 'WHO-GMP Certified Pharma & Surgical Supplier',
   headline: 'Quality you can trust, care you deserve.',
   tagline: site.tagline,
-  body: 'A complete range of surgical products (syringes, I.V. cannulas, infusion sets, dressings, tapes and theatre essentials) made to WHO-GMP standards, trusted by 150+ hospitals and exported to more than 20 countries.',
+  body: 'Pharmaceuticals, surgical consumables, medical devices and hospital essentials, sourced from certified manufacturers and delivered on the day we commit to. WHO-GMP standards, trusted by 150+ hospitals, exported to more than 20 countries.',
   primaryCta: { label: 'Request a Quote', href: '#contact' },
   secondaryCta: { label: 'Explore products', href: '#products' },
   stats: [
-    { value: 15, suffix: '', label: 'Product categories' },
+    { value: 1579, suffix: '', label: 'Stocked lines' },
     { value: 150, suffix: '+', label: 'Hospitals supplied' },
     { value: 20, suffix: '+', label: 'Export markets' },
   ],
@@ -99,6 +100,7 @@ export const marquee = [
   'WHO-GMP Certified',
   'Trusted by 150+ hospitals',
   'Exporting to 20+ countries',
+  'Surgicals and pharmaceuticals under one roof',
   'Sterile & X-ray detectable options',
   'Same-day quotes',
 ];
@@ -108,8 +110,8 @@ export const marquee = [
 export const about = {
   eyebrow: 'About OSPS',
   statement: 'Delivering Healthcare with Trust Since 2015',
-  lead: 'For over a decade we have kept hospitals, nursing homes and clinics supplied with the surgical consumables their theatres and wards run on, made to WHO-GMP standards and delivered on schedule.',
-  body: 'What began as a small regional supplier now serves healthcare institutions in more than twenty countries. Our strength lies in disciplined quality control on every batch, a complete surgical range available under one purchase order, and a team that treats each order as a commitment rather than a transaction.',
+  lead: 'For over a decade we have kept hospitals, nursing homes and clinics supplied with the surgical consumables and pharmaceuticals their theatres, wards and pharmacies run on, made to WHO-GMP standards and delivered on schedule.',
+  body: 'What began as a small regional supplier now serves healthcare institutions in more than twenty countries. Our strength lies in disciplined quality control on every batch, a complete surgical and pharmaceutical range available under one purchase order, and a team that treats each order as a commitment rather than a transaction.',
   cta: { label: 'Learn more about us', href: '#services' },
   video: {
     src: '/videos/dispatch.mp4',
@@ -133,9 +135,9 @@ export const about = {
 export const emergencySupply = {
   eyebrow: 'Critical Care & Urgent Response',
   title: '24-Hour Emergency Supply',
-  lead: 'Immediate priority dispatch and emergency surgical stock replenishment for ICUs, emergency departments, and hospital operation theatres.',
+  lead: 'Immediate priority dispatch and emergency replenishment of surgical stock and hospital medicines for ICUs, emergency departments, pharmacies and operation theatres.',
   description:
-    'When critical hospital wards face unexpected shortages, OSPS activates dedicated priority fulfillment. Pre-inspected WHO-GMP inventory is packed and dispatched through rapid transit lines to ensure zero interruption to patient care.',
+    'When critical hospital wards or the in-house pharmacy face unexpected shortages, OSPS activates dedicated priority fulfillment. Pre-inspected WHO-GMP surgical inventory and pharmaceutical stock is packed and dispatched through rapid transit lines to ensure zero interruption to patient care.',
   /** Board head: what the panel is, and whether it is live. */
   board: {
     label: 'Duty dispatch line',
@@ -158,7 +160,7 @@ export const emergencySupply = {
   ],
   whatsapp: {
     number: '+91 98180 00621',
-    href: 'https://wa.me/919818000621?text=Urgent%20Emergency%20Surgical%20Supply%20Requirement%20for%20Hospital',
+    href: 'https://wa.me/919818000621?text=Urgent%20Emergency%20Surgical%20and%20Pharmaceutical%20Supply%20Requirement%20for%20Hospital',
     label: 'WhatsApp quick dispatch',
     /** Sits where a hotline's number sits, so the three rows read as one rank. */
     note: 'Send your requirement list',
@@ -191,28 +193,44 @@ export const emergencySupply = {
       title: 'ICUs & Critical Care',
       tagline: 'Zero-delay infusion & bedside lines',
       description:
-        'Immediate replenishment of sterile I.V. cannulas, infusion sets, closed drainage sets, and bedside critical disposables.',
+        'Immediate replenishment of sterile I.V. cannulas, infusion sets, closed drainage sets, bedside critical disposables, hospital injectables and IV fluids.',
       icon: HeartPulse,
       badge: 'ICU Priority',
-      supplies: ['Surgical Syringes', 'I.V. Cannulas', 'Infusion Sets', 'Wound Drainage Sets'],
+      supplies: [
+        'Surgical Syringes',
+        'I.V. Cannulas',
+        'Infusion Sets',
+        'Hospital Injectables',
+        'IV Fluids',
+      ],
     },
     {
       title: 'Emergency Departments',
       tagline: 'Acute trauma care & rapid stabilization',
       description:
-        'Priority dispatch of sterile gauze swabs, trauma dressings, elastic bandages, micropore tapes, and quick-procedure packs.',
+        'Priority dispatch of sterile gauze swabs, trauma dressings, elastic bandages, micropore tapes, emergency medicines and quick-procedure packs.',
       icon: Ambulance,
       badge: 'Trauma Ready',
-      supplies: ['Gauze Swabs', 'Crepe & Elastic Bandages', 'Adhesive Tapes', 'Medical Plasters'],
+      supplies: [
+        'Gauze Swabs',
+        'Crepe & Elastic Bandages',
+        'Adhesive Tapes',
+        'Emergency Medicines',
+      ],
     },
     {
       title: 'Hospital Operation Theatres',
       tagline: 'OT consumable reserves & sterile barriers',
       description:
-        'Fast-track replenishment of sterile surgical blades (carbon steel), X-ray detectable sponges, examination gloves, and complete sterile procedure kits.',
+        'Fast-track replenishment of sterile surgical blades (carbon steel), X-ray detectable sponges, examination gloves, sterile procedure kits, and OT anaesthetic injectables.',
       icon: ShieldCheck,
       badge: 'OT Fast-Track',
-      supplies: ['Surgical Blades', 'X-Ray Sponges', 'Latex & Nitrile Gloves', 'Sterile Surgical Kits'],
+      supplies: [
+        'Surgical Blades',
+        'X-Ray Sponges',
+        'Latex & Nitrile Gloves',
+        'Anaesthesia Injectables',
+      ],
     },
   ],
   cta: { label: 'Submit a requisition', href: '#contact' },
@@ -245,9 +263,14 @@ export const productCategories: ProductCategory[] = [
     number: '01',
     title: 'Injection & Infusion',
     description:
-      'The disposables that carry fluid and medication to the patient, supplied sterile, single-use, and in the needle, safety and air-vent configurations each ward specifies.',
+      'The disposables that carry fluid and medication to the patient, supplied sterile, single-use, and in the needle, safety, stop-cock and air-vent configurations each ward specifies.',
     icon: Syringe,
-    items: ['Surgical Syringes', 'I.V. Cannulas', 'Infusion Sets'],
+    items: [
+      'Surgical Syringes',
+      'I.V. Cannulas',
+      'Infusion Sets',
+      'Blood Transfusion Sets',
+    ],
     tone: '#1f56d8',
     image: {
       src: '/images/category-injection.webp',
@@ -258,9 +281,9 @@ export const productCategories: ProductCategory[] = [
     number: '02',
     title: 'Drainage & Collection',
     description:
-      'Closed-system drainage and collection for post-operative and bedside care, available with or without T-valve and trocar to suit the procedure.',
+      'Closed-system drainage, catheters and collection for post-operative and bedside care, from urine bags and wound drains to Foley, Ryles and chest tubes.',
     icon: Droplets,
-    items: ['Urine Bags', 'Wound Drainage Sets'],
+    items: ['Urine Bags', 'Wound Drainage Sets', 'Foley Catheters', 'Ryles Tubes'],
     tone: '#2c63e4',
     image: {
       src: '/images/category-drainage.webp',
@@ -291,13 +314,13 @@ export const productCategories: ProductCategory[] = [
     number: '04',
     title: 'Theatre & Protection',
     description:
-      'Barrier protection and theatre consumables: sterile carbon-steel blades, latex, nitrile and vinyl gloves, 3-ply masks, and ready-assembled sterile kits.',
+      'Barrier protection, theatre consumables and airway lines: sterile carbon-steel blades, latex, nitrile and vinyl gloves, 3-ply masks, ready-assembled sterile kits, and respiratory circuits.',
     icon: ShieldCheck,
     items: [
       'Surgical Blades',
       'Examination Gloves',
       'Face Masks',
-      'Sterile Surgical Kits',
+      'Airway & Respiratory',
     ],
     tone: '#5b82f5',
     image: {
@@ -305,10 +328,28 @@ export const productCategories: ProductCategory[] = [
       alt: 'Theatre protection kit with gloves, masks, blades and sterile packs',
     },
   },
+  {
+    number: '05',
+    title: 'Pharmaceuticals',
+    description:
+      'Hospital medicines under the same purchase order as the surgical range: injectables, antibiotics, ICU and anaesthetic lines, IV fluids, and oral medicines, held with batch and expiry verified before dispatch.',
+    icon: Pill,
+    items: [
+      'Hospital Injectables',
+      'Antibiotics',
+      'ICU & Critical Care',
+      'IV Fluids & Electrolytes',
+    ],
+    tone: '#6a8ef6',
+    image: {
+      src: '/images/industries/industry-pharmacy.webp',
+      alt: 'Hospital pharmacy shelves stocked with pharmaceutical lines',
+    },
+  },
 ];
 
 export type Product = {
-  /** Continuous 01–15 numbering, in the order the range is quoted. */
+  /** Continuous numbering across surgical and pharmaceutical families. */
   number: string;
   name: string;
   /** The configurations each product is supplied in. */
@@ -480,18 +521,86 @@ export const productGroups: ProductGroup[] = [
       },
     ],
   },
+  {
+    title: 'Pharmaceuticals',
+    products: [
+      {
+        number: '16',
+        name: 'Hospital Injectables',
+        variants: ['Vials', 'Ampoules', 'Pre-filled'],
+        image: {
+          src: '/images/category-injection.webp',
+          alt: 'Hospital injectable medicines prepared for sterile ward use',
+        },
+      },
+      {
+        number: '17',
+        name: 'Antibiotics & Anti-infectives',
+        variants: ['Injectables', 'Tablets', 'Suspensions'],
+        image: {
+          src: '/images/accent-quality.webp',
+          alt: 'Quality-checked antibiotic and anti-infective pharmaceutical stock',
+        },
+      },
+      {
+        number: '18',
+        name: 'ICU & Critical Care Medicines',
+        variants: ['Vasopressors', 'Sedation', 'Emergency'],
+        image: {
+          src: '/images/patient-care.webp',
+          alt: 'Critical care medicines used at the hospital bedside',
+        },
+      },
+      {
+        number: '19',
+        name: 'Anaesthesia & Analgesia',
+        variants: ['Spinal', 'Epidural', 'Local'],
+        image: {
+          src: '/images/category-theatre.png',
+          alt: 'Anaesthetic and analgesic lines for operation theatre use',
+        },
+      },
+      {
+        number: '20',
+        name: 'IV Fluids & Electrolytes',
+        variants: ['NS', 'DNS', 'RL', 'Amino acids'],
+        image: {
+          src: '/images/product-infusion.webp',
+          alt: 'IV fluids and electrolyte infusions for hospital use',
+        },
+      },
+      {
+        number: '21',
+        name: 'Oral Medicines & Nutrition',
+        variants: ['Tablets', 'Capsules', 'Syrups', 'Drops'],
+        image: {
+          src: '/images/industries/industry-pharmacy.webp',
+          alt: 'Oral medicines, vitamins and nutrition lines for hospital pharmacies',
+        },
+      },
+    ],
+  },
 ];
 
 export const productAccent = {
-  title: 'Fifteen product categories, one accountable supplier.',
-  body: 'One purchase order, one point of contact, one accountable partner for your entire facility.',
+  eyebrow: 'What we supply',
+  heading: 'Surgical and pharmaceutical lines, one accountable partner.',
+  title: 'Surgical and pharmaceutical ranges, one accountable supplier.',
+  body: 'One purchase order, one point of contact, one accountable partner for surgicals, medical devices and medicines across your facility.',
   cta: { label: 'Request the full catalogue', href: '#contact' },
+};
+
+export const catalogueIntro = {
+  eyebrow: 'The range',
+  heading: 'Complete range of surgicals and pharmaceuticals.',
+  lead:
+    'Surgical families and hospital medicines, each supplied in the configurations below. Everything is quoted the same working day. Send a requirement list and we will price it line by line.',
 };
 
 export const productImageCard = {
   src: '/images/accent-quality.webp',
-  alt: 'OSPS quality team inspecting and packaging sterile surgical batches for WHO-GMP dispatch',
-  caption: 'Every batch quality-checked and packaged to WHO-GMP standards before dispatch.',
+  alt: 'OSPS quality team inspecting and packaging sterile surgical and pharmaceutical batches for WHO-GMP dispatch',
+  caption: 'Every surgical and pharmaceutical batch quality-checked and packaged to WHO-GMP standards before dispatch.',
 };
 
 /* ------------------------------------------------------------- downloads */
@@ -530,13 +639,13 @@ export const services = {
       icon: Ambulance,
       title: '24-Hour Emergency Supply',
       description:
-        'Round-the-clock emergency surgical replenishment and fast-track dispatch for critical hospital wards and emergency procedures.',
+        'Round-the-clock emergency replenishment of surgical stock and hospital medicines, with fast-track dispatch for critical wards, pharmacies and procedures.',
     },
     {
       icon: PackageCheck,
       title: 'Reliable Product Availability',
       description:
-        'Deep, actively managed inventory across fast-moving lines so critical items are in stock when you need them.',
+        'Deep, actively managed inventory across surgical consumables and fast-moving pharmaceutical lines so critical items are in stock when you need them.',
     },
     {
       icon: Clock,
@@ -604,7 +713,7 @@ export const process = {
     },
     {
       title: 'Procurement & Quality Check',
-      description: 'Sourced from certified vendors and checked for batch and expiry.',
+      description: 'Sourced from certified vendors and checked for batch, expiry and sterile integrity.',
     },
     {
       title: 'Packaging',
@@ -630,7 +739,7 @@ export type Stat = {
 };
 
 export const headlineStats: Stat[] = [
-  { value: 15, suffix: '', label: 'Product categories' },
+  { value: 1579, suffix: '', label: 'Stocked lines' },
   { value: 150, suffix: '+', label: 'Hospitals supplied' },
   { value: 20, suffix: '+', label: 'Export markets' },
   { value: 10, suffix: '+', label: 'Years of manufacturing' },
@@ -638,11 +747,11 @@ export const headlineStats: Stat[] = [
 
 export const whyChooseUs = {
   label: 'Provided by OSPS',
-  heading: 'A surgical range measured by what actually reaches the ward.',
-  body: 'Certification, consistency and dispatch speed are what procurement teams judge a surgical supplier on. They are the three things we build our operation around.',
+  heading: 'A surgical and pharmaceutical range measured by what actually reaches the ward.',
+  body: 'Certification, consistency and dispatch speed are what procurement teams judge a pharma and surgical supplier on. They are the three things we build our operation around.',
   image: {
     src: '/images/metrics-stock.webp',
-    alt: 'OSPS supply specialist checking branded surgical stock on storeroom shelves',
+    alt: 'OSPS supply specialist checking branded surgical and pharmaceutical stock on storeroom shelves',
   },
   pointers: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],
 };
@@ -658,35 +767,35 @@ export const industries = {
       image: '/images/industries/industry-hospital.webp',
       title: 'Multi-speciality Hospitals',
       description:
-        'Full surgical ranges for multi-department hospitals that need one accountable supplier across wards.',
+        'Full surgical and pharmaceutical ranges for multi-department hospitals that need one accountable supplier across wards and the in-house pharmacy.',
       badge: 'Hospitals',
     },
     {
       image: '/images/industries/industry-gov-hospital.webp',
       title: 'Government Hospitals',
       description:
-        'Tender-ready supply with documentation, batch traceability and reliable dispatch windows.',
+        'Tender-ready surgical and pharmaceutical supply with documentation, batch traceability and reliable dispatch windows.',
       badge: 'Public',
     },
     {
       image: '/images/industries/industry-private-hospital.webp',
       title: 'Private Hospitals',
       description:
-        'Premium consumables matched to private-care standards, quoted line by line the same day.',
+        'Premium consumables and hospital medicines matched to private-care standards, quoted line by line the same day.',
       badge: 'Private',
     },
     {
       image: '/images/industries/industry-clinic.webp',
       title: 'Clinics',
       description:
-        'Right-sized packs for OPDs and day clinics: syringes, dressings, gloves and essentials.',
+        'Right-sized packs for OPDs and day clinics: syringes, dressings, gloves, oral medicines and essentials.',
       badge: 'Clinic',
     },
     {
       image: '/images/industries/industry-nursing.webp',
       title: 'Nursing Homes',
       description:
-        'Steady reorder cycles for residential care, wound care and routine clinical consumables.',
+        'Steady reorder cycles for residential care: wound care, routine clinical consumables and ward medicines.',
       badge: 'Care',
     },
     {
@@ -700,21 +809,21 @@ export const industries = {
       image: '/images/industries/industry-pharmacy.webp',
       title: 'Pharmacies',
       description:
-        'Retail-ready surgical lines with clear configurations for counter and institutional orders.',
+        'Retail-ready surgical lines and pharmaceutical stock with clear configurations for counter and institutional orders.',
       badge: 'Retail',
     },
     {
       image: '/images/industries/industry-institution.webp',
       title: 'Healthcare Institutions',
       description:
-        'Campus and group buying covered with one catalogue, one quality standard, one contact.',
+        'Campus and group buying covered with one catalogue covering surgicals and medicines, one quality standard, one contact.',
       badge: 'Campus',
     },
     {
       image: '/images/industries/industry-corporate.webp',
       title: 'Corporate Healthcare Buyers',
       description:
-        'Procurement teams get itemised pricing, export-ready packs and a named account contact.',
+        'Procurement teams get itemised pricing across surgicals and medicines, export-ready packs and a named account contact.',
       badge: 'Corporate',
     },
   ],
@@ -774,12 +883,12 @@ export const checklist = {
   items: [
     'WHO-GMP Certified Manufacturing',
     'Complete Surgical Range',
+    'Complete Pharmaceutical Range',
     'Sterile & X-Ray Detectable Options',
     'Reliable Supply Chain',
     'Competitive Pricing',
     'Timely Deliveries',
     'Export to 20+ Countries',
-    'Long-Term Business Relationships',
   ],
 };
 
@@ -793,7 +902,7 @@ export const contact = {
     title: '24-Hour Emergency Supply',
     badge: '24/7 Available',
     description:
-      'Immediate priority dispatch and emergency surgical stock replenishment for ICUs, emergency departments, and hospital operation theatres.',
+      'Immediate priority dispatch and emergency replenishment of surgical stock and hospital medicines for ICUs, emergency departments, pharmacies and operation theatres.',
   },
   details: {
     address: [
@@ -839,7 +948,7 @@ export const exportGateway = {
 
 export const footer = {
   blurb:
-    'Manufacturing and supplying a complete range of surgical products (syringes, cannulas, infusion sets, dressings, tapes and theatre essentials) since 2015.',
+    'Manufacturing and supplying a complete range of surgical products and pharmaceuticals — syringes, cannulas, infusion sets, dressings, theatre essentials, hospital injectables and medicines — since 2015.',
   socials: [
     { label: 'Instagram', href: 'https://www.instagram.com/ospsmed', icon: Instagram },
   ],
@@ -995,9 +1104,9 @@ export const problemSolution = {
   problems: {
     label: 'Problem Statement',
     items: [
-      'Delay in medicine supply',
+      'Delay in medicine and surgical supply',
       'Multiple vendors for different products',
-      'Emergency medicine shortages',
+      'Emergency medicine and consumable shortages',
       'Price inconsistency',
     ],
   },
@@ -1224,7 +1333,7 @@ export const brandPartners = {
 export const coreStrengths = {
   eyebrow: 'Our strengths',
   heading: 'Four things we are built around',
-  lead: 'We combine rapid local delivery, optimised pricing and quality-assured sourcing to eliminate supply delays and high procurement costs for healthcare providers.',
+  lead: 'We combine rapid local delivery, optimised pricing and quality-assured sourcing of surgicals and pharmaceuticals to eliminate supply delays and high procurement costs for healthcare providers.',
   items: [
     {
       icon: Clock,
@@ -1239,7 +1348,7 @@ export const coreStrengths = {
     {
       icon: Warehouse,
       title: 'Reliable Supply Chain',
-      description: 'Actively managed stock depth so critical lines are available on demand.',
+      description: 'Actively managed stock depth across surgical consumables and hospital medicines so critical lines are available on demand.',
     },
     {
       icon: ShieldCheck,

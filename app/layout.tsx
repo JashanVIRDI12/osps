@@ -32,6 +32,7 @@ export const metadata: Metadata = {
   description: site.description,
   keywords: [
     'pharmaceutical supplier',
+    'hospital injectables',
     'surgical consumables',
     'medical devices',
     'hospital supplies',
