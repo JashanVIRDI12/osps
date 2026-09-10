@@ -632,52 +632,56 @@ export const priceList = {
 
 export const services = {
   eyebrow: 'Our strengths',
-  heading: 'Why Healthcare Professionals Choose OSPS',
-  lead: 'Procurement teams stay with us because the fundamentals are handled: stock is available, orders move quickly, and what arrives is exactly what was promised.',
+  heading: {
+    main: 'Why healthcare professionals',
+    accent: 'choose OSPS.',
+  },
+  lead: 'Stock you can count on. Orders that move quickly. Quality that meets the promise. We handle the essentials, so you can focus on care.',
   items: [
     {
       icon: Ambulance,
-      title: '24-Hour Emergency Supply',
+      title: '24-hour emergency supply',
       description:
-        'Round-the-clock emergency replenishment of surgical stock and hospital medicines, with fast-track dispatch for critical wards, pharmacies and procedures.',
+        'Round-the-clock replenishment, with priority dispatch for critical wards and urgent procedures.',
     },
     {
       icon: PackageCheck,
-      title: 'Reliable Product Availability',
+      title: 'Stock you can rely on',
       description:
-        'Deep, actively managed inventory across surgical consumables and fast-moving pharmaceutical lines so critical items are in stock when you need them.',
+        'Actively managed surgical and pharmaceutical inventory keeps essential products ready when you need them.',
     },
     {
       icon: Clock,
-      title: 'Fast Order Processing',
+      title: 'Fast order processing',
       description:
-        'Enquiries quoted the same working day and confirmed orders picked, packed and moving without delay.',
+        'Same-day quotations. Confirmed orders picked, packed and moving without delay.',
     },
     {
       icon: ShieldCheck,
-      title: 'Trusted Quality',
+      title: 'Quality at every step',
       description:
-        'WHO-GMP certified manufacturing, with batch, expiry and packaging integrity verified before anything ships.',
+        'WHO-GMP certified manufacturing. Batch, expiry and packaging checked before dispatch.',
     },
     {
       icon: PiggyBank,
-      title: 'Competitive Pricing',
+      title: 'Clear, competitive pricing',
       description:
-        'Manufacturing at scale passed on as transparent pricing, with no hidden loading on export or bulk orders.',
+        'Scale-led savings and transparent pricing, with no hidden loading on bulk or export orders.',
     },
     {
       icon: Users,
-      title: 'Dedicated Customer Support',
+      title: 'A contact who knows you',
       description:
-        'A named contact who knows your account, your usage patterns and your reorder cycles.',
-    },
-    {
-      icon: Handshake,
-      title: 'Long-Term Partnerships',
-      description:
-        'Most of our business comes from institutions we have supplied for years, not one-off transactions.',
+        'Dedicated support from someone who understands your account, usage and reorder cycles.',
     },
   ],
+  partnership: {
+    icon: Handshake,
+    title: 'Built for long-term partnerships',
+    description:
+      'Most of our business comes from healthcare institutions we have supplied for years.',
+  },
+  cta: { label: 'Discuss your requirements', href: '#contact' },
 };
 
 /**
@@ -1058,16 +1062,10 @@ export const visionMission = {
    */
   eyebrow: 'Our purpose',
   heading: 'Why we do this',
-  /**
-   * The dock, not a product shot. The scalpel still that used to sit here is
-   * the Catalogue's theatre card — running it twice made the purpose spread
-   * read as another product panel, and a close-up of a blade is a poor answer
-   * to "why we do this". A branded consignment leaving the warehouse is the
-   * supply chain the mission actually names.
-   */
+  /** A care team reflects the vision's focus on patient care and partnership. */
   media: {
-    src: '/images/hero-warehouse.webp',
-    alt: 'An OSPS consignment truck loaded at the Greater Noida warehouse dock',
+    src: '/images/vision-healthcare.webp',
+    alt: 'A doctor and nurse reviewing a patient-care chart together in a hospital ward',
   },
   vision: {
     label: 'Vision',
@@ -1209,7 +1207,12 @@ export const clients = {
       scale: 1.25,
     },
     { name: 'Sharda Hospital', logo: '/images/clients/sharda.png', scale: 0.95 },
-    { name: 'Neo Hospitals', logo: '/images/clients/neo.webp', scale: 1.05 },
+    // Version replaced artwork so Next's image cache fetches the current logo.
+    {
+      name: 'Neo Hospitals',
+      logo: '/images/clients/neo.webp?v=f6be3796666e',
+      scale: 1.5,
+    },
     {
       name: 'Primus Super Speciality Hospital',
       logo: '/images/clients/primus.webp',
@@ -1221,7 +1224,11 @@ export const clients = {
       logo: '/images/clients/park.png',
       scale: 1.05,
     },
-    { name: 'TMU Hospital', logo: '/images/clients/tmu.png', scale: 1.05 },
+    {
+      name: 'TMU Hospital',
+      logo: '/images/clients/tmu.png?v=2f8bce59e2ad',
+      scale: 1.05,
+    },
     { name: 'Cosmos Hospital', logo: '/images/clients/cosmos.webp', scale: 1.1 },
     { name: 'Apex Hospital', logo: '/images/clients/apex.png', scale: 1 },
     {
