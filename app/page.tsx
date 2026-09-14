@@ -20,6 +20,8 @@ import { ExportGlobe } from '@/components/sections/ExportGlobe';
 import { IndustriesValues } from '@/components/sections/IndustriesValues';
 import { ClosingChecklist } from '@/components/sections/ClosingChecklist';
 import { ContactBlock } from '@/components/sections/ContactBlock';
+import { FeaturedProducts } from '@/components/sections/FeaturedProducts';
+import { BuyerSolutions } from '@/components/sections/BuyerSolutions';
 
 /**
  * Section order is a light/royal rhythm. The page lives on the light canvas and
@@ -34,14 +36,16 @@ export default function HomePage() {
       <main id="main">
         <Hero />
         <TrustMarquee />
+        <Capabilities />
+        <FeaturedProducts />
+        <BuyerSolutions />
+        <Catalogue />
+        <PriceList />
         <AboutBlock />
         <EmergencySupply />
         <VisionMission />
         <ProblemSolution />
         <WhyDifferent />
-        <Capabilities />
-        <Catalogue />
-        <PriceList />
         <CoreStrengths />
         <Strengths />
         <ProcessRail />

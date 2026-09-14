@@ -31,9 +31,16 @@ export function isEmailjsConfigured() {
  */
 export type QuoteTemplateParams = {
   name: string;
-  organization: string;
+  company: string;
+  city_state: string;
   email: string;
   phone: string;
+  buyer_type: string;
+  product: string;
+  quantity: string;
+  requirement: string;
+  /** Legacy aliases keep the currently published EmailJS template functional. */
+  organization: string;
   interest: string;
   message: string;
   submitted_at: string;
@@ -44,11 +51,24 @@ export type QuoteTemplateParams = {
 export function toTemplateParams(values: QuoteInput): QuoteTemplateParams {
   return {
     name: values.name,
-    organization: values.organization,
+    company: values.company,
+    city_state: values.cityState,
     email: values.email,
     phone: values.phone,
-    interest: values.interest,
-    message: values.message,
+    buyer_type: values.buyerType,
+    product: values.product,
+    quantity: values.quantity,
+    requirement: values.requirement,
+    organization: values.company,
+    interest: values.product,
+    message: [
+      `City / State: ${values.cityState}`,
+      `Buyer Type: ${values.buyerType}`,
+      `Quantity: ${values.quantity}`,
+      '',
+      'Requirement:',
+      values.requirement,
+    ].join('\n'),
     submitted_at: new Date().toLocaleString('en-IN', {
       dateStyle: 'medium',
       timeStyle: 'short',

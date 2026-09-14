@@ -40,7 +40,11 @@ export function Catalogue() {
   const closeModal = useCallback(() => setSelected(null), []);
 
   return (
-    <section ref={ref} className="section-surface relative py-20 sm:py-24 lg:py-28">
+    <section
+      ref={ref}
+      id="catalogue"
+      className="section-surface relative py-20 sm:py-24 lg:py-28"
+    >
       <div className="shell">
         <div className="max-w-3xl">
           <h2 className="heading-section max-w-none" data-reveal>

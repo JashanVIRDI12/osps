@@ -12,7 +12,8 @@ export function Footer() {
   const onHome = pathname === '/';
   const { details } = contact;
 
-  const navHref = (href: string) => (onHome ? href : `/${href}`);
+  const navHref = (href: string) =>
+    onHome || !href.startsWith('#') ? href : `/${href}`;
 
   const handleNavigate = (
     event: React.MouseEvent<HTMLAnchorElement>,

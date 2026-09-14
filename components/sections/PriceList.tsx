@@ -19,7 +19,11 @@ export function PriceList() {
   const { file } = priceList;
 
   return (
-    <section ref={ref} className="section-base py-20 sm:py-24 lg:py-28">
+    <section
+      ref={ref}
+      id="catalogue-download"
+      className="section-base py-20 sm:py-24 lg:py-28"
+    >
       <div className="shell">
         <div className="overflow-hidden rounded-card-elevated border border-line bg-surface shadow-card">
           <div className="grid gap-8 p-6 xs:p-7 sm:gap-10 sm:p-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14 lg:p-12">

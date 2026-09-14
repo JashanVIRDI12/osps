@@ -1,17 +1,14 @@
 'use client';
 
 import { useRef } from 'react';
-import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, Download, Handshake, ShieldCheck, Zap } from 'lucide-react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
 import { scrollToHash } from '@/lib/scroll';
 import { hero, site } from '@/lib/content';
-import { RotatingWord } from '@/components/ui/RotatingWord';
 import { CountUp } from '@/components/ui/CountUp';
 import { LoopVideo } from '@/components/ui/LoopVideo';
 import { AetherRibbonMesh } from '@/components/ui/aether-ribbon-mesh';
-
-const HERO_WORDS = ['depend', 'rely', 'trust', 'count'];
 
 /**
  * Split hero: the claim and its evidence side by side rather than copy laid
@@ -77,8 +74,7 @@ export function Hero() {
             className="heading-section-lg mt-5 max-w-xl text-ink"
             data-hero-reveal
           >
-            Healthcare supplies you can{' '}
-            <RotatingWord words={HERO_WORDS} intervalMs={3000} /> on.
+            {hero.headline}
           </h1>
 
           <p
@@ -97,19 +93,37 @@ export function Hero() {
               onClick={(event) => {
                 if (scrollToHash(hero.primaryCta.href)) event.preventDefault();
               }}
-              className="btn-accent px-6 py-3.5"
+              className="btn-primary px-6 py-3.5"
             >
               {hero.primaryCta.label}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
-              href={hero.secondaryCta.href}
+              href={hero.quoteCta.href}
               onClick={(event) => {
-                if (scrollToHash(hero.secondaryCta.href)) event.preventDefault();
+                if (scrollToHash(hero.quoteCta.href)) event.preventDefault();
+              }}
+              className="btn-accent px-6 py-3.5"
+            >
+              {hero.quoteCta.label}
+            </a>
+            <a
+              href={hero.distributorCta.href}
+              onClick={(event) => {
+                if (scrollToHash(hero.distributorCta.href)) event.preventDefault();
               }}
               className="btn-outline px-6 py-3.5"
             >
-              {hero.secondaryCta.label}
+              <Handshake className="h-4 w-4" aria-hidden="true" />
+              {hero.distributorCta.label}
+            </a>
+            <a
+              href={hero.catalogueCta.href}
+              download="osps-product-list.xlsx"
+              className="btn-outline px-6 py-3.5"
+            >
+              <Download className="h-4 w-4" aria-hidden="true" />
+              {hero.catalogueCta.label}
             </a>
           </div>
 

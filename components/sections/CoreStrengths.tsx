@@ -88,7 +88,7 @@ export function CoreStrengths() {
   return (
     <section
       ref={sectionRef}
-      id="strengths"
+      id="quality"
       className="section-base relative overflow-hidden py-20 sm:py-24 lg:py-28"
     >
       <div className="shell">

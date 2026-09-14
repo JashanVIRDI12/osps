@@ -5,7 +5,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import emailjs from '@emailjs/browser';
 import { AlertCircle, CheckCircle2, Loader2, Send } from 'lucide-react';
-import { PRODUCT_INTERESTS, quoteSchema, type QuoteInput } from '@/lib/schema';
+import {
+  BUYER_TYPES,
+  PRODUCT_INTERESTS,
+  quoteSchema,
+  type QuoteInput,
+} from '@/lib/schema';
 import {
   emailjsConfig,
   isEmailjsConfigured,
@@ -30,10 +35,12 @@ export function QuoteForm() {
     resolver: zodResolver(quoteSchema),
     defaultValues: {
       name: '',
-      organization: '',
+      company: '',
+      cityState: '',
       email: '',
       phone: '',
-      message: '',
+      quantity: '',
+      requirement: '',
     },
   });
 
@@ -115,25 +122,49 @@ export function QuoteForm() {
         </div>
 
         <div>
-          <label htmlFor="organization" className="field-label">
-            Organisation <span aria-hidden="true">*</span>
+          <label htmlFor="company" className="field-label">
+            Company <span aria-hidden="true">*</span>
           </label>
           <input
-            id="organization"
+            id="company"
             type="text"
             autoComplete="organization"
             autoCapitalize="words"
             enterKeyHint="next"
-            placeholder="City Care Hospital"
+            placeholder="Company or organisation"
             className="field-input"
-            aria-invalid={errors.organization ? 'true' : undefined}
-            aria-describedby={describedBy('organization')}
-            {...register('organization')}
+            aria-invalid={errors.company ? 'true' : undefined}
+            aria-describedby={describedBy('company')}
+            {...register('company')}
           />
-          {errors.organization ? (
-            <p id="organization-error" className="field-error">
+          {errors.company ? (
+            <p id="company-error" className="field-error">
               <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
-              {errors.organization.message}
+              {errors.company.message}
+            </p>
+          ) : null}
+        </div>
+
+        <div>
+          <label htmlFor="cityState" className="field-label">
+            City / State <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="cityState"
+            type="text"
+            autoComplete="address-level2"
+            autoCapitalize="words"
+            enterKeyHint="next"
+            placeholder="Pune, Maharashtra"
+            className="field-input"
+            aria-invalid={errors.cityState ? 'true' : undefined}
+            aria-describedby={describedBy('cityState')}
+            {...register('cityState')}
+          />
+          {errors.cityState ? (
+            <p id="cityState-error" className="field-error">
+              <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+              {errors.cityState.message}
             </p>
           ) : null}
         </div>
@@ -167,7 +198,7 @@ export function QuoteForm() {
 
         <div>
           <label htmlFor="phone" className="field-label">
-            Phone <span aria-hidden="true">*</span>
+            Phone / WhatsApp <span aria-hidden="true">*</span>
           </label>
           <input
             id="phone"
@@ -190,61 +221,115 @@ export function QuoteForm() {
         </div>
       </div>
 
-      <div>
-        <label htmlFor="interest" className="field-label">
-          Product interest <span aria-hidden="true">*</span>
-        </label>
-        <select
-          id="interest"
-          defaultValue=""
-          className="field-input appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-11"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-          }}
-          aria-invalid={errors.interest ? 'true' : undefined}
-          aria-describedby={describedBy('interest')}
-          {...register('interest')}
-        >
-          <option value="" disabled className="bg-surface text-ink">
-            Select a category
-          </option>
-          {PRODUCT_INTERESTS.map((interest) => (
-            <option
-              key={interest}
-              value={interest}
-              className="bg-surface text-ink"
-            >
-              {interest}
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="buyerType" className="field-label">
+            Buyer type <span aria-hidden="true">*</span>
+          </label>
+          <select
+            id="buyerType"
+            defaultValue=""
+            className="field-input appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-11"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+            }}
+            aria-invalid={errors.buyerType ? 'true' : undefined}
+            aria-describedby={describedBy('buyerType')}
+            {...register('buyerType')}
+          >
+            <option value="" disabled className="bg-surface text-ink">
+              Select buyer type
             </option>
-          ))}
-        </select>
-        {errors.interest ? (
-          <p id="interest-error" className="field-error">
+            {BUYER_TYPES.map((buyerType) => (
+              <option key={buyerType} value={buyerType} className="bg-surface text-ink">
+                {buyerType}
+              </option>
+            ))}
+          </select>
+          {errors.buyerType ? (
+            <p id="buyerType-error" className="field-error">
+              <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+              {errors.buyerType.message}
+            </p>
+          ) : null}
+        </div>
+
+        <div>
+          <label htmlFor="product" className="field-label">
+            Product <span aria-hidden="true">*</span>
+          </label>
+          <select
+            id="product"
+            defaultValue=""
+            className="field-input appearance-none bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-11"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+            }}
+            aria-invalid={errors.product ? 'true' : undefined}
+            aria-describedby={describedBy('product')}
+            {...register('product')}
+          >
+            <option value="" disabled className="bg-surface text-ink">
+              Select a product category
+            </option>
+            {PRODUCT_INTERESTS.map((product) => (
+              <option key={product} value={product} className="bg-surface text-ink">
+                {product}
+              </option>
+            ))}
+          </select>
+          {errors.product ? (
+            <p id="product-error" className="field-error">
+              <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
+              {errors.product.message}
+            </p>
+          ) : null}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="quantity" className="field-label">
+          Quantity <span aria-hidden="true">*</span>
+        </label>
+        <input
+          id="quantity"
+          type="text"
+          inputMode="text"
+          enterKeyHint="next"
+          placeholder="e.g. 500 boxes or monthly requirement"
+          className="field-input"
+          aria-invalid={errors.quantity ? 'true' : undefined}
+          aria-describedby={describedBy('quantity')}
+          {...register('quantity')}
+        />
+        {errors.quantity ? (
+          <p id="quantity-error" className="field-error">
             <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
-            {errors.interest.message}
+            {errors.quantity.message}
           </p>
         ) : null}
       </div>
 
       <div>
-        <label htmlFor="message" className="field-label">
-          Requirement details <span aria-hidden="true">*</span>
+        <label htmlFor="requirement" className="field-label">
+          Requirement <span aria-hidden="true">*</span>
         </label>
         <textarea
-          id="message"
+          id="requirement"
           rows={4}
           enterKeyHint="enter"
-          placeholder="Share the items, quantities and delivery timeline you need."
+          placeholder="Share sizes, variants, packing needs and delivery timeline."
           className="field-input resize-y"
-          aria-invalid={errors.message ? 'true' : undefined}
-          aria-describedby={describedBy('message')}
-          {...register('message')}
+          aria-invalid={errors.requirement ? 'true' : undefined}
+          aria-describedby={describedBy('requirement')}
+          {...register('requirement')}
         />
-        {errors.message ? (
-          <p id="message-error" className="field-error">
+        {errors.requirement ? (
+          <p id="requirement-error" className="field-error">
             <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
-            {errors.message.message}
+            {errors.requirement.message}
           </p>
         ) : null}
       </div>

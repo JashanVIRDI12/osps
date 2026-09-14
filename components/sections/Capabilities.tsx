@@ -2,7 +2,6 @@
 
 import { ArrowRight } from 'lucide-react';
 import { useReveal } from '@/lib/motion';
-import { scrollToHash } from '@/lib/scroll';
 import { productAccent, productCategories } from '@/lib/content';
 import {
   StackingCards,
@@ -10,7 +9,7 @@ import {
 } from '@/components/ui/StackingCards';
 
 /**
- * The five supply lines, as a deck that assembles itself on scroll.
+ * The seven priority product categories, as a deck that assembles itself on scroll.
  *
  * The cards step down the royal ramp from deep to bright, so the deck reads as
  * one system rather than unrelated panels, and each card keeps enough room
@@ -25,8 +24,8 @@ const cards: StackingCardItem[] = productCategories.map((category) => ({
   icon: category.icon,
   tone: category.tone,
   image: category.image,
-  href: '#contact',
-  ctaLabel: 'Enquire about this line',
+  href: '#catalogue',
+  ctaLabel: 'Explore products',
 }));
 
 export function Capabilities() {
@@ -66,9 +65,7 @@ export function Capabilities() {
               paragraph reads as an orphan, and this is a primary action. */}
           <a
             href={productAccent.cta.href}
-            onClick={(event) => {
-              if (scrollToHash(productAccent.cta.href)) event.preventDefault();
-            }}
+            download="osps-product-list.xlsx"
             className="btn-light w-full shrink-0 px-6 py-3.5 sm:w-auto"
           >
             {productAccent.cta.label}

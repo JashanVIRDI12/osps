@@ -23,7 +23,7 @@ export function Navbar() {
   const { details } = contact;
 
   const navHref = useCallback(
-    (href: string) => (onHome ? href : `/${href}`),
+    (href: string) => (onHome || !href.startsWith('#') ? href : `/${href}`),
     [onHome]
   );
 
@@ -125,14 +125,14 @@ export function Navbar() {
             <Logo tone="light" />
           </a>
 
-          <nav aria-label="Primary" className="hidden lg:block">
-            <ul className="flex items-center gap-1">
+          <nav aria-label="Primary" className="hidden xl:block">
+            <ul className="flex items-center gap-0.5">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={navHref(link.href)}
                     onClick={(event) => handleNavigate(event, link.href)}
-                    className="inline-flex rounded-pill px-4 py-2 text-[17px] font-medium text-royal-mist transition-colors duration-200 hover:text-ink"
+                    className="inline-flex rounded-pill px-3 py-2 text-[14px] font-medium text-royal-mist transition-colors duration-200 hover:text-ink"
                   >
                     {link.label}
                   </a>
@@ -145,9 +145,11 @@ export function Navbar() {
             <a
               href={navHref('#contact')}
               onClick={(event) => handleNavigate(event, '#contact')}
-              className="btn-accent hidden px-5 py-2.5 sm:inline-flex"
+              className="btn-accent px-3 py-2.5 !text-[13px] sm:px-5 sm:!text-[15px]"
+              aria-label="Request a Quote"
             >
-              Request a Quote
+              <span className="sm:hidden">Quote</span>
+              <span className="hidden sm:inline">Request a Quote</span>
             </a>
 
             <button
@@ -156,7 +158,7 @@ export function Navbar() {
               aria-expanded={open}
               aria-controls="mobile-nav"
               aria-haspopup="dialog"
-              className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill border border-white/30 bg-royal text-white transition-colors hover:bg-royal-bright lg:hidden"
+              className="relative z-50 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill border border-white/30 bg-royal text-white transition-colors hover:bg-royal-bright xl:hidden"
             >
               <span className="sr-only">
                 {open ? 'Close menu' : 'Open menu'}
@@ -182,7 +184,7 @@ export function Navbar() {
 
       <div
         className={cn(
-          'fixed inset-0 z-40 lg:hidden',
+          'fixed inset-0 z-40 xl:hidden',
           open ? 'visible' : 'invisible pointer-events-none'
         )}
       >

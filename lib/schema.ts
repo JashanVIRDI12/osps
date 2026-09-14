@@ -2,13 +2,24 @@ import { z } from 'zod';
 
 /** Mirrors the product families in `content.ts`. */
 export const PRODUCT_INTERESTS = [
-  'Injection & Infusion',
-  'Drainage & Collection',
-  'Dressings & Bandages',
-  'Theatre & Protection',
-  'Pharmaceuticals',
+  'Wound Care & Dressings',
+  'Crepe / Elastic / Cohesive Bandages',
+  'Gauze & Cotton Products',
+  'Syringes & IV Products',
+  'Hospital Disposables',
+  'Surgical Essentials',
+  'Medical Equipment',
   'Multiple categories',
   'Something else',
+] as const;
+
+export const BUYER_TYPES = [
+  'Distributor / Dealer',
+  'Retailer / Pharmacy',
+  'Hospital / Clinic',
+  'Healthcare Institution',
+  'Corporate / Government Buyer',
+  'Other',
 ] as const;
 
 export const quoteSchema = z.object({
@@ -17,11 +28,16 @@ export const quoteSchema = z.object({
     .trim()
     .min(2, 'Please enter your name.')
     .max(80, 'That name is too long.'),
-  organization: z
+  company: z
     .string()
     .trim()
-    .min(2, 'Please enter your organisation.')
-    .max(120, 'That organisation name is too long.'),
+    .min(2, 'Please enter your company or organisation.')
+    .max(120, 'That company name is too long.'),
+  cityState: z
+    .string()
+    .trim()
+    .min(3, 'Please enter your city and state.')
+    .max(120, 'That location is too long.'),
   email: z
     .string()
     .trim()
@@ -33,14 +49,22 @@ export const quoteSchema = z.object({
     .min(7, 'Please enter a contact number.')
     .max(20, 'That number is too long.')
     .regex(/^[+()\d\s-]+$/, 'Use digits, spaces, +, - or ( ) only.'),
-  interest: z.enum(PRODUCT_INTERESTS, {
-    errorMap: () => ({ message: 'Please select a product interest.' }),
+  buyerType: z.enum(BUYER_TYPES, {
+    errorMap: () => ({ message: 'Please select a buyer type.' }),
   }),
-  message: z
+  product: z.enum(PRODUCT_INTERESTS, {
+    errorMap: () => ({ message: 'Please select a product.' }),
+  }),
+  quantity: z
+    .string()
+    .trim()
+    .min(1, 'Please enter the required quantity.')
+    .max(80, 'Please keep the quantity under 80 characters.'),
+  requirement: z
     .string()
     .trim()
     .min(10, 'Please tell us a little about your requirement.')
-    .max(1500, 'Please keep the message under 1500 characters.'),
+    .max(1500, 'Please keep the requirement under 1500 characters.'),
 });
 
 export type QuoteInput = z.infer<typeof quoteSchema>;

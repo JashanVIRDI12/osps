@@ -6,7 +6,6 @@ import {
   Building2,
   ClipboardCheck,
   Clock,
-  Droplets,
   Globe,
   Handshake,
   HeartPulse,
@@ -17,7 +16,6 @@ import {
   PackageCheck,
   Phone,
   PiggyBank,
-  Pill,
   ShieldCheck,
   Stethoscope,
   Store,
@@ -43,7 +41,7 @@ export const site = {
   founded: 2015,
   tagline: 'Quality You Can Trust, Care You Deserve',
   description:
-    'Om Sai Pharma & Surgicals manufactures and supplies a complete range of surgical products and pharmaceuticals — syringes, I.V. cannulas, infusion sets, dressings, theatre essentials, hospital injectables, IV fluids and medicines — to hospitals in India and 20+ countries worldwide.',
+    'Pan-India B2B supplier of medical, surgical and pharmaceutical products for distributors, dealers, retailers, hospitals, clinics, pharmacies and healthcare institutions.',
   url: 'https://ospsmed.com',
 };
 
@@ -52,30 +50,37 @@ export const highlights = [
   { label: 'Premium Quality', icon: Award },
   { label: 'WHO-GMP Certified', icon: ShieldCheck },
   { label: 'Trusted by 150+ Hospitals', icon: Building2 },
-  { label: 'Exporting to 20+ Countries', icon: Globe },
+  { label: 'Serving Healthcare Across India', icon: Globe },
 ];
 
 export const navLinks = [
-  { label: 'About', href: '#about' },
+  { label: 'Home', href: '#top' },
   { label: 'Products', href: '#products' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Distributors', href: '#distributors' },
+  { label: 'Hospitals & Institutions', href: '#institutions' },
+  { label: 'Quality', href: '#quality' },
+  { label: 'Catalogue', href: '#catalogue-download' },
+  { label: 'About Us', href: '#about' },
 ];
 
 /* ------------------------------------------------------------------ hero */
 
 export const hero = {
-  eyebrow: 'WHO-GMP Certified Pharma & Surgical Supplier',
-  headline: 'Quality you can trust, care you deserve.',
+  eyebrow: 'Pan-India B2B Medical Supply Partner',
+  headline: 'Reliable Medical & Surgical Supplies Across India',
   tagline: site.tagline,
-  body: 'Pharmaceuticals, surgical consumables, medical devices and hospital essentials, sourced from certified manufacturers and delivered on the day we commit to. WHO-GMP standards, trusted by 150+ hospitals, exported to more than 20 countries.',
-  primaryCta: { label: 'Request a Quote', href: '#contact' },
-  secondaryCta: { label: 'Explore products', href: '#products' },
+  body: 'Serving distributors, retailers, hospitals, clinics and healthcare institutions with dependable medical products and responsive supply support.',
+  primaryCta: { label: 'Explore Products', href: '#products' },
+  quoteCta: { label: 'Request a Quote', href: '#contact' },
+  distributorCta: { label: 'Become a Distributor', href: '#distributors' },
+  catalogueCta: {
+    label: 'Download Catalogue',
+    href: '/downloads/osps-product-list.xlsx',
+  },
   stats: [
     { value: 1579, suffix: '', label: 'Stocked lines' },
     { value: 150, suffix: '+', label: 'Hospitals supplied' },
-    { value: 20, suffix: '+', label: 'Export markets' },
+    { value: 10, suffix: '+', label: 'Years of supply support' },
   ],
   tags: ['Premium Quality', 'WHO-GMP Certified', 'Export Grade'],
   /**
@@ -89,8 +94,8 @@ export const hero = {
     poster: '/images/four-hour-delivery-poster.webp',
     alt: 'OSPS warehouse operator sending a packed order down the dispatch line',
     videoLabel: 'OSPS four-hour delivery from the warehouse dispatch line',
-    badge: '4-Hour Delivery',
-    badgeSub: 'Dock to doorstep, guaranteed',
+    badge: 'Reliable B2B Dispatch',
+    badgeSub: 'Responsive supply support across India',
   },
 };
 
@@ -99,9 +104,10 @@ export const marquee = [
   'Premium Quality',
   'WHO-GMP Certified',
   'Trusted by 150+ hospitals',
-  'Exporting to 20+ countries',
+  'Pan-India B2B supply',
+  'Distributor and dealer support',
+  'Institutional procurement support',
   'Surgicals and pharmaceuticals under one roof',
-  'Sterile & X-ray detectable options',
   'Same-day quotes',
 ];
 
@@ -261,9 +267,58 @@ export type ProductCategory = {
 export const productCategories: ProductCategory[] = [
   {
     number: '01',
-    title: 'Injection & Infusion',
+    title: 'Wound Care & Dressings',
     description:
-      'The disposables that carry fluid and medication to the patient, supplied sterile, single-use, and in the needle, safety, stop-cock and air-vent configurations each ward specifies.',
+      'A dependable range for wound preparation, protection and recovery, available for routine clinical use and institutional procurement.',
+    icon: Bandage,
+    items: [
+      'Adhesive Dressings',
+      'Wound Pads',
+      'Plasters',
+      'Medical Tapes',
+    ],
+    tone: '#1f56d8',
+    image: {
+      src: '/images/product-plasters.webp',
+      alt: 'Medical wound dressings, plasters and adhesive products',
+    },
+  },
+  {
+    number: '02',
+    title: 'Crepe / Elastic / Cohesive Bandages',
+    description:
+      'Compression and support bandages for hospitals, clinics, pharmacies and distribution partners, supplied in practical sizes and bulk packs.',
+    icon: Bandage,
+    items: ['Crepe Bandages', 'Elastic Bandages', 'Cohesive Bandages', 'Multiple Sizes'],
+    tone: '#2c63e4',
+    image: {
+      src: '/images/hero-bandage.webp',
+      alt: 'Crepe and elastic medical bandage rolls',
+    },
+  },
+  {
+    number: '03',
+    title: 'Gauze & Cotton Products',
+    description:
+      'Absorbent essentials for dressing, cleaning and procedure support, including sterile and non-sterile options where applicable.',
+    icon: Bandage,
+    items: [
+      'Gauze Swabs',
+      'Surgical Sponges',
+      'Absorbent Cotton',
+      'X-Ray Detectable Options',
+    ],
+    tone: '#2f62e8',
+    image: {
+      src: '/images/hero-gauze.webp',
+      alt: 'Sterile gauze swabs and absorbent cotton products',
+    },
+  },
+  {
+    number: '04',
+    title: 'Syringes & IV Products',
+    description:
+      'Sterile, single-use injection and infusion products with the configurations required by wards, pharmacies and institutional buyers.',
     icon: Syringe,
     items: [
       'Surgical Syringes',
@@ -271,79 +326,54 @@ export const productCategories: ProductCategory[] = [
       'Infusion Sets',
       'Blood Transfusion Sets',
     ],
-    tone: '#1f56d8',
-    image: {
-      src: '/images/category-injection.webp',
-      alt: 'Injection and infusion products: syringes, I.V. cannulas and infusion sets',
-    },
-  },
-  {
-    number: '02',
-    title: 'Drainage & Collection',
-    description:
-      'Closed-system drainage, catheters and collection for post-operative and bedside care, from urine bags and wound drains to Foley, Ryles and chest tubes.',
-    icon: Droplets,
-    items: ['Urine Bags', 'Wound Drainage Sets', 'Foley Catheters', 'Ryles Tubes'],
-    tone: '#2c63e4',
-    image: {
-      src: '/images/category-drainage.webp',
-      alt: 'Drainage and collection sets with sterile tubing components',
-    },
-  },
-  {
-    number: '03',
-    title: 'Dressings & Bandages',
-    description:
-      'Wound care from first dressing to final wrap, including plain and X-ray detectable swabs and sponges for theatre counts, plus the full tape and plaster range.',
-    icon: Bandage,
-    items: [
-      'Gauze Swabs',
-      'Surgical Sponges',
-      'Crepe Bandage',
-      'Elastic Bandage',
-      'Adhesive Tapes',
-      'Plasters',
-    ],
-    tone: '#2f62e8',
-    image: {
-      src: '/images/category-dressings.webp',
-      alt: 'Dressings, gauze swabs, tapes and plasters in sterile packaging',
-    },
-  },
-  {
-    number: '04',
-    title: 'Theatre & Protection',
-    description:
-      'Barrier protection, theatre consumables and airway lines: sterile carbon-steel blades, latex, nitrile and vinyl gloves, 3-ply masks, ready-assembled sterile kits, and respiratory circuits.',
-    icon: ShieldCheck,
-    items: [
-      'Surgical Blades',
-      'Examination Gloves',
-      'Face Masks',
-      'Airway & Respiratory',
-    ],
     tone: '#5b82f5',
     image: {
-      src: '/images/category-theatre.png',
-      alt: 'Theatre protection kit with gloves, masks, blades and sterile packs',
+      src: '/images/category-injection.webp',
+      alt: 'Syringes, I.V. cannulas and infusion products',
     },
   },
   {
     number: '05',
-    title: 'Pharmaceuticals',
+    title: 'Hospital Disposables',
     description:
-      'Hospital medicines under the same purchase order as the surgical range: injectables, antibiotics, ICU and anaesthetic lines, IV fluids, and oral medicines, held with batch and expiry verified before dispatch.',
-    icon: Pill,
+      'Everyday single-use products for wards, diagnostics, patient care and infection-control programmes, available for recurring supply.',
+    icon: PackageCheck,
     items: [
-      'Hospital Injectables',
-      'Antibiotics',
-      'ICU & Critical Care',
-      'IV Fluids & Electrolytes',
+      'Examination Gloves',
+      'Face Masks',
+      'Urine Bags',
+      'Procedure Kits',
     ],
     tone: '#6a8ef6',
     image: {
-      src: '/images/industries/industry-pharmacy.webp',
-      alt: 'Hospital pharmacy shelves stocked with pharmaceutical lines',
+      src: '/images/product-gloves.webp',
+      alt: 'Hospital disposable gloves and infection-control products',
+    },
+  },
+  {
+    number: '06',
+    title: 'Surgical Essentials',
+    description:
+      'Procedure and theatre essentials sourced for dependable quality, consistent specifications and coordinated institutional supply.',
+    icon: ShieldCheck,
+    items: ['Surgical Blades', 'Sterile Kits', 'Surgical Sponges', 'Theatre Protection'],
+    tone: '#7899f7',
+    image: {
+      src: '/images/category-theatre.png',
+      alt: 'Surgical theatre essentials including sterile kits and blades',
+    },
+  },
+  {
+    number: '07',
+    title: 'Medical Equipment',
+    description:
+      'Selected clinical equipment and patient-care products supported by product documentation, responsive quotations and bulk-order coordination.',
+    icon: Stethoscope,
+    items: ['Patient Care', 'Clinical Devices', 'Ward Equipment', 'Institutional Supply'],
+    tone: '#86a5f8',
+    image: {
+      src: '/images/category-drainage.webp',
+      alt: 'Medical devices and patient-care equipment for clinical use',
     },
   },
 ];
@@ -583,11 +613,11 @@ export const productGroups: ProductGroup[] = [
 ];
 
 export const productAccent = {
-  eyebrow: 'What we supply',
-  heading: 'Surgical and pharmaceutical lines, one accountable partner.',
-  title: 'Surgical and pharmaceutical ranges, one accountable supplier.',
-  body: 'One purchase order, one point of contact, one accountable partner for surgicals, medical devices and medicines across your facility.',
-  cta: { label: 'Request the full catalogue', href: '#contact' },
+  eyebrow: 'Product categories',
+  heading: 'Medical and surgical essentials for every healthcare buyer.',
+  title: 'A wide B2B portfolio, one responsive supply partner.',
+  body: 'Browse the core categories supplied to distributors, dealers, retailers, hospitals, clinics, pharmacies and institutions across India.',
+  cta: { label: 'Download Product Catalogue', href: '/downloads/osps-product-list.xlsx' },
 };
 
 export const catalogueIntro = {
@@ -899,8 +929,8 @@ export const checklist = {
 /* --------------------------------------------------------------- contact */
 
 export const contact = {
-  heading: "Let's Build a Strong Healthcare Partnership",
-  lead: 'Send us your requirement list and we will come back with itemised pricing and availability, usually the same working day.',
+  heading: 'Request B2B Pricing & Availability',
+  lead: 'Share your product, quantity and delivery location. Our team will respond with itemised pricing, availability and supply support.',
   productInterests: PRODUCT_INTERESTS,
   emergencyService: {
     title: '24-Hour Emergency Supply',

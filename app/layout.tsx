@@ -26,7 +26,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Pharmaceutical & Surgical Supplies`,
+    default: `${site.name} | B2B Medical & Surgical Supplies India`,
     template: `%s | ${site.shortName}`,
   },
   description: site.description,
@@ -37,9 +37,11 @@ export const metadata: Metadata = {
     'medical devices',
     'hospital supplies',
     'healthcare distributor India',
+    'medical products wholesale India',
+    'surgical supplies B2B India',
   ],
   openGraph: {
-    title: `${site.name} | Pharmaceutical & Surgical Supplies`,
+    title: `${site.name} | B2B Medical & Surgical Supplies India`,
     description: site.description,
     type: 'website',
     url: site.url,

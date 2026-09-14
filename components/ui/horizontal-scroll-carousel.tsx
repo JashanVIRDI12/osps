@@ -2,25 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useIsomorphicLayoutEffect } from '@/lib/motion';
-import { prefersReducedMotion } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 
 /**
  * Horizontal scroll carousel — adapted from @uniquesonu / 21st.dev.
  *
- * The section is taller than the viewport; the deck inside sticks to the top and
- * translates on X as that extra height scrolls past, so vertical input reads as
- * horizontal movement.
- *
- * Two changes from the source component:
- *   - the travel distance is measured from the real track width instead of the
- *     hardcoded `-95%`, so any number of cards lands flush at both ends,
- *   - the pinning only engages from `lg` up and is skipped under reduced motion;
- *     below that the deck is a native swipe row, which is what a touch device
- *     wants anyway.
+ * On desktop, vertical progress moves the cards horizontally while the section
+ * stays in view. GSAP owns the single transform so it runs on the same ticker as
+ * Lenis instead of competing with a second animation loop. Touch layouts retain
+ * native horizontal scrolling.
  */
 
 export type CarouselItem = {
@@ -33,7 +26,7 @@ export type CarouselItem = {
 type HorizontalScrollCarouselProps = {
   items: CarouselItem[];
   className?: string;
-  /** Rendered inside the pinned area, above the deck. */
+  /** Rendered inside the sticky area, above the deck. */
   header?: React.ReactNode;
 };
 
@@ -45,7 +38,6 @@ export function HorizontalScrollCarousel({
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
-  const [travel, setTravel] = useState(0);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
 
@@ -93,50 +85,56 @@ export function HorizontalScrollCarousel({
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    const measure = () => {
-      const track = trackRef.current;
-      const pinnable =
-        window.matchMedia('(min-width: 1024px)').matches &&
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track || prefersReducedMotion()) return;
 
-      if (!track || !pinnable) {
-        setTravel(0);
-        return;
-      }
+    const media = gsap.matchMedia(section);
 
-      // Overshoot slightly so the last card clears the right edge.
-      setTravel(Math.max(0, track.scrollWidth - window.innerWidth + 48));
-    };
+    media.add('(min-width: 1024px)', () => {
+      let travel = 0;
 
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+      const measure = () => {
+        travel = Math.max(0, track.scrollWidth - window.innerWidth + 48);
+        section.style.height = `calc(100svh + ${travel}px)`;
+      };
+
+      measure();
+      gsap.set(track, { x: 0, force3D: true, willChange: 'transform' });
+
+      const tween = gsap.to(track, {
+        x: () => -travel,
+        force3D: true,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true,
+          invalidateOnRefresh: true,
+          onRefreshInit: measure,
+        },
+      });
+
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        section.style.height = '';
+        gsap.set(track, { clearProps: 'transform,willChange' });
+      };
+    });
+
+    return () => media.revert();
   }, [items.length]);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
-  const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
-
   return (
-    <div
-      ref={sectionRef}
-      className={cn('relative', className)}
-      // Only reserve extra scroll height when the deck actually travels.
-      style={travel > 0 ? { height: `calc(100svh + ${travel}px)` } : undefined}
-    >
+    <div ref={sectionRef} className={cn('relative', className)}>
       <div className="lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:justify-center lg:overflow-hidden">
         {header}
 
         {/**
-         * Swipe controls, mobile only.
-         *
-         * From `lg` the deck is driven by the page scroll, so an arrow would be
-         * pointing at a gesture that does not apply. Below it the row is a
-         * native swipe area — and a swipe area with no visible control reads as
-         * a static row of cut-off cards, which is exactly how this section was
-         * being missed.
+         * Touch controls remain native below desktop. On desktop the page's
+         * vertical scroll advances the horizontal deck.
          *
          * They are real buttons rather than decorative chevrons, so the deck is
          * reachable by tap and by keyboard, not only by dragging.
@@ -161,12 +159,8 @@ export function HorizontalScrollCarousel({
         </div>
 
         {/**
-         * Below `lg` this is a native swipe row, so it gets the things a swipe
-         * row needs and a transformed track must not have: scroll snapping so
-         * cards come to rest framed rather than half-cut, `scroll-padding` that
-         * matches the gutter so a snapped card lines up with the copy above it,
-         * and `overscroll-contain` so swiping past the last card does not
-         * trigger the browser's back gesture.
+         * Native scrolling and snapping on touch; a single compositor transform
+         * driven by GSAP on desktop.
          */}
         <div
           ref={rowRef}
@@ -180,20 +174,15 @@ export function HorizontalScrollCarousel({
           role="region"
           aria-label="Industries we serve, swipe to browse"
           tabIndex={0}
-          /* Nested scroller: Lenis must leave this one to the browser, or a
-             horizontal trackpad gesture over the row is swallowed by the page's
-             virtual scroller instead of moving the deck. */
-          data-lenis-prevent
         >
-          <motion.div
+          <div
             ref={trackRef}
-            style={travel > 0 ? { x } : undefined}
-            className="gutter-x flex w-max gap-4 [--gutter:1.25rem] sm:gap-5 sm:[--gutter:1.5rem] lg:[--gutter:2rem]"
+            className="gutter-x flex w-max gap-4 [--gutter:1.25rem] sm:gap-5 sm:[--gutter:1.5rem] lg:[--gutter:2rem] lg:will-change-transform"
           >
             {items.map((item, index) => (
               <Card key={item.title} item={item} index={index} />
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
@@ -237,7 +226,7 @@ function Card({ item, index }: { item: CarouselItem; index: number }) {
   return (
     <article
       className={cn(
-        'group relative shrink-0 snap-start overflow-hidden rounded-card-elevated lg:snap-align-none',
+        'group relative shrink-0 snap-start overflow-hidden rounded-card-elevated',
         // Caps at the viewport width so a 320px phone never gets a card wider
         // than the screen, which would make the row impossible to rest on.
         'h-[300px] w-[min(260px,78vw)] xs:h-[340px] sm:h-[460px] sm:w-[320px] lg:h-[500px] lg:w-[368px]',
@@ -273,7 +262,7 @@ function Card({ item, index }: { item: CarouselItem; index: number }) {
 
       <div className="absolute inset-0 flex flex-col justify-between p-6">
         <div className="flex items-start justify-between gap-3">
-          <span className="rounded-pill border border-white/25 bg-ink/70 px-3 py-1.5 text-caption font-medium text-white lg:bg-ink/50 lg:backdrop-blur-md">
+          <span className="rounded-pill border border-white/25 bg-ink/70 px-3 py-1.5 text-caption font-medium text-white lg:bg-ink/60">
             {item.badge}
           </span>
           <span className="text-caption font-semibold tracking-[0.16em] text-white/60">
