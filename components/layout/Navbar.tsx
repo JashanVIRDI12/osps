@@ -119,20 +119,20 @@ export function Navbar() {
             onClick={(event) => {
               if (onHome) handleNavigate(event, '#top');
             }}
-            className="min-w-0 shrink rounded-pill focus-visible:ring-offset-4"
+            className="min-w-0 shrink rounded-pill focus-visible:ring-offset-4 xl:shrink-0"
             aria-label="Om Sai Pharma & Surgicals, back to top"
           >
             <Logo tone="light" />
           </a>
 
           <nav aria-label="Primary" className="hidden xl:block">
-            <ul className="flex items-center gap-0.5">
+            <ul className="flex items-center">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={navHref(link.href)}
                     onClick={(event) => handleNavigate(event, link.href)}
-                    className="inline-flex rounded-pill px-3 py-2 text-[14px] font-medium text-royal-mist transition-colors duration-200 hover:text-ink"
+                    className="inline-flex whitespace-nowrap rounded-pill px-2 py-2 text-[14px] font-medium text-royal-mist transition-colors duration-200 hover:text-ink 2xl:px-3"
                   >
                     {link.label}
                   </a>
@@ -145,7 +145,7 @@ export function Navbar() {
             <a
               href={navHref('#contact')}
               onClick={(event) => handleNavigate(event, '#contact')}
-              className="btn-accent px-3 py-2.5 !text-[13px] sm:px-5 sm:!text-[15px]"
+              className="btn-accent whitespace-nowrap px-3 py-2.5 !text-[13px] sm:px-5 sm:!text-[15px]"
               aria-label="Request a Quote"
             >
               <span className="sm:hidden">Quote</span>

@@ -22,6 +22,7 @@ import { ClosingChecklist } from '@/components/sections/ClosingChecklist';
 import { ContactBlock } from '@/components/sections/ContactBlock';
 import { FeaturedProducts } from '@/components/sections/FeaturedProducts';
 import { BuyerSolutions } from '@/components/sections/BuyerSolutions';
+import { CompanyNetwork } from '@/components/sections/CompanyNetwork';
 
 /**
  * Section order is a light/royal rhythm. The page lives on the light canvas and
@@ -37,6 +38,7 @@ export default function HomePage() {
         <Hero />
         <TrustMarquee />
         <Capabilities />
+        <CompanyNetwork />
         <FeaturedProducts />
         <BuyerSolutions />
         <Catalogue />
